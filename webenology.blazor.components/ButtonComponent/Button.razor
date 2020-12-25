@@ -1,0 +1,10 @@
+﻿<button @onclick=OnClick @attributes="Attributes" class="@_bgType">
+    @if (ChildContent == null)
+    {
+        @Text
+    }
+    else
+    {
+        @ChildContent
+    }
+</button>

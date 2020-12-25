@@ -1,0 +1,35 @@
+﻿.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2000;
+    background-color: rgba(204,204,204,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .backdrop.hidden {
+        display: none;
+    }
+
+    .backdrop .card {
+        min-width:300px;
+    }
+
+.bounce-in {
+    animation: bounce-in 0.3s cubic-bezier(0.4, 0, 0.6, 1);
+    animation-iteration-count: 1;
+}
+
+@keyframes bounce-in {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}

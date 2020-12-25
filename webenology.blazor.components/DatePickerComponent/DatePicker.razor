@@ -1,0 +1,19 @@
+﻿@typeparam TValue
+
+<div class="w-full flex flex-col">
+    <div class="w-full items-center relative flex">
+        <input type="text" @attributes="Attributes" @ref="_inputRef" value="@DateTimeStr" class="@Css()" />
+        @if (_isError)
+        {
+            <div class="absolute right-10">
+                <i class="mdi mdi-alert-circle-outline text-red-800"></i>
+            </div>
+        }
+    </div>
+    @if (_isError)
+    {
+        <div class="ml-1 error text-red-800 text-sm">
+            @_errorMessage
+        </div>
+    }
+</div>

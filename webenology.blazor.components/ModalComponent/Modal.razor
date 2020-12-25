@@ -1,0 +1,8 @@
+﻿<CascadingValue Value="this">
+
+    <div class="@GetBackdropCss()" @onclick="CloseByBackdrop">
+        <div class="@GetModalCss()" @ref="_modal" @onclick:stopPropagation>
+            @ChildContent
+        </div>
+    </div>
+</CascadingValue>

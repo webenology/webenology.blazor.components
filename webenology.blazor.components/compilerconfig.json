@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "wwwroot/css/style.css",
+    "inputFile": "wwwroot/css/style.less"
+  },
+  {
+    "outputFile": "ModalComponent/ModalHeader.razor.css",
+    "inputFile": "ModalComponent/ModalHeader.razor.less"
+  }
+]

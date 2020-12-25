@@ -1,0 +1,54 @@
+﻿@typeparam TItem
+
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+
+<div class="form-group">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label>@Label</label>
+    }
+    <OutsideClick OnOutsideClick="closeItemsWindow">
+        <div class="input-group">
+            <input placeholder="@PlaceHolder" type="text" @attributes="@_attributes" class="form-control @(ShowRemoveButton ? "show-remove-input": "")" @bind="LocalText" @bind:event="oninput" @onkeyup="onKeyPress" @onclick="openItemsWindow" @ref="_elRef" />
+            @if (ShowRemoveButton && !string.IsNullOrEmpty(_localText))
+            {
+                <div class="input-group-text show-remove-remove">
+                    <i class="mdi mdi-close-circle show-remove-icon" @onclick="clearItem"></i>
+                </div>
+            }
+            <div class="input-group-text" @onclick="toggleItemsWindows">
+                <i class="mdi mdi-chevron-down"></i>
+            </div>
+        </div>
+        @if (_isError)
+        {
+            <label class="error">
+                @_errorMessage
+            </label>
+        }
+        <div class="list-group @(_areItemsOpen? "" : "hide")" style="top: calc(100%@(_isError ? " - 24px" :""));box-shadow: 0px 3px 4px #cecece;border-radius: 4px;z-index:4">
+            <div style="max-height: @(Math.Clamp(MaxItemsToShow * 40, 160, 320))px; overflow-y: auto" @ref="_scrollEl">
+                <Virtualize TItem="TItem" ItemsProvider="GetSearchedItems" @ref="_virtualized" OverscanCount="0" Context="itm">
+                    @if (SearchedItems.Count == 1)
+                    {
+                        _currentFocused = 0;
+                    }
+                    <a class="list-group-item list-group-item-action @(_currentFocused == SearchedItems.IndexOf(itm) ? "focused" : "")" @onclick="@(()=> onSelectItem(itm))" @onclick:preventDefault href="javascript:;" style="height: 40px;">@((MarkupString)SearchHelper.HighlightSearchResult(_localText, GetValue(itm)))</a>
+                </Virtualize>
+            </div>
+            @if (!SearchedItems.Any())
+            {
+                <div class="list-group-item not-found">
+                    No Matches Found
+                </div>
+            }
+            @if (CanAddNewItem && !ExactMatch())
+            {
+                <div class="list-group-item add-new" @onclick="onAddNewItem">
+                    <i class="mdi mdi-plus-circle-outline"></i>
+                    <b>Ctrl + Enter</b> to create @(string.IsNullOrEmpty(_localText) ? "a": $"\"{_localText}\" as a") new @(string.IsNullOrEmpty(NewTypeName)? "item": NewTypeName)
+                </div>
+            }
+        </div>
+    </OutsideClick>
+</div>

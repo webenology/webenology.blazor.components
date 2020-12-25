@@ -1,0 +1,16 @@
+﻿@typeparam TValue
+@inherits WebNumberInputBase<TValue>
+
+<div class="form-group">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label>@Label</label>
+    }
+    <input type="number" @bind="LocalText" @bind:event="oninput" class="@Css()" step="@Step" min="0" />
+    @if (IsError)
+    {
+        <label class="error">
+            @ErrorMessage
+        </label>
+    }
+</div>

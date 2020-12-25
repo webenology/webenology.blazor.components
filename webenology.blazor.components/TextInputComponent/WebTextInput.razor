@@ -1,0 +1,15 @@
+﻿@inherits WebTextInputBase
+
+<div class="form-group">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label>@Label</label>
+    }
+    <input type="text" @bind="LocalText" @bind:event="oninput" class="@Css()" placeholder="@PlaceHolder" />
+    @if (IsError)
+    {
+        <label class="error">
+            @ErrorMessage
+        </label>
+    }
+</div>

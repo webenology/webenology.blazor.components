@@ -1,0 +1,79 @@
+﻿.webenology-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    z-index: 1000;
+}
+
+.hide {
+    display: none;
+}
+
+.webenology-modal {
+    width: 50%;
+    margin-top: 40px;
+    background-color: white;
+    border-radius: 6px;
+    transform: translateY(40px);
+    opacity: 0;
+}
+
+    .webenology-modal.webenology-modal-lg {
+        width: 80%;
+    }
+
+    .webenology-modal.webenology-modal-sm {
+        width: 30%;
+    }
+
+::deep .webenology-modal-body {
+    padding: 15px;
+    border-top: 1px solid #cecece;
+}
+
+::deep .webenology-modal-footer {
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid #cecece;
+}
+
+.animate-up {
+    animation: move-up 0.3s ease-out;
+    animation-fill-mode: forwards;
+}
+
+.animate-away {
+    animation: move-away 0.3s ease-out;
+    animation-fill-mode: forwards;
+}
+
+@keyframes move-away {
+    from {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+}
+
+
+@keyframes move-up {
+    from {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}

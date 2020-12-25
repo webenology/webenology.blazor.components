@@ -1,0 +1,50 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<Button ViewType="Button.ButtonType.Primary" Text="Open Modal" OnClick="@(()=>_modal.OpenModal())"></Button>
+<Button ViewType="Button.ButtonType.Secondary" Text="Show Confirm" OnClick="@(()=> _confirm.ShowConfirm("none","none"))" ButtonSecondaryCss="btn-secondary"></Button>
+<Modal @ref="_modal" Size="Modal.ModalSize.Default">
+    <ModalHeader Header="Groot" SubHeader="I am Groot"></ModalHeader>
+    <ModalBody>hello body</ModalBody>
+    <ModalFooter>hello foot</ModalFooter>
+</Modal>
+<Confirm @ref="_confirm"></Confirm>
+
+inside click: @_insideClick
+<OutsideClick OnOutsideClick="@(()=> _insideClick = false)" OnInsideFocus="@(()=> _insideClick = true)">
+    hello click anywhere inside here !
+</OutsideClick>
+
+<ComboBox Items="items" TItem="KeyValuePair<string,string>" ValueFieldName="Value"
+          IsEditable="true" PlaceHolder="Search for a number..."
+          ShowRemoveButton="true"></ComboBox>
+
+@code {
+    private Modal _modal;
+    private Confirm _confirm;
+    private bool _insideClick;
+
+    private List<KeyValuePair<string, string>> items = new List<KeyValuePair<string, string>>();
+
+    protected override void OnInitialized()
+    {
+        for (var i = 0; i < 100; i++)
+        {
+            items.Add(new KeyValuePair<string, string>(i.ToString(), i.ToString()));
+        }
+        base.OnInitialized();
+    }
+
+}
+
+
+
+
+
+
+

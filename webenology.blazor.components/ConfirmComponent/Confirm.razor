@@ -1,0 +1,18 @@
+﻿<div class="backdrop @(_isOpen ? "": "hidden")">
+    <div class="card @(_isOpen ? "bounce-in": "")">
+        @if (!string.IsNullOrEmpty(_header))
+        {
+            <div class="card-header hbuilt">
+                @_header
+            </div>
+        }
+        <div class="card-body">
+            @_content
+        </div>
+        <div class="card-footer text-right">
+            <button class="btn btn-default btn-sm" @onclick="@(()=> Execute(_onCancel))">Cancel</button>
+            <button class="btn btn-danger btn-sm" @onclick="@(()=> Execute(_onNo))">No</button>
+            <button class="btn btn-primary btn-sm" @onclick="@(()=> Execute(_onYes))">Yes</button>
+        </div>
+    </div>
+</div>

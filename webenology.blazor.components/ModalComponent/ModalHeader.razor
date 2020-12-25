@@ -1,0 +1,15 @@
+﻿<div class="@GetHeaderCss()">
+    <h4 class="@GetModalTitleCss()">
+        @Header
+        @if (!string.IsNullOrEmpty(SubHeader))
+        {
+            <small class="@GetModalSubheadingCss()">@SubHeader</small>
+        }
+    </h4>
+    @if (!HideClose)
+    {
+        <span class="@GetModalCloseCss()" @onclick="OnClose" aria-lable="Close">
+            <i class="@GetModalCloseIconCss()"></i>
+        </span>
+    }
+</div>

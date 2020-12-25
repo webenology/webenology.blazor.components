@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webenology.blazor.components", "webenology.blazor.components\webenology.blazor.components.csproj", "{8235607A-2576-4987-AE19-59FE9E3786A1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{BB36127E-720A-4B33-BEA4-50CA5A2F25E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8235607A-2576-4987-AE19-59FE9E3786A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8235607A-2576-4987-AE19-59FE9E3786A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8235607A-2576-4987-AE19-59FE9E3786A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8235607A-2576-4987-AE19-59FE9E3786A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB36127E-720A-4B33-BEA4-50CA5A2F25E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB36127E-720A-4B33-BEA4-50CA5A2F25E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB36127E-720A-4B33-BEA4-50CA5A2F25E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB36127E-720A-4B33-BEA4-50CA5A2F25E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C83AD63A-1D51-4689-BFDB-78D05094056B}
+	EndGlobalSection
+EndGlobal

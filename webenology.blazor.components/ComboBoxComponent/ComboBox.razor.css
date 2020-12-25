@@ -1,0 +1,64 @@
+﻿.form-group {
+    position: relative;
+}
+
+.list-group {
+    position: absolute;
+    top: 32px;
+    left: 0px;
+    background-color: white;
+    width: 100%;
+}
+
+::deep .mark, ::deep mark {
+    padding: 0.2em 0;
+}
+
+.add-new {
+    text-align: center;
+    cursor: pointer;
+}
+
+    .add-new:hover {
+        background-color: #34495e !important;
+        color: white !important;
+    }
+
+.not-found {
+    text-align: center;
+    color: #cecece;
+}
+
+.focused {
+    background-color: #34495e !important;
+    color: white !important;
+}
+
+.max-height {
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.show-remove-input {
+    border-right: 0;
+}
+
+.show-remove-remove {
+    border-left: 0;
+    padding: 0;
+    background: white;
+}
+
+.show-remove-icon {
+    padding: 3px;
+    cursor: pointer !important;
+    color: #cecece;
+}
+
+    .show-remove-icon:hover {
+        color: inherit !important;
+    }
+
+.hide {
+    display: none;
+}

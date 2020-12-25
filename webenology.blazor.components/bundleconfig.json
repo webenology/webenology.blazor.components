@@ -1,0 +1,26 @@
+[
+  {
+    "outputFileName": "wwwroot/js/Combobox.min.js",
+    "inputFiles": [
+      "wwwroot/js/Combobox.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/WebModal.min.js",
+    "inputFiles": [
+      "wwwroot/js/WebModal.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/DateTimePicker.min.js",
+    "inputFiles": [
+      "wwwroot/js/DateTimePicker.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/OutsideClick.min.js",
+    "inputFiles": [
+      "wwwroot/js/OutsideClick.js"
+    ]
+  }
+]

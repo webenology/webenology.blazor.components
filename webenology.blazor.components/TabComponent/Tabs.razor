@@ -1,0 +1,16 @@
+﻿<CascadingValue Value="this">
+    <div class="hpanel">
+        <ul class="nav nav-tabs">
+            @foreach (var tab in TabPages)
+            {
+                <li class="@(ActivePage == tab ? "active": "")">
+                    <a href="javascript:;" @onclick="@(_ => ActivatePage(tab))">@tab.Title</a>
+                </li>
+            }
+        </ul>
+        <div class="tab-content">
+            @ChildContent
+        </div>
+    </div>
+</CascadingValue>
+

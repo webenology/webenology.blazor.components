@@ -1,0 +1,16 @@
+﻿<div class="@GetCss()">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [CascadingParameter]
+    public Modal Modal { get; set; }
+
+    private string GetCss()
+    {
+        return Modal.ModalStyle.ModalBodyCss.IfNullOrEmpty("webenology-modal-footer");
+    }
+
+}
