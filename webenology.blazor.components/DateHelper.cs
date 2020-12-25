@@ -10,8 +10,8 @@ namespace webenology.blazor.components
     {
         public static string ToDtFormat(this DateTime dt, string format, bool enableTime)
         {
-            var baseDate = "MM/dd/yyy";
-            var baseTime = "hh:mm t";
+            var baseDate = "MM-dd-yyyy";
+            var baseTime = "hh:mm:ss tt";
 
             if (string.IsNullOrEmpty(format))
             {
@@ -30,8 +30,8 @@ namespace webenology.blazor.components
             if (!dt.HasValue)
                 return string.Empty;
 
-            var baseDate = "MM/dd/yyy";
-            var baseTime = "hh:mm t";
+            var baseDate = "MM-dd-yyyy";
+            var baseTime = "hh:mm:ss tt";
 
             if (string.IsNullOrEmpty(format))
             {

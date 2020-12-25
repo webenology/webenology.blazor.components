@@ -1,14 +1,16 @@
-﻿<CascadingValue Value="this">
-    <div class="hpanel">
-        <ul class="nav nav-tabs">
+﻿@namespace webenology.blazor.components
+
+<CascadingValue Value="this">
+    <div class="@Style.TabContainerCss">
+        <ul class="@Style.TabListCss">
             @foreach (var tab in TabPages)
             {
-                <li class="@(ActivePage == tab ? "active": "")">
-                    <a href="javascript:;" @onclick="@(_ => ActivatePage(tab))">@tab.Title</a>
+                <li class="@Style.TabListItemCss">
+                    <a class="@Style.TabLinkCss @(ActivePage == tab ? Style.ActiveTabCss: "")" href="javascript:;" @onclick="@(_ => ActivatePage(tab))">@tab.Title</a>
                 </li>
             }
         </ul>
-        <div class="tab-content">
+        <div class="@Style.TabContentContainerCss">
             @ChildContent
         </div>
     </div>

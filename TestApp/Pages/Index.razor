@@ -35,11 +35,28 @@ Welcome to your new app.
           IsEditable="true" PlaceHolder="Search for a number..."
           ShowRemoveButton="true"></ComboBox>
 
+<DropDown Items="items" ShowEmpty="true"></DropDown>
+
+<DatePicker Label="dt here" @bind-Date="_dt"></DatePicker>
+
+<Tabs>
+    <Tab Title="tab 1">
+        <h1>this is a tab</h1>
+    </Tab>
+    <Tab Title="tab 2">
+        <h2>this is the second tab</h2>
+    </Tab>
+</Tabs>
+
+<WebTextInput @bind-Text="_text" IsErrorFunc="() => true"></WebTextInput>
+
 @code {
     private Modal _modal;
     private Modal _modal2;
     private Confirm _confirm;
     private bool _insideClick;
+    private DateTime _dt = DateTime.Now;
+    private string _text;
 
     private List<KeyValuePair<string, string>> items = new List<KeyValuePair<string, string>>();
 

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 
-namespace webenology.blazor.components.DatePickerComponent
+namespace webenology.blazor.components
 {
     public partial class DatePicker<TValue>
     {
@@ -18,6 +18,7 @@ namespace webenology.blazor.components.DatePickerComponent
         [Parameter(CaptureUnmatchedValues = true)]
         public Dictionary<string, object> Attributes { get; set; }
         [Parameter] public TValue Date { get; set; }
+        [Parameter] public string Label { get; set; }
         [Parameter] public EventCallback<TValue> DateChanged { get; set; }
         [Parameter] public string DateFormat { get; set; }
         [Parameter] public Expression<Func<TValue>> For { get; set; }
@@ -27,6 +28,8 @@ namespace webenology.blazor.components.DatePickerComponent
         /// Only set to true if using inside a modal
         /// </summary>
         [Parameter] public bool MakeStatic { get; set; }
+        [Parameter]
+        public DatePickerStyle Style { get; set; } = DatePickerStyle.WebenologyStyle;
         [CascadingParameter] private EditContext _editContext { get; set; }
 
         private DatePickerType _oldType = DatePickerType.Single;
@@ -121,13 +124,12 @@ namespace webenology.blazor.components.DatePickerComponent
 
         public string Css()
         {
-            var css = new StringBuilder();
-            css.Append("w-full px-2 py-1 pr-8 border flex-1 rounded outline-none border-gray-300 focus:border-gray-600  duration-300 transition-colors text-sm m-1 ");
+            var css = new List<string> { Style.InputCss };
+
             if (_isError)
-            {
-                css.Append("border-red-800 bg-red-200");
-            }
-            return css.ToString();
+                css.Add(Style.InputErrorCss);
+
+            return string.Join(" ", css);
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -194,6 +196,13 @@ namespace webenology.blazor.components.DatePickerComponent
             {
                 _editContext.OnValidationRequested -= _editContext_OnValidationRequested;
             }
+        }
+
+        public enum DatePickerType
+        {
+            Single,
+            Multiple,
+            Range
         }
 
     }

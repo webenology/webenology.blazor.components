@@ -6,5 +6,9 @@
   {
     "outputFile": "ModalComponent/ModalHeader.razor.css",
     "inputFile": "ModalComponent/ModalHeader.razor.less"
+  },
+  {
+    "outputFile": "DatePickerComponent/DatePicker.razor.css",
+    "inputFile": "DatePickerComponent/DatePicker.razor.less"
   }
 ]

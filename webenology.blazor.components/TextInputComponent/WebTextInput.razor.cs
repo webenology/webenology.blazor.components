@@ -2,50 +2,56 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace webenology.blazor.components.DropDownComponent
+using webenology.blazor.components.TextInputComponent;
+
+namespace webenology.blazor.components
 {
-    public class DropDownBase : ComponentBase, IDisposable
+    public partial class WebTextInput : IDisposable
     {
         [Parameter]
-
-        public List<KeyValuePair<string, string>> Items { get; set; }
+        public string Label { get; set; }
         [Parameter]
-        public string EmptyValue { get; set; }
+        public string Text { get; set; }
         [Parameter]
-        public string EmptyText { get; set; }
-        [Parameter]
-        public bool ShowEmpty { get; set; }
+        public EventCallback<string> TextChanged { get; set; }
         [Parameter]
         public Expression<Func<string>> For { get; set; }
         [Parameter]
-        public string Value { get; set; }
+        public Func<bool> IsErrorFunc { get; set; }
         [Parameter]
-        public EventCallback<string> ValueChanged { get; set; }
-
+        public string ErrorMsg { get; set; }
+        [Parameter] public string PlaceHolder { get; set; }
         [CascadingParameter]
         private EditContext _editContext { get; set; }
+        [Parameter]
+        public WebTextInputStyle Style { get; set; } = WebTextInputStyle.WebenologyStyle;
 
-        public void onChangeValue(ChangeEventArgs val)
+        private bool _isError => !string.IsNullOrEmpty(_errorMessage);
+        private string _errorMessage;
+
+        public string LocalText
         {
-            ErrorMessage = string.Empty;
-            ValueChanged.InvokeAsync((string)val.Value);
-            StateHasChanged();
+            get => Text;
+            set
+            {
+                _errorMessage = string.Empty;
+                TextChanged.InvokeAsync(value);
+            }
         }
-        public bool IsError => !string.IsNullOrEmpty(ErrorMessage);
-        public string ErrorMessage;
 
         public string Css()
         {
-            var css = new List<string> { "form-control" };
+            var css = new List<string> { Style.WebInputCss };
 
-            if (IsError)
+            if (_isError)
             {
-                css.Add("error");
+                css.Add(Style.WebInputErrorCss);
             }
 
             return string.Join(" ", css);
@@ -62,14 +68,23 @@ namespace webenology.blazor.components.DropDownComponent
 
         private void _editContext_OnValidationRequested(object sender, ValidationRequestedEventArgs e)
         {
-            ErrorMessage = string.Empty;
-            if (_editContext != null && For != null)
+            _errorMessage = string.Empty;
+            if (_editContext != null && For != null && IsErrorFunc == null)
             {
                 var fieldIdentifier = new FieldIdentifier(_editContext.Model, ((MemberExpression)For.Body).Member.Name);
                 var message = _editContext.GetValidationMessages(fieldIdentifier);
                 if (message != null && message.Any())
                 {
-                    ErrorMessage = message.First();
+                    _errorMessage = message.First();
+                }
+            }
+            else if (_editContext != null && IsErrorFunc != null && For != null)
+            {
+                var isError = IsErrorFunc.Invoke();
+                if (isError)
+                {
+                    var messageStore = new ValidationMessageStore(_editContext);
+                    _errorMessage = ErrorMsg;
                 }
             }
         }
@@ -80,12 +95,6 @@ namespace webenology.blazor.components.DropDownComponent
             {
                 _editContext.OnValidationRequested -= _editContext_OnValidationRequested;
             }
-        }
-
-        public override Task SetParametersAsync(ParameterView parameters)
-        {
-
-            return base.SetParametersAsync(parameters);
         }
     }
 }

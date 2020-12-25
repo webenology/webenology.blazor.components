@@ -1,15 +1,23 @@
-﻿@inherits WebTextInputBase
+﻿@namespace webenology.blazor.components
 
-<div class="form-group">
+<div class="@Style.WebFormGroupCss">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label>@Label</label>
+        <label class="@Style.LabelCss">@Label</label>
     }
-    <input type="text" @bind="LocalText" @bind:event="oninput" class="@Css()" placeholder="@PlaceHolder" />
-    @if (IsError)
+    <div class="@Style.WebInputGroupCss">
+        <input type="text" @bind="LocalText" @bind:event="oninput" class="@Css()" placeholder="@PlaceHolder" />
+        @if (_isError)
+        {
+            <span class="@Style.WebInputGroupTextCss">
+                <i class="@Style.WebInputGroupTextIconCss"></i>
+            </span>
+        }
+    </div>
+    @if (_isError)
     {
-        <label class="error">
-            @ErrorMessage
+        <label class="@Style.ErrorMessageCss">
+            @_errorMessage
         </label>
     }
 </div>

@@ -1,0 +1,15 @@
+﻿.form-error {
+  border: 1px solid red;
+  border-right: none;
+}
+.error-icon-holder {
+  border: 1px solid red;
+  border-left: none;
+}
+.error-icon-holder i {
+  color: red;
+}
+.webenology-error {
+  color: red;
+  font-size: 0.85em;
+}

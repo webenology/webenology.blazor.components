@@ -8,16 +8,19 @@
     <Content Remove="bundleconfig.json" />
     <Content Remove="compilerconfig.json" />
     <Content Remove="wwwroot\js\Combobox.min.js" />
+    <Content Remove="wwwroot\js\OutsideClick.min.js" />
   </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\js\Combobox.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\OutsideClick.min.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\js\Combobox.min.js" />
+    <None Include="wwwroot\js\OutsideClick.min.js" />
   </ItemGroup>
 
   

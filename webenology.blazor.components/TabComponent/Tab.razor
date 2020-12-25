@@ -1,7 +1,9 @@
-﻿@if (Tabs.ActivePage == this)
+﻿@namespace webenology.blazor.components
+
+@if (Tabs.ActivePage == this)
 {
-    <div class="tab-pane active">
-        <div class="panel-body">
+    <div class="@Tabs.Style.TabPaneCss">
+        <div class="@Tabs.Style.TabBodyCss">
             @ChildContent
         </div>
     </div>

@@ -1,7 +1,8 @@
 ﻿using System;
+
 using Microsoft.AspNetCore.Components;
 
-namespace webenology.blazor.components.TabComponent
+namespace webenology.blazor.components
 {
     public partial class Tab
     {
@@ -14,8 +15,7 @@ namespace webenology.blazor.components.TabComponent
 
         protected override void OnInitialized()
         {
-            if (Tabs == null)
-                throw new ArgumentNullException($"S2Tab can only be part of S2Tabs control");
+            this.IfNullThrow(Tabs);
 
             Tabs.AddPage(this);
             Tabs.ActivePage ??= this;

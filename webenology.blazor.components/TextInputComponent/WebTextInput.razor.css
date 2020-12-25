@@ -1,8 +1,26 @@
 ﻿.right-10 {
-    right:10px;
+    right: 10px;
 }
 
-.error {
-    margin-top:-5px;
-    font-size:12px;
+
+.form-error {
+    border: 1px solid red;
+}
+
+.form-control.form-error {
+    border-right: none;
+}
+
+.input-group-text {
+    background-color: white;
+}
+
+.input-group-text.form-error {
+    border-left: none;
+    color: red;
+}
+
+.error-message {
+    font-size: 0.8em;
+    color: red;
 }

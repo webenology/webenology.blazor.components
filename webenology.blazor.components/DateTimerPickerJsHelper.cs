@@ -18,7 +18,7 @@ namespace webenology.blazor.components
 
     internal class DateTimerPickerJsHelper : BaseJsHelper, IDateTimerPickerJsHelper
     {
-        public DateTimerPickerJsHelper(IJSRuntime jsRuntime) : base(jsRuntime, "./_content/webenology.blazor.components/js/datetimepicker.min.js")
+        public DateTimerPickerJsHelper(IJSRuntime jsRuntime) : base(jsRuntime, "./_content/webenology.blazor.components/js/datetimepicker.js")
         {
             jsRuntime.InvokeAsync<IJSObjectReference>(
                 "import", "./_content/webenology.blazor.components/js/flatpickr.min.js");
@@ -28,12 +28,12 @@ namespace webenology.blazor.components
             bool time, bool isStatic) where TRef : class
         {
             var module = await ModuleTask.Value;
-            await module.InvokeVoidAsync("DateTimePicker.setupPicker", instance, el, type, time, isStatic);
+            await module.InvokeVoidAsync("setupPicker", instance, el, type, time, isStatic);
         }
         public async Task UpdateSettings(ElementReference el, string setting, string value)
         {
             var module = await ModuleTask.Value;
-            await module.InvokeVoidAsync("DateTimerPicker.UpdateSetting", el, setting, value);
+            await module.InvokeVoidAsync("UpdateSetting", el, setting, value);
         }
 
 
