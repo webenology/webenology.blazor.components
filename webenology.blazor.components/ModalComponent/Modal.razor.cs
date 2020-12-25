@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace webenology.blazor.components.ModalComponent
+namespace webenology.blazor.components
 {
     public partial class Modal
     {
@@ -14,18 +14,23 @@ namespace webenology.blazor.components.ModalComponent
         [Parameter]
         public string SubHeaderTitle { get; set; }
         [Parameter]
-        public RenderFragment ChildContent { get; set; }
+        public bool HeaderHideClose { get; set; }
+        [Parameter]
+        public RenderFragment BodyContent { get; set; }
+        [Parameter]
+        public RenderFragment FooterContent { get; set; }
+        [Parameter]
+        public RenderFragment HeaderContent { get; set; }
         [Parameter]
         public bool DisableBackgroundCloseOnClick { get; set; }
         [Parameter]
         public ModalSize Size { get; set; }
-        [Inject]
-        private IModalJsHelper js { get; set; }
+        [Parameter]
+        public ModalStyle Style { get; set; } = ModalStyle.WebenologyStyle;
 
         private bool _isOpen;
         private bool _showAnimateUp;
         private bool _showAnimateAway;
-        public ModalStyle ModalStyle = new();
         private ElementReference _modal;
         public enum ModalSize
         {
@@ -36,39 +41,39 @@ namespace webenology.blazor.components.ModalComponent
 
         private string GetBackdropCss()
         {
-            var css = new List<string> { ModalStyle.BackdropCss.IfNullOrEmpty("webenology-backdrop") };
+            var css = new List<string> { Style.BackdropCss };
 
             if (!_isOpen)
-                css.Add(ModalStyle.ModalHideCss.IfNullOrEmpty("hide"));
+                css.Add(Style.ModalHideCss);
 
             return string.Join(" ", css);
         }
 
         private string GetModalCss()
         {
-            var css = new List<string> { ModalStyle.ModalCss.IfNullOrEmpty("webenology-modal") };
+            var css = new List<string> { Style.ModalCss };
 
 
             if (Size == ModalSize.Small)
             {
-                css.Add(ModalStyle.ModalSizeSmallCss.IfNullOrEmpty("webenology-modal-sm"));
+                css.Add(Style.ModalSizeSmallCss);
             }
 
             if (Size == ModalSize.Large)
             {
-                css.Add(ModalStyle.ModalSizeLargeCss.IfNullOrEmpty("webenology-modal-lg"));
+                css.Add(Style.ModalSizeLargeCss);
             }
 
             if (Size == ModalSize.Default)
             {
-                css.Add(ModalStyle.ModalSizeDefaultCss.IfNullOrEmpty(""));
+                css.Add(Style.ModalSizeDefaultCss);
             }
 
             if (_showAnimateUp)
-                css.Add(ModalStyle.ModalAnimateInCss.IfNullOrEmpty("animate-up"));
+                css.Add(Style.ModalAnimateInCss);
 
             if (_showAnimateAway)
-                css.Add(ModalStyle.ModalAnimateOutCss.IfNullOrEmpty("animate-away"));
+                css.Add(Style.ModalAnimateOutCss);
 
             return string.Join(" ", css);
         }
@@ -103,12 +108,6 @@ namespace webenology.blazor.components.ModalComponent
                 _showAnimateUp = true;
                 InvokeAsync(StateHasChanged);
             });
-        }
-
-        internal void AddModalStyle(ModalStyle style)
-        {
-            ModalStyle = style;
-            StateHasChanged();
         }
     }
 }

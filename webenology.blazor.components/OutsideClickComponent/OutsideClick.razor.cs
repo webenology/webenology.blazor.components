@@ -1,7 +1,5 @@
 ﻿using System;
-
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
 namespace webenology.blazor.components

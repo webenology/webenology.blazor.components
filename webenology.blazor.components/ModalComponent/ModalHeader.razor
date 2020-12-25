@@ -1,15 +1,27 @@
-﻿<div class="@GetHeaderCss()">
-    <h4 class="@GetModalTitleCss()">
+﻿@namespace webenology.blazor.components
+ 
+<div class="@Modal.Style.ModalHeaderCss">
+    <h4 class="@Modal.Style.ModalHeaderTitleCss">
         @Header
         @if (!string.IsNullOrEmpty(SubHeader))
         {
-            <small class="@GetModalSubheadingCss()">@SubHeader</small>
+        <small class="@Modal.Style.ModalHeaderSubheadingCss">@SubHeader</small>
         }
     </h4>
     @if (!HideClose)
     {
-        <span class="@GetModalCloseCss()" @onclick="OnClose" aria-lable="Close">
-            <i class="@GetModalCloseIconCss()"></i>
-        </span>
+    <span class="@Modal.Style.ModalCloseCss" @onclick="OnClose" aria-lable="Close">
+        <i class="@Modal.Style.ModalCloseIconCss"></i>
+    </span>
     }
 </div>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        this.IfNullThrow(Modal);
+        base.OnInitialized();
+    }
+
+}

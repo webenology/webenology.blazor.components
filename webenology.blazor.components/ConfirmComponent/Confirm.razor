@@ -1,18 +1,20 @@
-﻿<div class="backdrop @(_isOpen ? "": "hidden")">
-    <div class="card @(_isOpen ? "bounce-in": "")">
+﻿@namespace webenology.blazor.components
+
+<div class="@Style.BackdropCss backdrop @(_isOpen ? "": Style.HideCss)">
+    <div class="@Style.CardCss @(_isOpen ? Style.BoundInCss: "")">
         @if (!string.IsNullOrEmpty(_header))
         {
-            <div class="card-header hbuilt">
+            <div class="@Style.CardHeaderCss">
                 @_header
             </div>
         }
-        <div class="card-body">
+        <div class="@Style.CardBodyCss">
             @_content
         </div>
-        <div class="card-footer text-right">
-            <button class="btn btn-default btn-sm" @onclick="@(()=> Execute(_onCancel))">Cancel</button>
-            <button class="btn btn-danger btn-sm" @onclick="@(()=> Execute(_onNo))">No</button>
-            <button class="btn btn-primary btn-sm" @onclick="@(()=> Execute(_onYes))">Yes</button>
+        <div class="@Style.CardFooterCss">
+            <button class="@Style.CancelButtonCss" @onclick="@(()=> Execute(_onCancel))">Cancel</button>
+            <button class="@Style.NoButtonCss" @onclick="@(()=> Execute(_onNo))">No</button>
+            <button class="@Style.YesButtonCss" @onclick="@(()=> Execute(_onYes))">Yes</button>
         </div>
     </div>
 </div>

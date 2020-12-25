@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 
-namespace webenology.blazor.components.ModalComponent
+namespace webenology.blazor.components
 {
     public partial class ModalHeader
     {
@@ -21,41 +21,9 @@ namespace webenology.blazor.components.ModalComponent
         [CascadingParameter]
         public Modal Modal { get; set; }
 
-        protected override void OnInitialized()
-        {
-            if (Modal == null)
-                throw new ArgumentNullException("Modal Header must be a child a modal.");
-
-            base.OnInitialized();
-        }
-
         public async Task OnClose()
         {
             await Modal.CloseModal();
-        }
-
-        private string GetHeaderCss()
-        {
-            return Modal.ModalStyle?.ModalHeaderCss.IfNullOrEmpty("webenology-modal-header");
-        }
-
-        private string GetModalTitleCss()
-        {
-            return Modal.ModalStyle?.ModalHeaderTitleCss.IfNullOrEmpty("webenology-modal-title");
-        }
-        private string GetModalSubheadingCss()
-        {
-            return Modal.ModalStyle?.ModalHeaderSubheadingCss.IfNullOrEmpty("webenology-subheading");
-        }
-
-        private string GetModalCloseCss()
-        {
-            return Modal.ModalStyle?.ModalCloseCss.IfNullOrEmpty("webenology-close");
-        }
-
-        private string GetModalCloseIconCss()
-        {
-            return Modal.ModalStyle?.ModalCloseIconCss.IfNullOrEmpty("mdi mdi-close");
         }
     }
 }

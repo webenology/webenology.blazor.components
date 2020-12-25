@@ -4,54 +4,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.AspNetCore.Components;
-
-namespace webenology.blazor.components.ModalComponent
+namespace webenology.blazor.components
 {
-    public partial class ModalStyle
+    public class ModalStyle
     {
-        [CascadingParameter]
-        public Modal modal { get; set; }
-        [Parameter]
         public string BackdropCss { get; set; }
-        [Parameter]
         public string ModalCss { get; set; }
-        [Parameter]
         public string ModalSizeDefaultCss { get; set; }
-        [Parameter]
         public string ModalSizeSmallCss { get; set; }
-        [Parameter]
         public string ModalSizeLargeCss { get; set; }
-        [Parameter]
         public string ModalBodyCss { get; set; }
-        [Parameter]
         public string ModalFooterCss { get; set; }
-        [Parameter]
         public string ModalHeaderCss { get; set; }
-        [Parameter]
         public string ModalHeaderTitleCss { get; set; }
-        [Parameter]
         public string ModalHeaderSubheadingCss { get; set; }
-        [Parameter]
         public string ModalCloseCss { get; set; }
-        [Parameter]
         public string ModalCloseIconCss { get; set; }
-        [Parameter]
         public string ModalHideCss { get; set; }
-        [Parameter]
         public string ModalAnimateInCss { get; set; }
-        [Parameter]
         public string ModalAnimateOutCss { get; set; }
 
-
-        protected override void OnInitialized()
+        public static ModalStyle WebenologyStyle => new ModalStyle
         {
-            if (modal == null)
-                throw new ArgumentNullException("Modal style can only be a child of a modal.");
+            BackdropCss = "webenology-backdrop",
+            ModalHideCss = "hide",
+            ModalCss = "webenology-modal",
+            ModalSizeLargeCss = "webenology-modal-lg",
+            ModalSizeSmallCss = "webenology-modal-sm",
+            ModalAnimateInCss = "animate-up",
+            ModalAnimateOutCss = "animate-away",
+            ModalBodyCss = "webenology-modal-body",
+            ModalFooterCss = "webenology-modal-footer",
+            ModalHeaderCss = "webenology-modal-header",
+            ModalHeaderTitleCss = "webenology-modal-title",
+            ModalHeaderSubheadingCss = "webenology-subheading",
+            ModalCloseCss = "webenology-close",
+            ModalCloseIconCss = "mdi mdi-close"
+        };
 
-            modal.AddModalStyle(this);
-
-            base.OnInitialized();
-        }
     }
 }

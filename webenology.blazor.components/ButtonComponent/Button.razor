@@ -1,4 +1,6 @@
-﻿<button @onclick=OnClick @attributes="Attributes" class="@_bgType">
+﻿@namespace webenology.blazor.components
+
+<button @onclick=OnClick @attributes="Attributes" class="@GetCss()">
     @if (ChildContent == null)
     {
         @Text

@@ -1,9 +1,13 @@
 ﻿using System;
 
-namespace webenology.blazor.components.ConfirmComponent
+using Microsoft.AspNetCore.Components;
+
+namespace webenology.blazor.components
 {
     public partial class Confirm
     {
+        [Parameter]
+        public ConfirmStyle Style { get; set; } = ConfirmStyle.WebenologyStyle;
         private string _header;
         private string _content;
         private bool _isOpen;

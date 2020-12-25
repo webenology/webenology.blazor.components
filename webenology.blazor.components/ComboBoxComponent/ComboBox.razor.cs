@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.JSInterop;
 
-namespace webenology.blazor.components.ComboBoxComponent
+namespace webenology.blazor.components
 {
     public partial class ComboBox<TItem> : IDisposable
     {

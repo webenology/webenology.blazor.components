@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Components;
 
-namespace webenology.blazor.components.ButtonComponent
+namespace webenology.blazor.components
 {
     public partial class Button
     {
@@ -17,38 +17,28 @@ namespace webenology.blazor.components.ButtonComponent
         [Parameter]
         public bool IsSmall { get; set; }
         [Parameter]
-        public string ButtonPrimaryCss { get; set; }
-        [Parameter]
-        public string ButtonSecondaryCss { get; set; }
-        [Parameter]
-        public string ButtonSuccessCss { get; set; }
-        [Parameter]
-        public string ButtonDangerCss { get; set; }
+        public ButtonStyle Style { get; set; } = ButtonStyle.WebenologyStyle;
         [Parameter(CaptureUnmatchedValues = true)]
         public Dictionary<string, object> Attributes { get; set; }
 
-
-        private string _bgType = "btn";
-
-        protected override void OnParametersSet()
+        private string GetCss()
         {
-            var buttonCss = new List<string> { "btn" };
+            var buttonCss = new List<string> { Style.ButtonCss };
 
             if (ViewType == ButtonType.Primary)
-                buttonCss.Add(ButtonPrimaryCss ?? "btn-primary");
+                buttonCss.Add(Style.ButtonPrimaryCss);
             else if (ViewType == ButtonType.Secondary)
-                buttonCss.Add(ButtonSecondaryCss ?? "btn-primary2");
+                buttonCss.Add(Style.ButtonSecondaryCss);
             else if (ViewType == ButtonType.Success)
-                buttonCss.Add(ButtonSuccessCss ?? "btn-success");
+                buttonCss.Add(Style.ButtonSuccessCss);
             else if (ViewType == ButtonType.Danger)
-                buttonCss.Add(ButtonDangerCss ?? "btn-danger");
+                buttonCss.Add(Style.ButtonDangerCss);
 
             if (IsSmall)
-                buttonCss.Add("btn-sm");
+                buttonCss.Add(Style.SmallCss);
 
-            _bgType = string.Join(" ", buttonCss);
+            return string.Join(" ", buttonCss);
 
-            base.OnParametersSet();
         }
 
         public enum ButtonType

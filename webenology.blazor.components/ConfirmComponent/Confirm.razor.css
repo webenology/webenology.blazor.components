@@ -5,7 +5,7 @@
     width: 100vw;
     height: 100vh;
     z-index: 2000;
-    background-color: rgba(204,204,204,0.4);
+    background-color: rgba(0,0,0,0.3);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,8 +16,12 @@
     }
 
     .backdrop .card {
-        min-width:300px;
+        min-width: 300px;
     }
+
+.text-right {
+    text-align: right;
+}
 
 .bounce-in {
     animation: bounce-in 0.3s cubic-bezier(0.4, 0, 0.6, 1);
