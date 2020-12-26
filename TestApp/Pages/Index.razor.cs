@@ -31,24 +31,18 @@ namespace TestApp.Pages
         private void AddNotification()
         {
             var success = new NotificationModel { Body = $"Count: {_count}", ShowTimeoutBar = true };
-            if (success.TimeoutInSeconds <= 0)
-                success.TimeoutInSeconds = 3;
 
             _notification.AddNotification(success);
 
             _count++;
 
             var warning = new NotificationModel { Body = $"Count: {_count}", ShowTimeoutBar = true, Type = NotificationType.Warning };
-            if (warning.TimeoutInSeconds <= 0)
-                warning.TimeoutInSeconds = 3;
 
             _notification.AddNotification(warning);
 
             _count++;
 
             var danger = new NotificationModel { Body = $"Count: {_count}", Header = "what what what", ShowTimeoutBar = true, Type = NotificationType.Danger, TimeoutInSeconds = 5 };
-            if (danger.TimeoutInSeconds <= 0)
-                danger.TimeoutInSeconds = 3;
 
             _notification.AddNotification(danger);
 

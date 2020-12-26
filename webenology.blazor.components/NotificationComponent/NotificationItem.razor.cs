@@ -57,6 +57,9 @@ namespace webenology.blazor.components
             this.IfNullThrow(_notification);
             this.IfNullThrow(Model);
 
+            if (Model.TimeoutInSeconds <= 0)
+                Model.TimeoutInSeconds = 3;
+            
             _timer = new Timer { Interval = (double)Model.TimeoutInSeconds * 1000 };
             _timer.Elapsed += timer_Elapsed;
             _timer.Start();
