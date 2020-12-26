@@ -11,7 +11,7 @@ namespace webenology.blazor.components
         [Parameter]
         public RenderFragment ChildContent { get; set; }
         [Parameter]
-        public TabStyle Style { get; set; } = TabStyle.WebenologyStyle;
+        public TabStyle CssStyle { get; set; } = TabStyle.WebenologyStyle;
 
         public Tab ActivePage;
         public List<Tab> TabPages = new();

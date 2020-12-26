@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace webenology.blazor.components.NumberInputComponent
+namespace webenology.blazor.components
 {
-    public class WebNumberInputBase<TValue> : ComponentBase, IDisposable
+    public partial class WebNumberInput<TValue> : IDisposable
     {
         [Parameter]
         public string Label { get; set; }
@@ -17,39 +20,50 @@ namespace webenology.blazor.components.NumberInputComponent
         public EventCallback<TValue> NumberChanged { get; set; }
         [Parameter]
         public Expression<Func<TValue>> For { get; set; }
-        [Parameter] public decimal? Step { get; set; }
+
+        [Parameter] public double Step { get; set; } = 1;
+        [Parameter] public double Min { get; set; } = double.MinValue;
+        [Parameter] public double Max { get; set; } = double.MaxValue;
+        [Parameter]
+        public WebNumberInputStyle CssStyle { get; set; } = WebNumberInputStyle.WebenologyStyle;
         [CascadingParameter]
         private EditContext _editContext { get; set; }
 
-        public bool IsError => !string.IsNullOrEmpty(ErrorMessage);
-        public string ErrorMessage;
+        private bool _isError => !string.IsNullOrEmpty(_errorMessage);
+        private string _errorMessage = "error";
 
         public TValue LocalText
         {
             get => Number;
             set
             {
-                ErrorMessage = string.Empty;
+                _errorMessage = string.Empty;
                 NumberChanged.InvokeAsync(value);
             }
         }
 
-        public string Css()
+        public string ErrorCss()
         {
-            var css = new List<string> { "form-control" };
+            var css = new List<string> { CssStyle.InputGroupAddonCss };
 
-            if (IsError)
-            {
-                css.Add("error");
-            }
+            if (_isError)
+                css.Add(CssStyle.InputGroupAddonErrorCss);
+
+            return string.Join(" ", css);
+        }
+
+        public string InputCss()
+        {
+            var css = new List<string> { CssStyle.InputCss };
+
+            if (_isError)
+                css.Add(CssStyle.InputErrorCss);
 
             return string.Join(" ", css);
         }
 
         protected override void OnInitialized()
         {
-            Step ??= 1;
-
             var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
             if (targetType == typeof(int) ||
                 targetType == typeof(long) ||
@@ -75,14 +89,14 @@ namespace webenology.blazor.components.NumberInputComponent
 
         private void _editContext_OnValidationRequested(object sender, ValidationRequestedEventArgs e)
         {
-            ErrorMessage = string.Empty;
+            _errorMessage = string.Empty;
             if (_editContext != null && For != null)
             {
                 var fieldIdentifier = new FieldIdentifier(_editContext.Model, ((MemberExpression)For.Body).Member.Name);
                 var message = _editContext.GetValidationMessages(fieldIdentifier);
                 if (message != null && message.Any())
                 {
-                    ErrorMessage = message.First();
+                    _errorMessage = message.First();
                 }
             }
         }

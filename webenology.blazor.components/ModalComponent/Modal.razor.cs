@@ -26,7 +26,7 @@ namespace webenology.blazor.components
         [Parameter]
         public ModalSize Size { get; set; }
         [Parameter]
-        public ModalStyle Style { get; set; } = ModalStyle.WebenologyStyle;
+        public ModalStyle CssStyle { get; set; } = ModalStyle.WebenologyStyle;
 
         private bool _isOpen;
         private bool _showAnimateUp;
@@ -41,39 +41,39 @@ namespace webenology.blazor.components
 
         private string GetBackdropCss()
         {
-            var css = new List<string> { Style.BackdropCss };
+            var css = new List<string> { CssStyle.BackdropCss };
 
             if (!_isOpen)
-                css.Add(Style.ModalHideCss);
+                css.Add(CssStyle.ModalHideCss);
 
             return string.Join(" ", css);
         }
 
         private string GetModalCss()
         {
-            var css = new List<string> { Style.ModalCss };
+            var css = new List<string> { CssStyle.ModalCss };
 
 
             if (Size == ModalSize.Small)
             {
-                css.Add(Style.ModalSizeSmallCss);
+                css.Add(CssStyle.ModalSizeSmallCss);
             }
 
             if (Size == ModalSize.Large)
             {
-                css.Add(Style.ModalSizeLargeCss);
+                css.Add(CssStyle.ModalSizeLargeCss);
             }
 
             if (Size == ModalSize.Default)
             {
-                css.Add(Style.ModalSizeDefaultCss);
+                css.Add(CssStyle.ModalSizeDefaultCss);
             }
 
             if (_showAnimateUp)
-                css.Add(Style.ModalAnimateInCss);
+                css.Add(CssStyle.ModalAnimateInCss);
 
             if (_showAnimateAway)
-                css.Add(Style.ModalAnimateOutCss);
+                css.Add(CssStyle.ModalAnimateOutCss);
 
             return string.Join(" ", css);
         }

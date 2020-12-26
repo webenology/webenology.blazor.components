@@ -1,4 +1,4 @@
-﻿namespace webenology.blazor.components.NotificationComponent
+﻿namespace webenology.blazor.components
 {
     public class NotificationModel
     {

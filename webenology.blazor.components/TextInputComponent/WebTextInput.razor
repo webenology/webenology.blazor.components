@@ -1,22 +1,22 @@
 ﻿@namespace webenology.blazor.components
 
-<div class="@Style.WebFormGroupCss">
+<div class="@CssStyle.WebFormGroupCss">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label class="@Style.LabelCss">@Label</label>
+        <label class="@CssStyle.LabelCss">@Label</label>
     }
-    <div class="@Style.WebInputGroupCss">
+    <div class="@CssStyle.WebInputGroupCss">
         <input type="text" @bind="LocalText" @bind:event="oninput" class="@Css()" placeholder="@PlaceHolder" />
         @if (_isError)
         {
-            <span class="@Style.WebInputGroupTextCss">
-                <i class="@Style.WebInputGroupTextIconCss"></i>
+            <span class="@CssStyle.WebInputGroupTextCss">
+                <i class="@CssStyle.WebInputGroupTextIconCss"></i>
             </span>
         }
     </div>
     @if (_isError)
     {
-        <label class="@Style.ErrorMessageCss">
+        <label class="@CssStyle.ErrorMessageCss">
             @_errorMessage
         </label>
     }

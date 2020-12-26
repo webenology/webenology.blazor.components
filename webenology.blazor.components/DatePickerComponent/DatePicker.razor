@@ -1,20 +1,20 @@
 ﻿@namespace webenology.blazor.components
 @typeparam TValue
 
-<div class="@Style.DatePickerHolderCss">
-    <label class="@Style.DatePickerLabelCss">@Label</label>
-    <div class="@Style.InputGroupCss">
+<div class="@CssStyle.DatePickerHolderCss">
+    <label class="@CssStyle.DatePickerLabelCss">@Label</label>
+    <div class="@CssStyle.InputGroupCss">
         <input type="text" @attributes="Attributes" @ref="_inputRef" value="@DateTimeStr" class="@Css()" />
         @if (_isError)
         {
-            <div class="@Style.InputErrorIconHolderCss">
-                <i class="@Style.InputErrorIconCss"></i>
+            <div class="@CssStyle.InputErrorIconHolderCss">
+                <i class="@CssStyle.InputErrorIconCss"></i>
             </div>
         }
     </div>
     @if (_isError)
     {
-        <div class="@Style.ErrorMessageCss">
+        <div class="@CssStyle.ErrorMessageCss">
             @_errorMessage
         </div>
     }

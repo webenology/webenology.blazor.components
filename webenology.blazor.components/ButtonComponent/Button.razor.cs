@@ -17,25 +17,25 @@ namespace webenology.blazor.components
         [Parameter]
         public bool IsSmall { get; set; }
         [Parameter]
-        public ButtonStyle Style { get; set; } = ButtonStyle.WebenologyStyle;
+        public ButtonStyle CssStyle { get; set; } = ButtonStyle.WebenologyStyle;
         [Parameter(CaptureUnmatchedValues = true)]
         public Dictionary<string, object> Attributes { get; set; }
 
         private string GetCss()
         {
-            var buttonCss = new List<string> { Style.ButtonCss };
+            var buttonCss = new List<string> { CssStyle.ButtonCss };
 
             if (ViewType == ButtonType.Primary)
-                buttonCss.Add(Style.ButtonPrimaryCss);
+                buttonCss.Add(CssStyle.ButtonPrimaryCss);
             else if (ViewType == ButtonType.Secondary)
-                buttonCss.Add(Style.ButtonSecondaryCss);
+                buttonCss.Add(CssStyle.ButtonSecondaryCss);
             else if (ViewType == ButtonType.Success)
-                buttonCss.Add(Style.ButtonSuccessCss);
+                buttonCss.Add(CssStyle.ButtonSuccessCss);
             else if (ViewType == ButtonType.Danger)
-                buttonCss.Add(Style.ButtonDangerCss);
+                buttonCss.Add(CssStyle.ButtonDangerCss);
 
             if (IsSmall)
-                buttonCss.Add(Style.SmallCss);
+                buttonCss.Add(CssStyle.SmallCss);
 
             return string.Join(" ", buttonCss);
 

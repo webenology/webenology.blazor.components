@@ -1,20 +1,20 @@
 ﻿@namespace webenology.blazor.components
 
-<div class="@Style.BackdropCss backdrop @(_isOpen ? "": Style.HideCss)">
-    <div class="@Style.CardCss @(_isOpen ? Style.BoundInCss: "")">
+<div class="@CssStyle.BackdropCss @(_isOpen ? "": CssStyle.HideCss)">
+    <div class="@CssStyle.CardCss @(_isOpen ? CssStyle.BoundInCss: "")">
         @if (!string.IsNullOrEmpty(_header))
         {
-            <div class="@Style.CardHeaderCss">
+            <div class="@CssStyle.CardHeaderCss">
                 @_header
             </div>
         }
-        <div class="@Style.CardBodyCss">
+        <div class="@CssStyle.CardBodyCss">
             @_content
         </div>
-        <div class="@Style.CardFooterCss">
-            <button class="@Style.CancelButtonCss" @onclick="@(()=> Execute(_onCancel))">Cancel</button>
-            <button class="@Style.NoButtonCss" @onclick="@(()=> Execute(_onNo))">No</button>
-            <button class="@Style.YesButtonCss" @onclick="@(()=> Execute(_onYes))">Yes</button>
+        <div class="@CssStyle.CardFooterCss">
+            <button class="@CssStyle.CancelButtonCss" @onclick="@(()=> Execute(_onCancel))">Cancel</button>
+            <button class="@CssStyle.NoButtonCss" @onclick="@(()=> Execute(_onNo))">No</button>
+            <button class="@CssStyle.YesButtonCss" @onclick="@(()=> Execute(_onYes))">Yes</button>
         </div>
     </div>
 </div>

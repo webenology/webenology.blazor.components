@@ -6,6 +6,8 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
+<WebNumberInput TValue="decimal" Label="This is a number!" @bind-Number="_num" Step="0.1" Min="0" Max="3"></WebNumberInput>
+
 <Button ViewType="Button.ButtonType.Primary" Text="Open Modal" OnClick="@(()=>_modal.OpenModal())"></Button>
 <Button ViewType="Button.ButtonType.Success" Text="Open Modal 2" OnClick="@(()=>_modal2.OpenModal())"></Button>
 <Button ViewType="Button.ButtonType.Secondary" Text="Show Confirm" OnClick="@(()=> _confirm.ShowConfirm("Question!","Do you like this?"))" ButtonSecondaryCss="btn-secondary"></Button>
@@ -20,7 +22,7 @@ Welcome to your new app.
     <FooterContent>this is the footer!</FooterContent>
 </Modal>
 
-<Confirm @ref="_confirm"></Confirm>
+<Confirm @ref="_confirm" CssStyle="@confirmStyle()"></Confirm>
 
 <div>
     inside click: @_insideClick
@@ -58,6 +60,14 @@ Welcome to your new app.
     private bool _insideClick;
     private DateTime _dt = DateTime.Now;
     private string _text;
+    private decimal _num = 0;
+
+    private ConfirmStyle confirmStyle()
+    {
+        var c = ConfirmStyle.WebenologyStyle;
+        c.BackdropCss = "none";
+        return c;
+    }
 
     private List<KeyValuePair<string, string>> items = new List<KeyValuePair<string, string>>();
 

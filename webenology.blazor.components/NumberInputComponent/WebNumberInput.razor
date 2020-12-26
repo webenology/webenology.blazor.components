@@ -1,16 +1,24 @@
-﻿@typeparam TValue
-@inherits WebNumberInputBase<TValue>
+﻿@namespace webenology.blazor.components
+@typeparam TValue
 
-<div class="form-group">
+<div class="@CssStyle.FormGroupCss">
     @if (!string.IsNullOrEmpty(Label))
     {
-        <label>@Label</label>
+        <label class="@CssStyle.FormGroupLabelCss">@Label</label>
     }
-    <input type="number" @bind="LocalText" @bind:event="oninput" class="@Css()" step="@Step" min="0" />
-    @if (IsError)
+    <div class="@CssStyle.InputGroupCss">
+        <input type="number" @bind="LocalText" @bind:event="oninput" class="@InputCss()" step="@Step" min="@Min" max="@Max" />
+        @if (_isError)
+        {
+            <span class="@ErrorCss()">
+                <i class="@CssStyle.InputGroupAddonIconCss"></i>
+            </span>
+        }
+    </div>
+    @if (_isError)
     {
-        <label class="error">
-            @ErrorMessage
+        <label class="@CssStyle.ErrorCss">
+            @_errorMessage
         </label>
     }
 </div>

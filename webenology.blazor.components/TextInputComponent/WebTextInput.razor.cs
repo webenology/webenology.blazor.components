@@ -30,7 +30,7 @@ namespace webenology.blazor.components
         [CascadingParameter]
         private EditContext _editContext { get; set; }
         [Parameter]
-        public WebTextInputStyle Style { get; set; } = WebTextInputStyle.WebenologyStyle;
+        public WebTextInputStyle CssStyle { get; set; } = WebTextInputStyle.WebenologyStyle;
 
         private bool _isError => !string.IsNullOrEmpty(_errorMessage);
         private string _errorMessage;
@@ -47,11 +47,11 @@ namespace webenology.blazor.components
 
         public string Css()
         {
-            var css = new List<string> { Style.WebInputCss };
+            var css = new List<string> { CssStyle.WebInputCss };
 
             if (_isError)
             {
-                css.Add(Style.WebInputErrorCss);
+                css.Add(CssStyle.WebInputErrorCss);
             }
 
             return string.Join(" ", css);

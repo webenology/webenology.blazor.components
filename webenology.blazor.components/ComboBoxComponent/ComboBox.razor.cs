@@ -44,7 +44,7 @@ namespace webenology.blazor.components
         [Parameter]
         public string PlaceHolder { get; set; }
         [Parameter]
-        public ComboBoxStyle Style { get; set; } = ComboBoxStyle.WebenologyStyle;
+        public ComboBoxStyle CssStyle { get; set; } = ComboBoxStyle.WebenologyStyle;
 
         [Parameter] public int ItemHeight { get; set; } = 40;
         [CascadingParameter]
@@ -229,29 +229,29 @@ namespace webenology.blazor.components
 
         private string InputCss()
         {
-            var css = new List<string> { Style.InputCss };
+            var css = new List<string> { CssStyle.InputCss };
 
             if (ShowRemoveButton)
-                css.Add(Style.InputShowRemoveInputCss);
+                css.Add(CssStyle.InputShowRemoveInputCss);
 
             return string.Join(" ", css);
         }
 
         private string ListGroupCss()
         {
-            var css = new List<string> { Style.ListGroupCss };
+            var css = new List<string> { CssStyle.ListGroupCss };
 
             if (!_areItemsOpen)
-                css.Add(Style.ListGroupHideCss);
+                css.Add(CssStyle.ListGroupHideCss);
 
             return string.Join(" ", css);
         }
         private string ListGroupItemCss(bool isFocused)
         {
-            var css = new List<string> { Style.ListGroupItemCss };
+            var css = new List<string> { CssStyle.ListGroupItemCss };
 
             if (isFocused)
-                css.Add(Style.ListGroupItemFocusedCss);
+                css.Add(CssStyle.ListGroupItemFocusedCss);
 
             return string.Join(" ", css);
         }

@@ -3,28 +3,28 @@
 
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 
-<div class="@Style.ContainerCss">
+<div class="@CssStyle.ContainerCss">
     @if (!string.IsNullOrEmpty(Label))
     {
-    <label class="@Style.LabelCss">@Label</label>
+    <label class="@CssStyle.LabelCss">@Label</label>
     }
 
     <OutsideClick OnOutsideClick="closeItemsWindow">
-        <div class="@Style.InputGroupCss">
+        <div class="@CssStyle.InputGroupCss">
             <input placeholder="@PlaceHolder" type="text" @attributes="@_attributes" class="@InputCss()" @bind="LocalText" @bind:event="oninput" @onkeyup="onKeyPress" @onclick="openItemsWindow" @ref="_elRef" />
             @if (ShowRemoveButton && !string.IsNullOrEmpty(_localText))
             {
-            <div class="@Style.RemoveIconContainerCss">
-                <i class="@Style.RemoveIconCss" @onclick="clearItem"></i>
+            <div class="@CssStyle.RemoveIconContainerCss">
+                <i class="@CssStyle.RemoveIconCss" @onclick="clearItem"></i>
             </div>
             }
-            <div class="@Style.ChevronContainerCss" @onclick="toggleItemsWindows">
-                <i class="@Style.ChevronIconCss"></i>
+            <div class="@CssStyle.ChevronContainerCss" @onclick="toggleItemsWindows">
+                <i class="@CssStyle.ChevronIconCss"></i>
             </div>
         </div>
         @if (_isError)
         {
-        <label class="@Style.ErrorCss">
+        <label class="@CssStyle.ErrorCss">
             @_errorMessage
         </label>
         }
@@ -40,14 +40,14 @@
             </div>
             @if (!SearchedItems.Any())
             {
-            <div class="@Style.ItemNotFoundCss">
+            <div class="@CssStyle.ItemNotFoundCss">
                 No Matches Found
             </div>
             }
             @if (CanAddNewItem && !ExactMatch())
             {
-            <div class="@Style.AddNewContainerCss" @onclick="onAddNewItem">
-                <i class="@Style.AddNewIconCss"></i>
+            <div class="@CssStyle.AddNewContainerCss" @onclick="onAddNewItem">
+                <i class="@CssStyle.AddNewIconCss"></i>
                 <b>Ctrl + Enter</b> to create @(string.IsNullOrEmpty(_localText) ? "a": $"\"{_localText}\" as a") new @(string.IsNullOrEmpty(NewTypeName)? "item": NewTypeName)
             </div>
             }

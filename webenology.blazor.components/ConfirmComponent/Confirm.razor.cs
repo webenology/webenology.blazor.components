@@ -7,7 +7,7 @@ namespace webenology.blazor.components
     public partial class Confirm
     {
         [Parameter]
-        public ConfirmStyle Style { get; set; } = ConfirmStyle.WebenologyStyle;
+        public ConfirmStyle CssStyle { get; set; } = ConfirmStyle.WebenologyStyle;
         private string _header;
         private string _content;
         private bool _isOpen;

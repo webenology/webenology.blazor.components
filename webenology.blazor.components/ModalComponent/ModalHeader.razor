@@ -1,17 +1,17 @@
 ﻿@namespace webenology.blazor.components
  
-<div class="@Modal.Style.ModalHeaderCss">
-    <h4 class="@Modal.Style.ModalHeaderTitleCss">
+<div class="@Modal.CssStyle.ModalHeaderCss">
+    <h4 class="@Modal.CssStyle.ModalHeaderTitleCss">
         @Header
         @if (!string.IsNullOrEmpty(SubHeader))
         {
-        <small class="@Modal.Style.ModalHeaderSubheadingCss">@SubHeader</small>
+        <small class="@Modal.CssStyle.ModalHeaderSubheadingCss">@SubHeader</small>
         }
     </h4>
     @if (!HideClose)
     {
-    <span class="@Modal.Style.ModalCloseCss" @onclick="OnClose" aria-lable="Close">
-        <i class="@Modal.Style.ModalCloseIconCss"></i>
+    <span class="@Modal.CssStyle.ModalCloseCss" @onclick="OnClose" aria-lable="Close">
+        <i class="@Modal.CssStyle.ModalCloseIconCss"></i>
     </span>
     }
 </div>

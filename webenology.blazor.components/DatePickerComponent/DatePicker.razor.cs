@@ -29,7 +29,7 @@ namespace webenology.blazor.components
         /// </summary>
         [Parameter] public bool MakeStatic { get; set; }
         [Parameter]
-        public DatePickerStyle Style { get; set; } = DatePickerStyle.WebenologyStyle;
+        public DatePickerStyle CssStyle { get; set; } = DatePickerStyle.WebenologyStyle;
         [CascadingParameter] private EditContext _editContext { get; set; }
 
         private DatePickerType _oldType = DatePickerType.Single;
@@ -124,10 +124,10 @@ namespace webenology.blazor.components
 
         public string Css()
         {
-            var css = new List<string> { Style.InputCss };
+            var css = new List<string> { CssStyle.InputCss };
 
             if (_isError)
-                css.Add(Style.InputErrorCss);
+                css.Add(CssStyle.InputErrorCss);
 
             return string.Join(" ", css);
         }
@@ -197,13 +197,5 @@ namespace webenology.blazor.components
                 _editContext.OnValidationRequested -= _editContext_OnValidationRequested;
             }
         }
-
-        public enum DatePickerType
-        {
-            Single,
-            Multiple,
-            Range
-        }
-
     }
 }
