@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+
+using webenology.blazor.components.NotificationComponent;
 
 namespace webenology.blazor.components
 {
@@ -9,10 +12,11 @@ namespace webenology.blazor.components
     {
         [Parameter]
         public RenderFragment ChildContent { get; set; }
+        [Parameter]
+        public NotificationStyle CssStyle { get; set; } = NotificationStyle.WebenologyStyle;
 
         public List<NotificationModel> Items = new();
-        [Inject]
-        private IToastrJsHelper js { get; set; }
+        public List<NotificationModel> RemoveItems = new();
 
         public void AddNotification(string body)
         {
@@ -35,28 +39,8 @@ namespace webenology.blazor.components
 
         public void AddNotification(NotificationModel model)
         {
-            var toastType = "success";
-            if (model.Type == NotificationType.Success)
-            {
-                toastType = "success";
-            }
-            else if (model.Type == NotificationType.Danger)
-            {
-                toastType = "error";
-            }
-            else if (model.Type == NotificationType.Warning)
-            {
-                toastType = "warning";
-            }
-
-            var timeoutInMilliseconds = (model.TimeoutInSeconds > 0 ? model.TimeoutInSeconds : 3) * 1000;
-
-            var options = new
-            {
-                timeOut = timeoutInMilliseconds
-            };
-
-            js.ShowToast(toastType, model.Body, model.Header, options);
+            Items.Add(model);
+            StateHasChanged();
         }
     }
 }

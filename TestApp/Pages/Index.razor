@@ -51,36 +51,8 @@ Welcome to your new app.
 </Tabs>
 
 <WebTextInput @bind-Text="_text" IsErrorFunc="() => true"></WebTextInput>
-
-
-@code {
-    private Modal _modal;
-    private Modal _modal2;
-    private Confirm _confirm;
-    private bool _insideClick;
-    private DateTime _dt = DateTime.Now;
-    private string _text;
-    private decimal _num = 0;
-
-    private ConfirmStyle confirmStyle()
-    {
-        var c = ConfirmStyle.WebenologyStyle;
-        c.BackdropCss = "none";
-        return c;
-    }
-
-    private List<KeyValuePair<string, string>> items = new List<KeyValuePair<string, string>>();
-
-    protected override void OnInitialized()
-    {
-        for (var i = 0; i < 100; i++)
-        {
-            items.Add(new KeyValuePair<string, string>(i.ToString(), i.ToString()));
-        }
-        base.OnInitialized();
-    }
-
-}
+<Notification @ref="_notification"></Notification>
+<Button OnClick="AddNotification" Text="add notification"></Button>
 
 
 

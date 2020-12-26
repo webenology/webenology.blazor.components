@@ -10,5 +10,9 @@
   {
     "outputFile": "DatePickerComponent/DatePicker.razor.css",
     "inputFile": "DatePickerComponent/DatePicker.razor.less"
+  },
+  {
+    "outputFile": "NotificationComponent/Notification.razor.css",
+    "inputFile": "NotificationComponent/Notification.razor.less"
   }
 ]
