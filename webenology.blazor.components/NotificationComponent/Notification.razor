@@ -1,11 +1,11 @@
 ﻿@namespace webenology.blazor.components
 
 <CascadingValue Value="this">
-    @Items.Count
     <div class="@CssStyle.NotificationContainerCss @CssStyle.NotificationContainerFlipCss">
         @foreach (var i in Items)
         {
             <NotificationItem Model="i" @key="i"></NotificationItem>
         }
     </div>
+    @ChildContent
 </CascadingValue>
