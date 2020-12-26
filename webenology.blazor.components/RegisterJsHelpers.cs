@@ -17,6 +17,7 @@ namespace webenology.blazor.components
             service.TryAddScoped<IOutsideClickJsHelper, OutsideClickJsHelper>();
             service.TryAddScoped<IModalJsHelper, ModalJsHelper>();
             service.TryAddScoped<IToastrJsHelper, ToastrJsHelper>();
+            service.TryAddScoped<IWebPdfViewerJsHelper, WebPdfViewerJsHelper>();
         }
     }
 }

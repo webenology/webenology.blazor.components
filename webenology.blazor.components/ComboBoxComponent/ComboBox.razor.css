@@ -10,6 +10,12 @@
     width: 100%;
 }
 
+.list-group-container {
+    box-shadow: 0px 3px 4px #cecece;
+    border-radius: 4px;
+    z-index: 4;
+}
+
 ::deep .mark, ::deep mark {
     padding: 0.2em 0;
 }
@@ -61,4 +67,9 @@
 
 .hide {
     display: none;
+}
+
+.form-error {
+    color: red;
+    font-size: 0.85em;
 }

@@ -33,7 +33,7 @@ Welcome to your new app.
 
 <ComboBox Items="items" TItem="KeyValuePair<string,string>" ValueFieldName="Value"
           IsEditable="true" PlaceHolder="Search for a number..."
-          ShowRemoveButton="true"></ComboBox>
+          ShowRemoveButton="true" CanAddNewItem="true"></ComboBox>
 
 <DropDown Items="items" ShowEmpty="true"></DropDown>
 
@@ -49,6 +49,7 @@ Welcome to your new app.
 </Tabs>
 
 <WebTextInput @bind-Text="_text" IsErrorFunc="() => true"></WebTextInput>
+
 
 @code {
     private Modal _modal;

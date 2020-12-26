@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
-using Microsoft.JSInterop;
 
 namespace webenology.blazor.components
 {
@@ -44,6 +43,10 @@ namespace webenology.blazor.components
         public Expression<Func<object>> For { get; set; }
         [Parameter]
         public string PlaceHolder { get; set; }
+        [Parameter]
+        public ComboBoxStyle Style { get; set; } = ComboBoxStyle.WebenologyStyle;
+
+        [Parameter] public int ItemHeight { get; set; } = 40;
         [CascadingParameter]
         private EditContext _editContext { get; set; }
 
@@ -119,7 +122,7 @@ namespace webenology.blazor.components
 
         private void clearItem()
         {
-            onSelectItem((TItem)(object)null);
+            onSelectItem(default);
         }
 
         private void onKeyPress(KeyboardEventArgs args)
@@ -154,7 +157,7 @@ namespace webenology.blazor.components
             }
             else if (args.Code == "Enter" && string.IsNullOrEmpty(_localText))
             {
-                onSelectItem((TItem)(object)null);
+                onSelectItem(default);
             }
             else if (args.CtrlKey && args.Code == "Enter")
             {
@@ -224,6 +227,36 @@ namespace webenology.blazor.components
             }
         }
 
+        private string InputCss()
+        {
+            var css = new List<string> { Style.InputCss };
+
+            if (ShowRemoveButton)
+                css.Add(Style.InputShowRemoveInputCss);
+
+            return string.Join(" ", css);
+        }
+
+        private string ListGroupCss()
+        {
+            var css = new List<string> { Style.ListGroupCss };
+
+            if (!_areItemsOpen)
+                css.Add(Style.ListGroupHideCss);
+
+            return string.Join(" ", css);
+        }
+        private string ListGroupItemCss(bool isFocused)
+        {
+            var css = new List<string> { Style.ListGroupItemCss };
+
+            if (isFocused)
+                css.Add(Style.ListGroupItemFocusedCss);
+
+            return string.Join(" ", css);
+        }
+
+
         protected override void OnParametersSet()
         {
             if (SelectedItem != null)
@@ -253,5 +286,6 @@ namespace webenology.blazor.components
                 _editContext.OnValidationRequested -= _editContext_OnValidationRequested;
             }
         }
+
     }
 }

@@ -15,7 +15,11 @@ namespace webenology.blazor.components
         public static void IfNullThrow<TType>(this ComponentBase obj, TType modal, string errorMessage = "")
         {
             if (string.IsNullOrEmpty(errorMessage))
-                errorMessage = $"Component {nameof(obj)} must be a child of {nameof(modal)}";
+            {
+                var modalTypeName = typeof(TType).Name;
+                var meTypeName = obj.GetType().Name;
+                errorMessage = $"Component {meTypeName} must be a child of {modalTypeName}";
+            }
 
             if (modal == null)
             {
