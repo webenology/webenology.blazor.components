@@ -30,7 +30,7 @@ namespace webenology.blazor.components
         private EditContext _editContext { get; set; }
 
         private bool _isError => !string.IsNullOrEmpty(_errorMessage);
-        private string _errorMessage = "error";
+        private string _errorMessage;
 
         public TValue LocalText
         {

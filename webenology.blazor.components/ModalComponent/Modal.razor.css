@@ -9,6 +9,7 @@
     justify-content: center;
     align-items: baseline;
     z-index: 1000;
+    overflow-y: auto;
 }
 
 .hide {
@@ -18,6 +19,7 @@
 .webenology-modal {
     width: 50%;
     margin-top: 40px;
+    margin-bottom: 40px;
     background-color: white;
     border-radius: 6px;
     transform: translateY(40px);
