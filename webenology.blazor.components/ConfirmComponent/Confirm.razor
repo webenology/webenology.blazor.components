@@ -12,9 +12,9 @@
             @_content
         </div>
         <div class="@CssStyle.CardFooterCss">
-            <button class="@CssStyle.CancelButtonCss" @onclick="@(()=> Execute(_onCancel))">Cancel</button>
-            <button class="@CssStyle.NoButtonCss" @onclick="@(()=> Execute(_onNo))">No</button>
-            <button class="@CssStyle.YesButtonCss" @onclick="@(()=> Execute(_onYes))">Yes</button>
+            <button class="@CssStyle.CancelButtonCss" @onclick="@(()=> Execute(_onCancel))">@cancel</button>
+            <button class="@CssStyle.NoButtonCss" @onclick="@(()=> Execute(_onNo))">@no</button>
+            <button class="@CssStyle.YesButtonCss" @onclick="@(()=> Execute(_onYes))">@yes</button>
         </div>
     </div>
 </div>

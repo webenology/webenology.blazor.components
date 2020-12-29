@@ -117,7 +117,7 @@ namespace webenology.blazor.components
 
         private void onAddNewItem()
         {
-            OnCreateNewItem.InvokeAsync();
+            OnCreateNewItem.InvokeAsync(_localText);
         }
 
         private void clearItem()
@@ -182,9 +182,17 @@ namespace webenology.blazor.components
             if (typeof(TItem) == typeof(string))
                 return item.ToString();
 
+            if (string.IsNullOrEmpty(ValueFieldName))
+                throw new ArgumentNullException($"ValueFieldName is a required field!");
+            
             var property = item.GetType().GetProperty(ValueFieldName);
             if (property == null)
                 throw new ArgumentNullException($"Value field name: {ValueFieldName} does not exist on object");
+
+            var propertyValue = property.GetValue(item);
+
+            if (propertyValue == null)
+                return string.Empty;
 
             return property.GetValue(item)?.ToString();
         }
