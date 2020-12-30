@@ -12,7 +12,7 @@
     <PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input</PackageTags>
     <PackageReleaseNotes>Add ability to control if Modal should close from outside factors.</PackageReleaseNotes>
     <AssemblyVersion>1.0.0.13</AssemblyVersion>
-    <FileVersion>1.0.0.3</FileVersion>
+    <FileVersion>1.0.0.13</FileVersion>
     <Version>1.0.13</Version>
   </PropertyGroup>
 
