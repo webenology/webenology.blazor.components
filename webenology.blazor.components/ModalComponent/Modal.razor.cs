@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,6 +26,7 @@ namespace webenology.blazor.components
         public bool DisableBackgroundCloseOnClick { get; set; }
         [Parameter]
         public ModalSize Size { get; set; }
+        [Parameter] public Func<bool> CanClose { get; set; } = () => true;
         [Parameter]
         public ModalStyle CssStyle { get; set; } = ModalStyle.WebenologyStyle;
 
@@ -80,16 +82,19 @@ namespace webenology.blazor.components
 
         public async Task CloseModal()
         {
-            _showAnimateAway = true;
-            _showAnimateUp = false;
-            StateHasChanged();
-            await Task.Run(() =>
+            if (CanClose.Invoke())
             {
-                Thread.Sleep(300);
-                _isOpen = false;
-                _showAnimateAway = false;
-                InvokeAsync(StateHasChanged);
-            });
+                _showAnimateAway = true;
+                _showAnimateUp = false;
+                StateHasChanged();
+                await Task.Run(() =>
+                {
+                    Thread.Sleep(300);
+                    _isOpen = false;
+                    _showAnimateAway = false;
+                    InvokeAsync(StateHasChanged);
+                });
+            }
         }
 
         private async Task CloseByBackdrop()
