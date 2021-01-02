@@ -23,6 +23,7 @@ namespace webenology.blazor.components
         {
             _isOpen = false;
             action?.Invoke();
+            StateHasChanged();
         }
 
         public void ShowConfirm(string confirmHeader, string confirmMessage, Action OnYes = null, Action OnNo = null, Action OnCancel = null, string yesName = null, string noName = null, string cancelName = null)
