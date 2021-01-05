@@ -31,7 +31,8 @@ namespace webenology.blazor.components
         private EditContext _editContext { get; set; }
         [Parameter]
         public WebTextInputStyle CssStyle { get; set; } = WebTextInputStyle.WebenologyStyle;
-
+        [Parameter]
+        public WebInputType InputType {get;set;}
         private bool _isError => !string.IsNullOrEmpty(_errorMessage);
         private string _errorMessage;
 

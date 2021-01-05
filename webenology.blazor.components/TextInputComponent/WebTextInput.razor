@@ -6,7 +6,7 @@
         <label class="@CssStyle.LabelCss">@Label</label>
     }
     <div class="@CssStyle.WebInputGroupCss">
-        <input type="text" @bind="LocalText" @bind:event="oninput" class="@Css()" placeholder="@PlaceHolder" />
+        <input type="@InputType" @bind="LocalText" @bind:event="oninput" class="@Css()" placeholder="@PlaceHolder" />
         @if (_isError)
         {
             <span class="@CssStyle.WebInputGroupTextCss">
