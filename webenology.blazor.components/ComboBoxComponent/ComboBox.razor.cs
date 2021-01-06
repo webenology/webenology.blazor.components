@@ -28,9 +28,7 @@ namespace webenology.blazor.components
         [Parameter]
         public TItem SelectedItem { get; set; }
         [Parameter]
-        public bool AllowMultipleSelections { get; set; }
-        [Parameter]
-        public bool IsTag { get; set; }
+        public ComboBoxType ComboBoxType { get; set; }
         [Parameter]
         public bool IsEditable { get; set; }
         [Parameter]
@@ -155,13 +153,16 @@ namespace webenology.blazor.components
             {
                 onSelectItem(SearchedItems[_currentFocused]);
             }
-            else if (args.Code == "Enter" && string.IsNullOrEmpty(_localText))
-            {
-                onSelectItem(default);
-            }
             else if (args.CtrlKey && args.Code == "Enter")
             {
-                OnCreateNewItem.InvokeAsync(_localText);
+                if (CanAddNewItem)
+                    OnCreateNewItem.InvokeAsync(_localText);
+            }
+            else if (args.Code == "Enter")
+            {
+                var item = SearchedItems.FirstOrDefault(x =>
+                    GetValue(x).Equals(_localText, StringComparison.OrdinalIgnoreCase));
+                onSelectItem(item ?? default);
             }
         }
 
@@ -184,7 +185,7 @@ namespace webenology.blazor.components
 
             if (string.IsNullOrEmpty(ValueFieldName))
                 throw new ArgumentNullException($"ValueFieldName is a required field!");
-            
+
             var property = item.GetType().GetProperty(ValueFieldName);
             if (property == null)
                 throw new ArgumentNullException($"Value field name: {ValueFieldName} does not exist on object");

@@ -33,9 +33,9 @@ Welcome to your new app.
     </div>
 </div>
 
-<ComboBox Items="items" TItem="KeyValuePair<string,string>" ValueFieldName="Value"
-          IsEditable="true" PlaceHolder="Search for a number..."
-          ShowRemoveButton="true" CanAddNewItem="true"></ComboBox>
+<ComboBox Items="items" TItem="KeyValuePair<string,string>" ValueFieldName="Value" SelectedItem="_selectedItem"
+          IsEditable="true" PlaceHolder="Search for a number..." OnSelectedItem="@((x)=>_selectedItem = x)"
+          ShowRemoveButton="true" CanAddNewItem="true" OnCreateNewItem="AddNewItem"></ComboBox>
 
 <DropDown Items="items" ShowEmpty="true"></DropDown>
 

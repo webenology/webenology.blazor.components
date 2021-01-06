@@ -27,6 +27,15 @@ namespace TestApp.Pages
         }
 
         private List<KeyValuePair<string, string>> items = new();
+        private KeyValuePair<string,string> _selectedItem;
+
+        private void AddNewItem(string s)
+        {
+            var itm = new KeyValuePair<string, string>(s,s);
+            items.Add(itm);
+            _selectedItem = itm;
+            StateHasChanged();
+        }
 
         private void AddNotification()
         {
