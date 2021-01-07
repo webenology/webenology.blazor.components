@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.Win32.SafeHandles;
+
 using webenology.blazor.components;
 
 namespace TestApp.Pages
@@ -18,6 +20,7 @@ namespace TestApp.Pages
         private string _text;
         private decimal _num = 0;
         private int _count = 0;
+        private List<TreeNode> _nodes = new();
 
         private ConfirmStyle confirmStyle()
         {
@@ -27,11 +30,11 @@ namespace TestApp.Pages
         }
 
         private List<KeyValuePair<string, string>> items = new();
-        private KeyValuePair<string,string> _selectedItem;
+        private KeyValuePair<string, string> _selectedItem;
 
         private void AddNewItem(string s)
         {
-            var itm = new KeyValuePair<string, string>(s,s);
+            var itm = new KeyValuePair<string, string>(s, s);
             items.Add(itm);
             _selectedItem = itm;
             StateHasChanged();
@@ -65,7 +68,19 @@ namespace TestApp.Pages
             {
                 items.Add(new KeyValuePair<string, string>(i.ToString(), i.ToString()));
             }
+
+            var homeNode = new TreeNode("1-abi");
+            homeNode.Nodes.Add(new TreeNode("second node"));
+            homeNode.Nodes.Add(new("third node"));
+            var fourthNode = new TreeNode("fourth node");
+            fourthNode.Nodes.Add(new TreeNode("fourth + 1 node"));
+            homeNode.Nodes.Add(fourthNode);
+
+            _nodes.Add(homeNode);
+            _nodes.Add(new TreeNode("sehab"));
             base.OnInitialized();
         }
+
+
     }
 }

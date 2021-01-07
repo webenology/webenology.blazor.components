@@ -18388,3 +18388,9 @@ span.flatpickr-weekday {
     transform: translate3d(0, 0, 0);
   }
 }
+.link {
+  cursor: pointer;
+}
+.link:hover {
+  color: deepskyblue;
+}

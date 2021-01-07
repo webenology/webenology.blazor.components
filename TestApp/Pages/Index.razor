@@ -50,6 +50,10 @@ Welcome to your new app.
     </Tab>
 </Tabs>
 
+<TreeView TreeNodes="_nodes" AllowSelectAll="true" />
+    
+
+
 <WebTextInput @bind-Text="_text" IsErrorFunc="() => true"></WebTextInput>
 <Notification @ref="_notification"></Notification>
 <Button OnClick="AddNotification" Text="add notification"></Button>

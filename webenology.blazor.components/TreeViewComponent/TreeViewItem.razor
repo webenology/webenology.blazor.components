@@ -1,0 +1,37 @@
+﻿@using System.ComponentModel.Design
+@namespace webenology.blazor.components
+
+@foreach (var t in TreeNodes)
+{
+    <ul class="@CssStyle.UlStyle">
+        <li class="@CssStyle.LiStyle">
+            @if (t.Nodes.Any())
+            {
+                if (t.IsExpanded)
+                {
+                    <i class="mdi mdi-minus-box-outline link" @onclick="@(()=> t.IsExpanded =false)"></i>
+                }
+                else if (!t.IsExpanded)
+                {
+                    <i class="mdi mdi-plus-box-outline link" @onclick="@(()=> t.IsExpanded = true)"></i>
+                }
+            }
+            else
+            {
+                <i style="display: inline-block; width: 16px;"></i>
+            }
+            <label class="link">
+                <input type="checkbox" class="@CssStyle.InputStyle" style="margin-left: 0.5em" checked="@t.IsSelected" @onchange="@((e)=> ToggleCheck(e, t))" />
+                @t.Node
+                @if (!t.IsExpanded)
+                {
+                    <text> (@t.Nodes.Count)</text>
+                }
+            </label>
+            @if (t.IsExpanded)
+            {
+                <TreeViewItem TreeNodes="@t.Nodes" CssStyle="CssStyle" />
+            }
+        </li>
+    </ul>
+}

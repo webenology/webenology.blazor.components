@@ -1,0 +1,11 @@
+﻿@namespace webenology.blazor.components
+
+@if (AllowSelectAll)
+{
+    <label>
+        <input type="checkbox" @onchange="ToggleAll" /> Select All
+    </label>
+}
+<TreeViewItem TreeNodes="TreeNodes" CssStyle="CssStyle"></TreeViewItem>
+
+
