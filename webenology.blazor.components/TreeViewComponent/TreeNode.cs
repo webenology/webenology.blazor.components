@@ -12,6 +12,7 @@ namespace webenology.blazor.components
     {
         public bool IsSelected { get; set; }
         public string Node { get; set; }
+        public string NodeDescription { get; set; }
         public List<TreeNode> Nodes { get; set; }
         public bool IsExpanded { get; set; }
 
@@ -23,6 +24,12 @@ namespace webenology.blazor.components
         public TreeNode(string nodeName) : this()
         {
             Node = nodeName;
+        }
+
+        public TreeNode(string nodeName, string nodeDescription) : this()
+        {
+            Node = nodeName;
+            NodeDescription = nodeDescription;
         }
     }
 }

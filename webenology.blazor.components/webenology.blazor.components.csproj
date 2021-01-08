@@ -5,15 +5,15 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Sehab Veljacic</Authors>
     <Company>Webenology, Inc</Company>
-    <Copyright>2020 Webenology, Inc</Copyright>
+    <Copyright>2021 Webenology, Inc</Copyright>
     <Description>Small package of blazor components to use within our applications. We're sharing it with the world.</Description>
     <RepositoryUrl>https://github.com/webenology/webenology.blazor.components</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input</PackageTags>
-    <PackageReleaseNotes>Combo box only allows to select what's in the list</PackageReleaseNotes>
-    <AssemblyVersion>1.0.0.16</AssemblyVersion>
-    <FileVersion>1.0.0.16</FileVersion>
-    <Version>1.0.16</Version>
+    <PackageReleaseNotes>Tree View component</PackageReleaseNotes>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -11,18 +11,48 @@ namespace webenology.blazor.components
 {
     public partial class TreeViewItem
     {
+        [CascadingParameter] private TreeView _treeView { get; set; }
         [Parameter]
         public List<TreeNode> TreeNodes { get; set; }
         [Parameter]
+        public TreeNode ParentNode { get; set; }
+        [Parameter]
         public TreeViewStyle CssStyle { get; set; }
 
-        public void ToggleCheck(ChangeEventArgs e, TreeNode t)
+        public void ToggleCheck(TreeNode t)
         {
-            if (e.Value != null)
+            var anySelected = t.Nodes.AreAnySelected(new List<bool>());
+            var allSelected = t.Nodes.AreAllSelected(new List<bool>());
+
+            if (anySelected || !allSelected)
             {
-                t.Nodes.ToggleCheck((bool)e.Value);
+                t.IsSelected = true;
             }
+            else
+            {
+                t.IsSelected = !t.IsSelected;
+            }
+
+            if (allSelected && ParentNode != null)
+            {
+                ParentNode.IsSelected = true;
+            }
+            t.Nodes.ToggleCheck(t.IsSelected);
+            _treeView.ChangeNodeSelection();
             StateHasChanged();
+        }
+
+
+        protected override void OnInitialized()
+        {
+            if (_treeView.StartExpended)
+            {
+                foreach (var t in TreeNodes)
+                {
+                    t.IsExpanded = true;
+                }
+            }
+            base.OnInitialized();
         }
     }
 }

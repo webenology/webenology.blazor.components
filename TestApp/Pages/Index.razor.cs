@@ -69,8 +69,8 @@ namespace TestApp.Pages
                 items.Add(new KeyValuePair<string, string>(i.ToString(), i.ToString()));
             }
 
-            var homeNode = new TreeNode("1-abi");
-            homeNode.Nodes.Add(new TreeNode("second node"));
+            var homeNode = new TreeNode("1-abi", "main page");
+            homeNode.Nodes.Add(new TreeNode("second node", "another node that you need to look at,this one does stuff"));
             homeNode.Nodes.Add(new("third node"));
             var fourthNode = new TreeNode("fourth node");
             fourthNode.Nodes.Add(new TreeNode("fourth + 1 node"));

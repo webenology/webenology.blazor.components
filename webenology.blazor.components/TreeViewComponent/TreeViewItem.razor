@@ -3,34 +3,66 @@
 
 @foreach (var t in TreeNodes)
 {
-    <ul class="@CssStyle.UlStyle">
-        <li class="@CssStyle.LiStyle">
-            @if (t.Nodes.Any())
-            {
-                if (t.IsExpanded)
+    <ul class="@CssStyle.UlCss">
+        <li class="@CssStyle.LiCss">
+            <div class="@CssStyle.LiHolderCss">
+                @if (t.Nodes.Any())
                 {
-                    <i class="mdi mdi-minus-box-outline link" @onclick="@(()=> t.IsExpanded =false)"></i>
+                    if (t.IsExpanded)
+                    {
+                        <i class="@CssStyle.MinusCss @CssStyle.LinkCss" @onclick="@(()=> t.IsExpanded =false)"></i>
+                    }
+                    else if (!t.IsExpanded)
+                    {
+                        <i class="@CssStyle.PlusCss @CssStyle.LinkCss" @onclick="@(()=> t.IsExpanded = true)"></i>
+                    }
                 }
-                else if (!t.IsExpanded)
+                else
                 {
-                    <i class="mdi mdi-plus-box-outline link" @onclick="@(()=> t.IsExpanded = true)"></i>
+                    <i style="@CssStyle.EmptyStyle"></i>
                 }
-            }
-            else
-            {
-                <i style="display: inline-block; width: 16px;"></i>
-            }
-            <label class="link">
-                <input type="checkbox" class="@CssStyle.InputStyle" style="margin-left: 0.5em" checked="@t.IsSelected" @onchange="@((e)=> ToggleCheck(e, t))" />
-                @t.Node
-                @if (!t.IsExpanded)
-                {
-                    <text> (@t.Nodes.Count)</text>
-                }
-            </label>
+                <label class="@CssStyle.LinkCss" style="margin-left: 0.5em" @onclick="@(()=> ToggleCheck(t))">
+                    @if (t.Nodes.Any())
+                    {
+                        if (t.Nodes.AreAllSelected(new List<bool>()))
+                        {
+                            t.IsSelected = true;
+                            <i class="@CssStyle.CheckedCss"></i>
+                        }
+                        else if (t.Nodes.AreAnySelected(new List<bool>()))
+                        {
+                            t.IsSelected = false;
+                            <i class="@CssStyle.IntermediateCss"></i>
+                        }
+                        else
+                        {
+                            t.IsSelected = false;
+                            <i class="@CssStyle.UncheckedCss"></i>
+                        }
+                    }
+                    else
+                    {
+                        if (t.IsSelected)
+                        {
+                            <i class="@CssStyle.CheckedCss"></i>
+                        }
+                        else
+                        {
+                            <i class="@CssStyle.UncheckedCss"></i>
+                        }
+                    }
+                    <span style="margin-left: 0.5em">
+                        @t.Node @(!string.IsNullOrEmpty(t.NodeDescription)? $" - {t.NodeDescription}": "")
+                        @if (!t.IsExpanded)
+                        {
+                            <text> (@t.Nodes.Count)</text>
+                        }
+                    </span>
+                </label>
+            </div>
             @if (t.IsExpanded)
             {
-                <TreeViewItem TreeNodes="@t.Nodes" CssStyle="CssStyle" />
+                <TreeViewItem TreeNodes="@t.Nodes" ParentNode="@t" CssStyle="CssStyle" />
             }
         </li>
     </ul>
