@@ -21,6 +21,9 @@ namespace webenology.blazor.components
 
         public void ToggleCheck(TreeNode t)
         {
+            if (!_treeView.Selectable)
+                return;
+
             var anySelected = t.Nodes.AreAnySelected(new List<bool>());
             var allSelected = t.Nodes.AreAllSelected(new List<bool>());
 

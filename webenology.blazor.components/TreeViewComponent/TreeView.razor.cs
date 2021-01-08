@@ -17,6 +17,7 @@ namespace webenology.blazor.components
         public bool StartExpended { get; set; }
         [Parameter]
         public List<TreeNode> TreeNodes { get; set; }
+        [Parameter] public bool Selectable { get; set; } = true;
         [Parameter]
         public TreeViewStyle CssStyle { get; set; } = TreeViewStyle.WebenologyStyle;
         [Parameter]

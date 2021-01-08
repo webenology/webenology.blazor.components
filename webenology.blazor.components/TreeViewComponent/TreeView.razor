@@ -1,7 +1,7 @@
 ﻿@namespace webenology.blazor.components
 <CascadingValue Value="this">
 
-    @if (AllowSelectAll)
+    @if (AllowSelectAll && Selectable)
     {
         <label class="@CssStyle.LinkCss" @onclick="ToggleAll">
             @if (_toggleAll)

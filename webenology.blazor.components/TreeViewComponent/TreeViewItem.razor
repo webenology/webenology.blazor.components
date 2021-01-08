@@ -22,33 +22,37 @@
                     <i style="@CssStyle.EmptyStyle"></i>
                 }
                 <label class="@CssStyle.LinkCss" style="margin-left: 0.5em" @onclick="@(()=> ToggleCheck(t))">
-                    @if (t.Nodes.Any())
+                    @if (_treeView.Selectable)
                     {
-                        if (t.Nodes.AreAllSelected(new List<bool>()))
+
+                        @if (t.Nodes.Any())
                         {
-                            t.IsSelected = true;
-                            <i class="@CssStyle.CheckedCss"></i>
-                        }
-                        else if (t.Nodes.AreAnySelected(new List<bool>()))
-                        {
-                            t.IsSelected = false;
-                            <i class="@CssStyle.IntermediateCss"></i>
+                            if (t.Nodes.AreAllSelected(new List<bool>()))
+                            {
+                                t.IsSelected = true;
+                                <i class="@CssStyle.CheckedCss"></i>
+                            }
+                            else if (t.Nodes.AreAnySelected(new List<bool>()))
+                            {
+                                t.IsSelected = false;
+                                <i class="@CssStyle.IntermediateCss"></i>
+                            }
+                            else
+                            {
+                                t.IsSelected = false;
+                                <i class="@CssStyle.UncheckedCss"></i>
+                            }
                         }
                         else
                         {
-                            t.IsSelected = false;
-                            <i class="@CssStyle.UncheckedCss"></i>
-                        }
-                    }
-                    else
-                    {
-                        if (t.IsSelected)
-                        {
-                            <i class="@CssStyle.CheckedCss"></i>
-                        }
-                        else
-                        {
-                            <i class="@CssStyle.UncheckedCss"></i>
+                            if (t.IsSelected)
+                            {
+                                <i class="@CssStyle.CheckedCss"></i>
+                            }
+                            else
+                            {
+                                <i class="@CssStyle.UncheckedCss"></i>
+                            }
                         }
                     }
                     <span style="margin-left: 0.5em">
