@@ -55,12 +55,15 @@
                             }
                         }
                     }
-                    <span style="margin-left: 0.5em">
-                        @t.Node @(!string.IsNullOrEmpty(t.NodeDescription)? $" - {t.NodeDescription}": "")
-                        @if (!t.IsExpanded)
-                        {
-                            <text> (@t.Nodes.Count)</text>
-                        }
+                    <span style="margin-left:0.5em">
+                        <b>@t.Node</b>
+                        <span>
+                            @(!string.IsNullOrEmpty(t.NodeDescription)? $" - {t.NodeDescription}": "")
+                            @if (!t.IsExpanded)
+                            {
+                                <text> (@t.Nodes.Count)</text>
+                            }
+                        </span>
                     </span>
                 </label>
             </div>

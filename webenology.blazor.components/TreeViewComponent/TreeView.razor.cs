@@ -14,7 +14,7 @@ namespace webenology.blazor.components
         [Parameter]
         public bool AllowSelectAll { get; set; }
         [Parameter]
-        public bool StartExpended { get; set; }
+        public bool StartExpanded { get; set; }
         [Parameter]
         public List<TreeNode> TreeNodes { get; set; }
         [Parameter] public bool Selectable { get; set; } = true;

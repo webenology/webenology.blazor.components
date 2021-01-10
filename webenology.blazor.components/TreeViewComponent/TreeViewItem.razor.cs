@@ -48,7 +48,7 @@ namespace webenology.blazor.components
 
         protected override void OnInitialized()
         {
-            if (_treeView.StartExpended)
+            if (_treeView.StartExpanded)
             {
                 foreach (var t in TreeNodes)
                 {
