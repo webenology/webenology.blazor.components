@@ -21,6 +21,7 @@ namespace TestApp.Pages
         private decimal _num = 0;
         private int _count = 0;
         private List<TreeNode> _nodes = new();
+        private string _myvalue;
 
         private ConfirmStyle confirmStyle()
         {

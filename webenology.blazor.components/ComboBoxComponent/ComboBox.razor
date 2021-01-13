@@ -6,17 +6,17 @@
 <div class="@CssStyle.ContainerCss">
     @if (!string.IsNullOrEmpty(Label))
     {
-    <label class="@CssStyle.LabelCss">@Label</label>
+        <label class="@CssStyle.LabelCss">@Label</label>
     }
 
-    <OutsideClick OnOutsideClick="closeItemsWindow">
+    <OutsideClick OnOutsideClick="OnEnter">
         <div class="@CssStyle.InputGroupCss">
             <input placeholder="@PlaceHolder" type="text" @attributes="@_attributes" class="@InputCss()" @bind="LocalText" @bind:event="oninput" @onkeyup="onKeyPress" @onclick="openItemsWindow" @ref="_elRef" />
             @if (ShowRemoveButton && !string.IsNullOrEmpty(_localText))
             {
-            <div class="@CssStyle.RemoveIconContainerCss">
-                <i class="@CssStyle.RemoveIconCss" @onclick="clearItem"></i>
-            </div>
+                <div class="@CssStyle.RemoveIconContainerCss">
+                    <i class="@CssStyle.RemoveIconCss" @onclick="clearItem"></i>
+                </div>
             }
             <div class="@CssStyle.ChevronContainerCss" @onclick="toggleItemsWindows">
                 <i class="@CssStyle.ChevronIconCss"></i>
@@ -24,9 +24,9 @@
         </div>
         @if (_isError)
         {
-        <label class="@CssStyle.ErrorCss">
-            @_errorMessage
-        </label>
+            <label class="@CssStyle.ErrorCss">
+                @_errorMessage
+            </label>
         }
         <div class="@ListGroupCss()" style="top: calc(100%@(_isError ? " - 24px" :""));">
             <div style="max-height: @(Math.Clamp(MaxItemsToShow * ItemHeight, ItemHeight*4, ItemHeight*8))px; overflow-y: auto" @ref="_scrollEl">
@@ -40,16 +40,16 @@
             </div>
             @if (!SearchedItems.Any())
             {
-            <div class="@CssStyle.ItemNotFoundCss">
-                No Matches Found
-            </div>
+                <div class="@CssStyle.ItemNotFoundCss">
+                    No Matches Found
+                </div>
             }
             @if (CanAddNewItem && !ExactMatch())
             {
-            <div class="@CssStyle.AddNewContainerCss" @onclick="onAddNewItem">
-                <i class="@CssStyle.AddNewIconCss"></i>
-                <b>Ctrl + Enter</b> to create @(string.IsNullOrEmpty(_localText) ? "a": $"\"{_localText}\" as a") new @(string.IsNullOrEmpty(NewTypeName)? "item": NewTypeName)
-            </div>
+                <div class="@CssStyle.AddNewContainerCss" @onclick="onAddNewItem">
+                    <i class="@CssStyle.AddNewIconCss"></i>
+                    <b>Ctrl + Enter</b> to create @(string.IsNullOrEmpty(_localText) ? "a": $"\"{_localText}\" as a") new @(string.IsNullOrEmpty(NewTypeName)? "item": NewTypeName)
+                </div>
             }
         </div>
     </OutsideClick>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -45,6 +46,8 @@ namespace webenology.blazor.components
         public ComboBoxStyle CssStyle { get; set; } = ComboBoxStyle.WebenologyStyle;
 
         [Parameter] public int ItemHeight { get; set; } = 40;
+        [Parameter] public EventCallback<string> ValueChanged { get; set; }
+        [Parameter] public bool AllowFreeFormText { get; set; }
         [CascadingParameter]
         private EditContext _editContext { get; set; }
 
@@ -85,7 +88,7 @@ namespace webenology.blazor.components
 
         private void closeItemsWindow()
         {
-            if (SelectedItem != null)
+            if (!EqualityComparer<TItem>.Default.Equals(SelectedItem, default))
                 _localText = GetValue(SelectedItem);
 
             _areItemsOpen = false;
@@ -100,9 +103,19 @@ namespace webenology.blazor.components
 
         private void onSelectItem(TItem item)
         {
-            _localText = GetValue(item);
-            OnSelectedItem.InvokeAsync(item);
-            SelectedItem = item;
+            if (EqualityComparer<TItem>.Default.Equals(item, default) && AllowFreeFormText)
+            {
+                SelectedItem = default;
+                OnSelectedItem.InvokeAsync(default);
+                ValueChanged.InvokeAsync(_localText);
+            }
+            else
+            {
+                ValueChanged.InvokeAsync(string.Empty);
+                _localText = GetValue(item);
+                OnSelectedItem.InvokeAsync(item);
+                SelectedItem = item;
+            }
             _currentFocused = -1;
             closeItemsWindow();
         }
@@ -160,10 +173,18 @@ namespace webenology.blazor.components
             }
             else if (args.Code == "Enter")
             {
-                var item = SearchedItems.FirstOrDefault(x =>
-                    GetValue(x).Equals(_localText, StringComparison.OrdinalIgnoreCase));
-                onSelectItem(item ?? default);
+                OnEnter();
             }
+        }
+
+        private void OnEnter()
+        {
+            var item = SearchedItems.FirstOrDefault(x =>
+                GetValue(x).Equals(_localText, StringComparison.OrdinalIgnoreCase));
+            if (EqualityComparer<TItem>.Default.Equals(item, default))
+                onSelectItem(default);
+            else 
+                onSelectItem(item);
         }
 
         private ValueTask<ItemsProviderResult<TItem>> GetSearchedItems(
@@ -268,13 +289,11 @@ namespace webenology.blazor.components
 
         protected override void OnParametersSet()
         {
-            if (SelectedItem != null)
+            if (!EqualityComparer<TItem>.Default.Equals(SelectedItem, default))
             {
                 var val = GetValue(SelectedItem);
                 _localText = val;
             }
-            else
-                _localText = string.Empty;
 
             base.OnParametersSet();
         }
