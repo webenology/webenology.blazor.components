@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -97,6 +98,10 @@ namespace webenology.blazor.components
             js.UpdateSettings(_inputRef, setting, value);
         }
 
+        private async Task OpenCalendar()
+        {
+            await js.OpenCalendar(_inputRef);
+        }
 
         [JSInvokable]
         public void OnChange(List<DateTime?> dt)

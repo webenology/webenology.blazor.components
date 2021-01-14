@@ -5,6 +5,9 @@
     <label class="@CssStyle.DatePickerLabelCss">@Label</label>
     <div class="@CssStyle.InputGroupCss">
         <input type="text" @attributes="Attributes" @ref="_inputRef" value="@DateTimeStr" class="@Css()" />
+        <div class="@CssStyle.CalendarIconHolderCss  @(_isError ? CssStyle.CalendarIconHolderErrorCss : "" )" @onclick="OpenCalendar">
+            <i class="@CssStyle.CalendarIcon"></i>
+        </div>
         @if (_isError)
         {
             <div class="@CssStyle.InputErrorIconHolderCss">

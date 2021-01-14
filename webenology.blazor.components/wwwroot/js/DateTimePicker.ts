@@ -24,3 +24,9 @@ export function updateSetting(element, setting, value) {
     const el = flatpickr(element);
     el.set(setting, value);
 }
+
+export function openCalendar(element) {
+    console.log("opening calendar");
+    const el = flatpickr(element);
+    el.open();
+}

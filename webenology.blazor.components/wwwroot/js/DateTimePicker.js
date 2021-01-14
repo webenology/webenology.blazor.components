@@ -20,4 +20,9 @@ export function updateSetting(element, setting, value) {
     var el = flatpickr(element);
     el.set(setting, value);
 }
+export function openCalendar(element) {
+    console.log("opening calendar");
+    var el = flatpickr(element);
+    el.open();
+}
 //# sourceMappingURL=DateTimePicker.js.map

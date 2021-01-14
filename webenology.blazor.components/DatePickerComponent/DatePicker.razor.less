@@ -1,4 +1,9 @@
-﻿.form-error {
+﻿
+.flatpickr-input[readonly] {
+    background-color: #fff;
+}
+
+.form-error {
     border: 1px solid red;
     border-right: none;
 }
@@ -7,9 +12,17 @@
     border: 1px solid red;
     border-left: none;
 
+    &:not(:last-child) {
+        border-right: none;
+    }
+
     i {
         color: red;
     }
+}
+
+.link {
+    cursor: pointer;
 }
 
 .webenology-error {

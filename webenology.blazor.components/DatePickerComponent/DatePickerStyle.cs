@@ -17,9 +17,15 @@ namespace webenology.blazor.components
             DatePickerHolderCss = "form-group",
             DatePickerLabelCss = "form-label",
             InputGroupCss = "input-group",
-            ErrorMessageCss = "webenology-error"
+            ErrorMessageCss = "webenology-error",
+            CalendarIconHolderCss = "input-group-text link",
+            CalendarIconHolderErrorCss = "error-icon-holder",
+            CalendarIcon= "mdi mdi-calendar"
         };
 
+        public string CalendarIconHolderErrorCss { get; set; }
+        public string CalendarIcon { get; set; }
+        public string CalendarIconHolderCss { get; set; }
         public string InputCss { get; set; }
         public string InputErrorCss { get; set; }
         public string InputErrorIconHolderCss { get; set; }
