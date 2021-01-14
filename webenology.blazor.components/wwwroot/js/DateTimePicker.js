@@ -17,12 +17,11 @@ export function setupPicker(instance, element, type, time, makeStatic) {
     });
 }
 export function updateSetting(element, setting, value) {
-    var el = flatpickr(element);
+    var el = element._flatpickr;
     el.set(setting, value);
 }
 export function openCalendar(element) {
-    console.log("opening calendar");
-    var el = flatpickr(element);
+    var el = element._flatpickr;
     el.open();
 }
 //# sourceMappingURL=DateTimePicker.js.map

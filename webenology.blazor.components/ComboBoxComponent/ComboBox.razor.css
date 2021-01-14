@@ -73,3 +73,7 @@
     color: red;
     font-size: 0.85em;
 }
+
+input[readonly] {
+    background-color: #fff;
+}
