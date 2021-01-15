@@ -133,6 +133,7 @@ namespace webenology.blazor.components
 
         private void clearItem()
         {
+            _localText = string.Empty;
             onSelectItem(default);
         }
 
@@ -183,7 +184,7 @@ namespace webenology.blazor.components
                 GetValue(x).Equals(_localText, StringComparison.OrdinalIgnoreCase));
             if (EqualityComparer<TItem>.Default.Equals(item, default))
                 onSelectItem(default);
-            else 
+            else
                 onSelectItem(item);
         }
 
