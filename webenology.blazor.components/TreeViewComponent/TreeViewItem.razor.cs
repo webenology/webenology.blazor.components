@@ -22,7 +22,11 @@ namespace webenology.blazor.components
         public void ToggleCheck(TreeNode t)
         {
             if (!_treeView.Selectable)
+            {
+                if (t.Nodes.Any())
+                    t.IsExpanded = !t.IsExpanded;
                 return;
+            }
 
             var anySelected = t.Nodes.AreAnySelected(new List<bool>());
             var allSelected = t.Nodes.AreAllSelected(new List<bool>());
