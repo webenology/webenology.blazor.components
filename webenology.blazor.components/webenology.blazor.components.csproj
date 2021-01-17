@@ -11,9 +11,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input</PackageTags>
     <PackageReleaseNotes>Tree View Updates</PackageReleaseNotes>
-    <AssemblyVersion>1.1.6.0</AssemblyVersion>
-    <FileVersion>1.1.6.0</FileVersion>
-    <Version>1.1.6</Version>
+    <AssemblyVersion>1.1.7.0</AssemblyVersion>
+    <FileVersion>1.1.7.0</FileVersion>
+    <Version>1.1.7</Version>
   </PropertyGroup>
 
   <ItemGroup>

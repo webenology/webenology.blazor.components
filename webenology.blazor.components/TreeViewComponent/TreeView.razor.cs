@@ -61,6 +61,10 @@ namespace webenology.blazor.components
                 if (treeNode.IsSelected)
                 {
                     selectedNodes.Add(treeNode.Node);
+                }
+
+                if (treeNode.Nodes.Any())
+                {
                     selectedNodes = callNodeSelectionChange(treeNode.Nodes, selectedNodes);
                 }
             }

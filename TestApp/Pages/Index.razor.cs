@@ -63,6 +63,11 @@ namespace TestApp.Pages
 
         }
 
+        private void onSelected(List<string> claims)
+        {
+            var c= claims;
+        }
+
         protected override void OnInitialized()
         {
             for (var i = 0; i < 100; i++)
