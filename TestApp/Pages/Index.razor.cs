@@ -18,7 +18,7 @@ namespace TestApp.Pages
         private bool _insideClick;
         private DateTime _dt = DateTime.Now;
         private string _text;
-        private decimal _num = 0;
+        private int? _num;
         private int _count = 0;
         private List<TreeNode> _nodes = new();
         private string _myvalue;

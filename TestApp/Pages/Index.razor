@@ -7,7 +7,7 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-<WebNumberInput TValue="decimal" Label="This is a number!" @bind-Number="_num" Step="0.1" Min="0" Max="3"></WebNumberInput>
+<WebNumberInput TValue="int?" Label="This is a number!" @bind-Number="_num" Max="4"></WebNumberInput>
 
 <Button ViewType="Button.ButtonType.Primary" Text="Open Modal" OnClick="@(()=>_modal.OpenModal())"></Button>
 <Button ViewType="Button.ButtonType.Success" Text="Open Modal 2" OnClick="@(()=>_modal2.OpenModal())"></Button>
@@ -58,7 +58,8 @@ selectedItem: @_selectedItem
 
 
 
-<WebTextInput @bind-Text="_text" IsErrorFunc="() => true"></WebTextInput>
+<WebTextInput @bind-Text="_text"></WebTextInput>
+
 <Notification @ref="_notification"></Notification>
 <Button OnClick="AddNotification" Text="add notification"></Button>
 

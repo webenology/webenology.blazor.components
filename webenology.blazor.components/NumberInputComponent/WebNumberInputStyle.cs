@@ -11,6 +11,7 @@ namespace webenology.blazor.components
         public static WebNumberInputStyle WebenologyStyle => new WebNumberInputStyle
         {
             FormGroupCss = "form-group",
+            FormGroupLabelCss = "form-label",
             InputCss = "form-control",
             InputErrorCss = "error",
             InputGroupCss = "input-group",
@@ -26,8 +27,8 @@ namespace webenology.blazor.components
         public string InputErrorCss { get; set; }
         public string InputGroupCss { get; set; }
         public string InputGroupAddonCss { get; set; }
-        public string InputGroupAddonIconCss { get; set; }
         public string InputGroupAddonErrorCss { get; set; }
+        public string InputGroupAddonIconCss { get; set; }
         public string ErrorCss { get; set; }
     }
 }

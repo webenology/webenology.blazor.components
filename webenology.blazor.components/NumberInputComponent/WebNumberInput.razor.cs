@@ -22,8 +22,8 @@ namespace webenology.blazor.components
         public Expression<Func<TValue>> For { get; set; }
 
         [Parameter] public double Step { get; set; } = 1;
-        [Parameter] public double Min { get; set; } = double.MinValue;
-        [Parameter] public double Max { get; set; } = double.MaxValue;
+        [Parameter] public double? Min { get; set; }
+        [Parameter] public double? Max { get; set; }
         [Parameter]
         public WebNumberInputStyle CssStyle { get; set; } = WebNumberInputStyle.WebenologyStyle;
         [CascadingParameter]
