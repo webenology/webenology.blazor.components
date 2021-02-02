@@ -7,7 +7,7 @@
         <label class="@CssStyle.FormGroupLabelCss">@Label</label>
     }
     <div class="@CssStyle.InputGroupCss">
-        <input type="number" @bind="LocalText" @bind:event="oninput" class="@InputCss()" step="@Step" min="@Min" max="@Max" />
+        <input type="number" @bind="LocalText" @bind:event="oninput" class="@InputCss()" @attributes="_attributes" />
         @if (_isError)
         {
             <span class="@ErrorCss()">

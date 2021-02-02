@@ -21,13 +21,15 @@ namespace webenology.blazor.components
         [Parameter]
         public Expression<Func<TValue>> For { get; set; }
 
-        [Parameter] public double Step { get; set; } = 1;
+        [Parameter] public double? Step { get; set; }
         [Parameter] public double? Min { get; set; }
         [Parameter] public double? Max { get; set; }
         [Parameter]
         public WebNumberInputStyle CssStyle { get; set; } = WebNumberInputStyle.WebenologyStyle;
         [CascadingParameter]
         private EditContext _editContext { get; set; }
+
+        private Dictionary<string, object> _attributes = new();
 
         private bool _isError => !string.IsNullOrEmpty(_errorMessage);
         private string _errorMessage;
@@ -78,6 +80,15 @@ namespace webenology.blazor.components
             {
                 throw new InvalidOperationException($"The type '{targetType}' is not a supported numeric type.");
             }
+
+            if (Step.HasValue)
+                _attributes.Add("step", Step.Value);
+
+            if (Min.HasValue)
+                _attributes.Add("min", Min.Value);
+
+            if (Max.HasValue)
+                _attributes.Add("max", Max.Value);
 
 
             if (_editContext != null)
