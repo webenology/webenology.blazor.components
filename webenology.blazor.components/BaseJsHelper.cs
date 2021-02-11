@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace webenology.blazor.components
 {
-    internal abstract class BaseJsHelper : IAsyncDisposable
+    public abstract class BaseJsHelper : IAsyncDisposable
     {
         public readonly Lazy<Task<IJSObjectReference>> ModuleTask;
         protected BaseJsHelper(IJSRuntime jsRuntime, string url)
@@ -26,5 +26,7 @@ namespace webenology.blazor.components
                 await module.DisposeAsync();
             }
         }
+
+        
     }
 }

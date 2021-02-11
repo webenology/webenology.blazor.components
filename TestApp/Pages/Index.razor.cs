@@ -22,6 +22,7 @@ namespace TestApp.Pages
         private int _count = 0;
         private List<TreeNode> _nodes = new();
         private string _myvalue;
+        private string _myhightlightvalue;
 
         private ConfirmStyle confirmStyle()
         {

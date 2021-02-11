@@ -9,6 +9,8 @@ Welcome to your new app.
 
 <WebNumberInput TValue="int?" Label="This is a number!" @bind-Number="_num" Max="4"></WebNumberInput>
 
+<WebTextInput HighlightOnFocus="true" @bind-Text="_myhightlightvalue"></WebTextInput>
+
 <Button ViewType="Button.ButtonType.Primary" Text="Open Modal" OnClick="@(()=>_modal.OpenModal())"></Button>
 <Button ViewType="Button.ButtonType.Success" Text="Open Modal 2" OnClick="@(()=>_modal2.OpenModal())"></Button>
 <Button ViewType="Button.ButtonType.Secondary" Text="Show Confirm" OnClick="@(()=> _confirm.ShowConfirm("Question!","Do you like this?"))" ButtonSecondaryCss="btn-secondary"></Button>

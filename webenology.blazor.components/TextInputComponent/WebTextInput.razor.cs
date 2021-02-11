@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 
 using webenology.blazor.components.TextInputComponent;
 
@@ -32,9 +33,15 @@ namespace webenology.blazor.components
         [Parameter]
         public WebTextInputStyle CssStyle { get; set; } = WebTextInputStyle.WebenologyStyle;
         [Parameter]
-        public WebInputType InputType {get;set;}
+        public WebInputType InputType { get; set; }
+        [Parameter]
+        public bool HighlightOnFocus { get; set; }
+
         private bool _isError => !string.IsNullOrEmpty(_errorMessage);
         private string _errorMessage;
+        private ElementReference _el { get; set; }
+        [Inject]
+        private IWebTextInputJsHelper jsHelper { get; set; }
 
         public string LocalText
         {
@@ -56,6 +63,14 @@ namespace webenology.blazor.components
             }
 
             return string.Join(" ", css);
+        }
+
+        private async Task DoOnFocus(FocusEventArgs e)
+        {
+            if (HighlightOnFocus)
+            {
+                await jsHelper.HighlightText(_el);
+            }
         }
 
         protected override void OnInitialized()
@@ -89,6 +104,7 @@ namespace webenology.blazor.components
                 }
             }
         }
+
 
         public void Dispose()
         {

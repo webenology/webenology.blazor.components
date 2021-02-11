@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace webenology.blazor.components
 {
@@ -25,6 +26,8 @@ namespace webenology.blazor.components
         [Parameter] public double? Min { get; set; }
         [Parameter] public double? Max { get; set; }
         [Parameter]
+        public bool HighlightOnFocus { get; set; }
+        [Parameter]
         public WebNumberInputStyle CssStyle { get; set; } = WebNumberInputStyle.WebenologyStyle;
         [CascadingParameter]
         private EditContext _editContext { get; set; }
@@ -33,6 +36,9 @@ namespace webenology.blazor.components
 
         private bool _isError => !string.IsNullOrEmpty(_errorMessage);
         private string _errorMessage;
+        private ElementReference _el { get; set; }
+        [Inject]
+        private IWebTextInputJsHelper jsHelper { get; set; }
 
         public TValue LocalText
         {
@@ -44,6 +50,13 @@ namespace webenology.blazor.components
             }
         }
 
+        private async Task DoFocus(FocusEventArgs e)
+        {
+            if (HighlightOnFocus)
+            {
+                await jsHelper.HighlightText(_el);
+            }
+        }
         public string ErrorCss()
         {
             var css = new List<string> { CssStyle.InputGroupAddonCss };
