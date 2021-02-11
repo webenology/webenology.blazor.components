@@ -43,14 +43,11 @@ namespace webenology.blazor.components
         [Inject]
         private IWebTextInputJsHelper jsHelper { get; set; }
 
-        public string LocalText
+       
+        private void InvokeTextChange(ChangeEventArgs e)
         {
-            get => Text;
-            set
-            {
-                _errorMessage = string.Empty;
-                TextChanged.InvokeAsync(value);
-            }
+            _errorMessage = string.Empty;
+            TextChanged.InvokeAsync((string)e.Value);
         }
 
         public string Css()
