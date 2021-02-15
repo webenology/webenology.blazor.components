@@ -1,7 +1,7 @@
 ﻿@namespace webenology.blazor.components
 
 <div>
-    <select class="@Css()" value="@Value" @onchange="onChangeValue">
+    <select class="@Style.SelectForm @(IsError ? Style.Error : "")" value="@Value" @onchange="onChangeValue">
         @if (ShowEmpty)
         {
             <option value="@EmptyValue">@EmptyText</option>
@@ -16,7 +16,7 @@
     </select>
     @if (IsError)
     {
-        <label class="error">
+        <label class="@Style.Error">
             @ErrorMessage
         </label>
     }

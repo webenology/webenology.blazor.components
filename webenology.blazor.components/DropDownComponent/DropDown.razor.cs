@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
+using webenology.blazor.components.DropDownComponent;
+
 namespace webenology.blazor.components
 {
     public partial class DropDown
@@ -27,6 +29,8 @@ namespace webenology.blazor.components
         public string Value { get; set; }
         [Parameter]
         public EventCallback<string> ValueChanged { get; set; }
+        [Parameter]
+        public DropDownStyle Style { get; set; } = DropDownStyle.WebenologyDropDownStyle;
 
         [CascadingParameter]
         private EditContext _editContext { get; set; }
@@ -39,19 +43,7 @@ namespace webenology.blazor.components
         }
         public bool IsError => !string.IsNullOrEmpty(ErrorMessage);
         public string ErrorMessage;
-
-        public string Css()
-        {
-            var css = new List<string> { "form-control" };
-
-            if (IsError)
-            {
-                css.Add("error");
-            }
-
-            return string.Join(" ", css);
-        }
-
+        
         protected override void OnInitialized()
         {
             if (_editContext != null)
