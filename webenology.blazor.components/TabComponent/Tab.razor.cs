@@ -12,6 +12,8 @@ namespace webenology.blazor.components
         public RenderFragment ChildContent { get; set; }
         [Parameter]
         public string Title { get; set; }
+        [Parameter]
+        public string Badge { get;set; }
 
         protected override void OnInitialized()
         {

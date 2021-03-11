@@ -17,9 +17,11 @@ namespace webenology.blazor.components.TabComponent
             TabPaneCss = "tab-pane active",
             TabBodyCss = "panel-body",
             TabListItemCss = "nav-item",
-            TabLinkCss = "nav-link"
+            TabLinkCss = "nav-link",
+            BadgeCss = "badge bg-primary rounded-pill ml-1"
         };
 
+        public string BadgeCss { get; set; }
         public string TabContainerCss { get; set; }
         public string TabListCss { get; set; }
         public string ActiveTabCss { get; set; }

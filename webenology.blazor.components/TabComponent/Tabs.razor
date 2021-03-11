@@ -6,7 +6,10 @@
             @foreach (var tab in TabPages)
             {
                 <li class="@CssStyle.TabListItemCss">
-                    <a class="@CssStyle.TabLinkCss @(ActivePage == tab ? CssStyle.ActiveTabCss: "")" href="javascript:;" @onclick="@(_ => ActivatePage(tab))">@tab.Title</a>
+                    <a class="@CssStyle.TabLinkCss @(ActivePage == tab ? CssStyle.ActiveTabCss: "")" href="javascript:;" @onclick="@(_ => ActivatePage(tab))">
+                        @tab.Title
+                        <span class="@CssStyle.BadgeCss">@tab.Badge</span>
+                    </a>
                 </li>
             }
         </ul>
