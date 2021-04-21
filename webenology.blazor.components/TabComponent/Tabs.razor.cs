@@ -28,6 +28,7 @@ namespace webenology.blazor.components
             if (firstRender)
             {
                 nav.LocationChanged += Nav_LocationChanged;
+                CheckCurrentUri(nav.Uri);
             }
 
             base.OnAfterRender(firstRender);
@@ -35,7 +36,12 @@ namespace webenology.blazor.components
 
         private void Nav_LocationChanged(object sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
-            var uri = new Uri(e.Location);
+            CheckCurrentUri(e.Location);
+        }
+
+        private void CheckCurrentUri(string location)
+        {
+            var uri = new Uri(location);
             if (!string.IsNullOrEmpty(uri.Fragment) && uri.Fragment.StartsWith("#tab"))
             {
                 var tabName = WebUtility.UrlDecode(uri.Fragment).Substring(1);
