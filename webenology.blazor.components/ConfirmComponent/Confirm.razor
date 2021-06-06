@@ -12,9 +12,15 @@
             @_content
         </div>
         <div class="@CssStyle.CardFooterCss">
-            <button class="@CssStyle.CancelButtonCss" @onclick="@(()=> Execute(_onCancel))">@cancel</button>
-            <button class="@CssStyle.NoButtonCss" @onclick="@(()=> Execute(_onNo))">@no</button>
-            <button class="@CssStyle.YesButtonCss" @onclick="@(()=> Execute(_onYes))">@yes</button>
+            <button class="@CssStyle.CancelButtonCss" @onclick="@(()=> Execute(_onCancel))" disabled="@_isSaving">@cancel</button>
+            <button class="@CssStyle.NoButtonCss" @onclick="@(()=> Execute(_onNo))" disabled="@_isSaving">@no</button>
+            <button class="@CssStyle.YesButtonCss" @onclick="@(()=> Execute(_onYes))" disabled="@_isSaving">
+                @if (_isSaving)
+                {
+                    <i class="mdi mdi-spin mdi-loading" style="margin-right: 2px"></i>
+                }
+                @yes
+            </button>
         </div>
     </div>
 </div>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 
@@ -8,7 +10,7 @@ namespace webenology.blazor.components
     {
         [Parameter]
         public ConfirmStyle CssStyle { get; set; } = ConfirmStyle.WebenologyStyle;
-     
+
         private string _header;
         private string _content;
         private bool _isOpen;
@@ -18,9 +20,12 @@ namespace webenology.blazor.components
         private string yes = "Yes";
         private string no = "No";
         private string cancel = "Cancel";
+        private bool _isSaving;
 
-        private void Execute(Action action)
+        private async Task Execute(Action action)
         {
+            _isSaving = true;
+            await Task.Delay(10);
             _isOpen = false;
             action?.Invoke();
             StateHasChanged();
@@ -37,8 +42,10 @@ namespace webenology.blazor.components
             cancel = cancelName ?? cancel;
             yes = yesName ?? yes;
             no = noName ?? no;
-            
+            _isSaving = false;
+
             StateHasChanged();
         }
+
     }
 }
