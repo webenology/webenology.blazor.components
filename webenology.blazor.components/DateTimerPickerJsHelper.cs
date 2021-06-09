@@ -12,7 +12,7 @@ namespace webenology.blazor.components
     internal interface IDateTimerPickerJsHelper
     {
         Task SetupPicker<TRef>(DotNetObjectReference<TRef> instance, ElementReference el, string type, bool time,
-            bool isStatic) where TRef : class;
+            bool isStatic, bool isInline) where TRef : class;
         Task UpdateSettings(ElementReference el, string setting, string value);
         Task OpenCalendar(ElementReference el);
     }
@@ -26,10 +26,10 @@ namespace webenology.blazor.components
         }
 
         public async Task SetupPicker<TRef>(DotNetObjectReference<TRef> instance, ElementReference el, string type,
-            bool time, bool isStatic) where TRef : class
+            bool time, bool isStatic, bool isInline) where TRef : class
         {
             var module = await ModuleTask.Value;
-            await module.InvokeVoidAsync("setupPicker", instance, el, type, time, isStatic);
+            await module.InvokeVoidAsync("setupPicker", instance, el, type, time, isStatic, isInline);
         }
         public async Task UpdateSettings(ElementReference el, string setting, string value)
         {

@@ -25,6 +25,7 @@ namespace webenology.blazor.components
         [Parameter] public Expression<Func<TValue>> For { get; set; }
         [Parameter] public DatePickerType DateType { get; set; } = DatePickerType.Single;
         [Parameter] public bool EnableTime { get; set; }
+        [Parameter] public bool IsInline {get; set; }
         /// <summary>
         /// Only set to true if using inside a modal
         /// </summary>
@@ -142,7 +143,7 @@ namespace webenology.blazor.components
             if (firstRender)
             {
                 js.SetupPicker(DotNetObjectReference.Create(this), _inputRef, DateType.ToString().ToLower(), EnableTime,
-                    MakeStatic);
+                    MakeStatic, IsInline);
             }
 
             base.OnAfterRender(firstRender);

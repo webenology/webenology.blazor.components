@@ -1,9 +1,10 @@
-export function setupPicker(instance, element, type, time, makeStatic) {
+export function setupPicker(instance, element, type, time, makeStatic, isInline) {
     flatpickr(element, {
         dateFormat: time ? "m-d-Y G:i:S K" : "m-d-Y",
         weekNumbers: true,
         enableTime: time,
         static: makeStatic,
+        inline: isInline,
         mode: type,
         onChange: function (e) {
             var noTimeZone = [];
