@@ -21,6 +21,8 @@ namespace webenology.blazor.components
         private string no = "No";
         private string cancel = "Cancel";
         private bool _isSaving;
+        private bool _showCancel = true;
+        private bool _showNo = true;
 
         private async Task Execute(Action action)
         {
@@ -31,7 +33,7 @@ namespace webenology.blazor.components
             StateHasChanged();
         }
 
-        public void ShowConfirm(string confirmHeader, string confirmMessage, Action OnYes = null, Action OnNo = null, Action OnCancel = null, string yesName = null, string noName = null, string cancelName = null)
+        public void ShowConfirm(string confirmHeader, string confirmMessage, Action OnYes = null, Action OnNo = null, Action OnCancel = null, string yesName = null, string noName = null, string cancelName = null, bool showCancel = true, bool showNo = true)
         {
             _header = confirmHeader;
             _content = confirmMessage;
@@ -43,6 +45,8 @@ namespace webenology.blazor.components
             yes = yesName ?? yes;
             no = noName ?? no;
             _isSaving = false;
+            _showCancel = showCancel;
+            _showNo = showNo;
 
             StateHasChanged();
         }
