@@ -25,7 +25,7 @@ namespace webenology.blazor.components
         [Parameter] public Expression<Func<TValue>> For { get; set; }
         [Parameter] public DatePickerType DateType { get; set; } = DatePickerType.Single;
         [Parameter] public bool EnableTime { get; set; }
-        [Parameter] public bool IsInline {get; set; }
+        [Parameter] public bool IsInline { get; set; }
         /// <summary>
         /// Only set to true if using inside a modal
         /// </summary>
@@ -124,7 +124,10 @@ namespace webenology.blazor.components
             }
             else
             {
-                DateChanged.InvokeAsync((TValue)(object)dt);
+
+                var newDt = new List<DateTime>();
+                newDt.AddRange(dt.Select(x => x.GetValueOrDefault()));
+                DateChanged.InvokeAsync((TValue)(object)newDt);
             }
         }
 

@@ -45,6 +45,7 @@ selectedItem: @_selectedItem
 
 <DropDown Items="items" ShowEmpty="true"></DropDown>
 
+<DatePicker Label="date range" Date="_dates" DateChanged="UpdateDates" TValue="List<DateTime>" DateType="DatePickerType.Range"></DatePicker>
 <DatePicker Label="dt here" @bind-Date="_dt" IsInline="true"></DatePicker>
 
 <Tabs>

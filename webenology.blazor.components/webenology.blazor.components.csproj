@@ -10,10 +10,10 @@
     <RepositoryUrl>https://github.com/webenology/webenology.blazor.components</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input</PackageTags>
-    <PackageReleaseNotes>confirm buttons visibility</PackageReleaseNotes>
-    <AssemblyVersion>1.1.19.0</AssemblyVersion>
-    <FileVersion>1.1.19.0</FileVersion>
-    <Version>1.1.19</Version>
+    <PackageReleaseNotes>fix date time</PackageReleaseNotes>
+    <AssemblyVersion>1.1.20.0</AssemblyVersion>
+    <FileVersion>1.1.20.0</FileVersion>
+    <Version>1.1.20</Version>
   </PropertyGroup>
 
   <ItemGroup>

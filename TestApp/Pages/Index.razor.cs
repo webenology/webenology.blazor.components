@@ -33,6 +33,7 @@ namespace TestApp.Pages
 
         private List<KeyValuePair<string, string>> items = new();
         private KeyValuePair<string, string> _selectedItem;
+        private List<DateTime> _dates = new();
 
         private void AddNewItem(string s)
         {
@@ -89,5 +90,9 @@ namespace TestApp.Pages
         }
 
 
+        private void UpdateDates(List<DateTime> obj)
+        {
+            _dates = obj;
+        }
     }
 }
