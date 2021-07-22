@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Authentication.ExtendedProtection;
 using System.Text;
@@ -28,8 +29,8 @@ namespace webenology.blazor.components
                 return;
             }
 
-            var anySelected = t.Nodes.AreAnySelected(new List<bool>());
-            var allSelected = t.Nodes.AreAllSelected(new List<bool>());
+            var anySelected = t.Nodes.Where(x => !x.IsDisabled).ToList().AreAnySelected(new List<bool>());
+            var allSelected = t.Nodes.Where(x => !x.IsDisabled).ToList().AreAllSelected(new List<bool>());
 
             if (anySelected || !allSelected)
             {

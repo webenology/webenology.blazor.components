@@ -11,6 +11,7 @@ namespace webenology.blazor.components
     public class TreeNode
     {
         public bool IsSelected { get; set; }
+        public bool IsDisabled { get; set; }
         public string Node { get; set; }
         public string NodeDescription { get; set; }
         public List<TreeNode> Nodes { get; set; }

@@ -79,13 +79,13 @@ namespace TestApp.Pages
 
             var homeNode = new TreeNode("1-abi", "main page");
             homeNode.Nodes.Add(new TreeNode("second node", "another node that you need to look at,this one does stuff"));
-            homeNode.Nodes.Add(new("third node"));
+            homeNode.Nodes.Add(new TreeNode{Node = "third node", IsDisabled = true});
             var fourthNode = new TreeNode("fourth node");
             fourthNode.Nodes.Add(new TreeNode("fourth + 1 node"));
             homeNode.Nodes.Add(fourthNode);
 
             _nodes.Add(homeNode);
-            _nodes.Add(new TreeNode("sehab"));
+            _nodes.Add(new TreeNode {Node = "Sehab", IsDisabled = true});
             base.OnInitialized();
         }
 
