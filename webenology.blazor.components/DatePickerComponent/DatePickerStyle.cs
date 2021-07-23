@@ -20,7 +20,8 @@ namespace webenology.blazor.components
             ErrorMessageCss = "webenology-error",
             CalendarIconHolderCss = "input-group-text link",
             CalendarIconHolderErrorCss = "error-icon-holder",
-            CalendarIcon= "mdi mdi-calendar"
+            CalendarIcon= "mdi mdi-calendar",
+            CalendarClearIcon = "mdi mdi-calendar-remove text-danger"
         };
 
         public string CalendarIconHolderErrorCss { get; set; }
@@ -34,5 +35,6 @@ namespace webenology.blazor.components
         public string DatePickerLabelCss { get; set; }
         public string InputGroupCss { get; set; }
         public string ErrorMessageCss { get; set; }
+        public string CalendarClearIcon { get; set; }
     }
 }

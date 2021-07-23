@@ -10,10 +10,10 @@
     <RepositoryUrl>https://github.com/webenology/webenology.blazor.components</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input</PackageTags>
-    <PackageReleaseNotes>treeview disabled item</PackageReleaseNotes>
-    <AssemblyVersion>1.1.21.0</AssemblyVersion>
-    <FileVersion>1.1.21.0</FileVersion>
-    <Version>1.1.21</Version>
+    <PackageReleaseNotes>clear datetime</PackageReleaseNotes>
+    <AssemblyVersion>1.1.22.0</AssemblyVersion>
+    <FileVersion>1.1.22.0</FileVersion>
+    <Version>1.1.22</Version>
   </PropertyGroup>
 
   <ItemGroup>

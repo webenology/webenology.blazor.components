@@ -206,5 +206,15 @@ namespace webenology.blazor.components
                 _editContext.OnValidationRequested -= _editContext_OnValidationRequested;
             }
         }
+
+        private async Task OpenOrClear()
+        {
+            if (string.IsNullOrEmpty(DateTimeStr))
+                await OpenCalendar();
+            else
+            {
+                await DateChanged.InvokeAsync();
+            }
+        }
     }
 }
