@@ -23,6 +23,7 @@ namespace TestApp.Pages
         private List<TreeNode> _nodes = new();
         private string _myvalue;
         private string _myhightlightvalue;
+        private string _checkedValue = "All";
 
         private ConfirmStyle confirmStyle()
         {

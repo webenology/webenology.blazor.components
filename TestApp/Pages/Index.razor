@@ -71,7 +71,14 @@ selectedItem: @_selectedItem
 
 
 <WebTextInput @bind-Text="_text"></WebTextInput>
+<br />
 
+Selected Value @_checkedValue
+<RadioButton TItem="string" CheckedValue="@("All")" Name="is-checked" @bind-Value="_checkedValue"></RadioButton> All
+<RadioButton TItem="string" CheckedValue="@("None")" Name="is-checked" @bind-Value="_checkedValue"></RadioButton> None
+<RadioButton TItem="string" CheckedValue="@("Some")" Name="is-checked" @bind-Value="_checkedValue"></RadioButton> Some
+<br />
+<br/>
 <Notification @ref="_notification"></Notification>
 <Button OnClick="AddNotification" Text="add notification"></Button>
 

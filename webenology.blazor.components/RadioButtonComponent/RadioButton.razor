@@ -1,0 +1,4 @@
+﻿@namespace webenology.blazor.components
+@typeparam TItem
+
+<input name="@Name" type="radio" checked="@(Value.Equals(CheckedValue))" @onchange="@(OnChange)" @attributes="@AdditionalAttributes" />
