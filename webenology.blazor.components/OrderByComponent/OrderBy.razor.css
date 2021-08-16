@@ -1,0 +1,13 @@
+﻿.item {
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+}
+
+    .item span {
+        margin-right: 6px;
+    }
+
+    .item:hover span {
+        text-decoration: underline;
+    }

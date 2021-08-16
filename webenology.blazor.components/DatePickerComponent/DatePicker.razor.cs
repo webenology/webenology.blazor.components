@@ -124,10 +124,18 @@ namespace webenology.blazor.components
             }
             else
             {
-
-                var newDt = new List<DateTime>();
-                newDt.AddRange(dt.Select(x => x.GetValueOrDefault()));
-                DateChanged.InvokeAsync((TValue)(object)newDt);
+                if (typeof(TValue) == typeof(List<DateTime?>))
+                {
+                    var newDt = new List<DateTime?>();
+                    newDt.AddRange(dt.Select(x => x));
+                    DateChanged.InvokeAsync((TValue)(object)newDt);
+                }
+                else
+                {
+                    var newDt = new List<DateTime>();
+                    newDt.AddRange(dt.Select(x => x.GetValueOrDefault()));
+                    DateChanged.InvokeAsync((TValue)(object)newDt);
+                }
             }
         }
 

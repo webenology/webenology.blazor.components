@@ -45,8 +45,8 @@ selectedItem: @_selectedItem
 
 <DropDown Items="items" ShowEmpty="true"></DropDown>
 
-<DatePicker Label="date range" Date="_dates" DateChanged="UpdateDates" TValue="List<DateTime>" DateType="DatePickerType.Range"></DatePicker>
-<DatePicker Label="dt here" @bind-Date="_dt" IsInline="true"></DatePicker>
+<DatePicker Label="date range" @bind-Date="Dates" TValue="List<DateTime?>" DateType="DatePickerType.Range" DateFormat="MM-dd-yyyy"></DatePicker>
+<DatePicker Label="dt here" @bind-Date="_dt" TValue="DateTime?"></DatePicker>
 
 <Tabs>
     <Tab Title="tab 1" Badge="1">
@@ -78,12 +78,32 @@ Selected Value @_checkedValue
 <RadioButton TItem="string" CheckedValue="@("None")" Name="is-checked" @bind-Value="_checkedValue"></RadioButton> None
 <RadioButton TItem="string" CheckedValue="@("Some")" Name="is-checked" @bind-Value="_checkedValue"></RadioButton> Some
 <br />
-<br/>
+<br />
 <Notification @ref="_notification"></Notification>
 <Button OnClick="AddNotification" Text="add notification"></Button>
 
+<div>this is the order by stuff</div>
 
+<OrderByContainer InputList="_orderByClasses" OnOutputList="UpdateOrderBy" TValue="Data.OrderByClass" AllowSortToReset="true">
+    <table class="table">
+        <tr>
+            <th>
+                <OrderBy FieldName="Name" FieldText="The Name" TValue="Data.OrderByClass" />
+            </th>
+            <th>
+                <OrderBy FieldName="Age" FieldText="The Age" TValue="Data.OrderByClass"/>
+            </th>
+        </tr>
+        @foreach (var i in _orderByClasses)
+        {
+            <tr>
+                <td>@i.Name</td>
+                <td>@i.Age</td>
+            </tr>
+        }
+    </table>
 
+</OrderByContainer>
 
 
 

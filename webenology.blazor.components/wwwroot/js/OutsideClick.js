@@ -14,7 +14,9 @@ export function Setup(el, instance) {
         window.addEventListener("click", function (e) {
             var allEls = [];
             var dfi = document.querySelectorAll("[data-focused-in]");
-            dfi.forEach(function (x) { return allEls.push(x); });
+            dfi.forEach(function (x) {
+                allEls.push(x);
+            });
             var path = e.composedPath();
             var _loop_1 = function (p) {
                 if (allEls.indexOf(p) > -1)

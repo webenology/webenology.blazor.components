@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Win32.SafeHandles;
 
+using TestApp.Data;
+
 using webenology.blazor.components;
 
 namespace TestApp.Pages
@@ -16,7 +18,7 @@ namespace TestApp.Pages
         private Modal _modal2;
         private Confirm _confirm;
         private bool _insideClick;
-        private DateTime _dt = DateTime.Now;
+        private DateTime? _dt;
         private string _text;
         private int? _num;
         private int _count = 0;
@@ -24,6 +26,7 @@ namespace TestApp.Pages
         private string _myvalue;
         private string _myhightlightvalue;
         private string _checkedValue = "All";
+        private List<OrderByClass> _orderByClasses = new();
 
         private ConfirmStyle confirmStyle()
         {
@@ -34,7 +37,13 @@ namespace TestApp.Pages
 
         private List<KeyValuePair<string, string>> items = new();
         private KeyValuePair<string, string> _selectedItem;
-        private List<DateTime> _dates = new();
+
+        private List<DateTime?> _dates = new();
+        private List<DateTime?> Dates
+        {
+            get => _dates;
+            set => _dates = value;
+        }
 
         private void AddNewItem(string s)
         {
@@ -68,7 +77,7 @@ namespace TestApp.Pages
 
         private void onSelected(List<string> claims)
         {
-            var c= claims;
+            var c = claims;
         }
 
         protected override void OnInitialized()
@@ -80,20 +89,35 @@ namespace TestApp.Pages
 
             var homeNode = new TreeNode("1-abi", "main page");
             homeNode.Nodes.Add(new TreeNode("second node", "another node that you need to look at,this one does stuff"));
-            homeNode.Nodes.Add(new TreeNode{Node = "third node", IsDisabled = true});
+            homeNode.Nodes.Add(new TreeNode { Node = "third node", IsDisabled = true });
             var fourthNode = new TreeNode("fourth node");
             fourthNode.Nodes.Add(new TreeNode("fourth + 1 node"));
             homeNode.Nodes.Add(fourthNode);
 
             _nodes.Add(homeNode);
-            _nodes.Add(new TreeNode {Node = "Sehab", IsDisabled = true});
+            _nodes.Add(new TreeNode { Node = "Sehab", IsDisabled = true });
+            _orderByClasses.Add(new OrderByClass
+            {
+                Name = "Sehab",
+                Age = 2
+            });
+            _orderByClasses.Add(new OrderByClass
+            {
+                Name = "Iris",
+                Age = 13
+            });
             base.OnInitialized();
         }
 
 
         private void UpdateDates(List<DateTime> obj)
         {
-            _dates = obj;
+            // _dates = obj;
+        }
+
+        private void UpdateOrderBy(List<OrderByClass> obj)
+        {
+            _orderByClasses = obj;
         }
     }
 }

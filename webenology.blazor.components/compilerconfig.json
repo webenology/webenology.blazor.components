@@ -14,5 +14,9 @@
   {
     "outputFile": "NotificationComponent/Notification.razor.css",
     "inputFile": "NotificationComponent/Notification.razor.less"
+  },
+  {
+    "outputFile": "OrderByComponent/OrderBy.razor.css",
+    "inputFile": "OrderByComponent/OrderBy.razor.less"
   }
 ]

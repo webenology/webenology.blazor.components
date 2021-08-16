@@ -1,0 +1,20 @@
+﻿@typeparam TValue
+@namespace webenology.blazor.components
+
+<div class="item" @onclick="OnToggleChanges">
+    <span>
+        @FieldText
+    </span>
+    @if (OrderByContainer.OrderType == OrderByType.ASC && OrderByContainer.CurrentFieldName == FieldName)
+    {
+        <i class="mdi mdi-arrow-up-bold"></i>
+    }
+    else if (OrderByContainer.OrderType == OrderByType.DESC && OrderByContainer.CurrentFieldName == FieldName)
+    {
+        <i class="mdi mdi-arrow-down-bold"></i>
+    }
+    else
+    {
+        <i class="mdi mdi-arrow-up-down-bold" style="opacity: 0.3"></i>
+    }
+</div>

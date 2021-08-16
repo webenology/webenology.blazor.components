@@ -18,7 +18,9 @@ export function Setup(el: Element, instance: any) {
         window.addEventListener("click", (e: MouseEvent) => {
             let allEls = [];
             const dfi = document.querySelectorAll("[data-focused-in]");
-            dfi.forEach(x => allEls.push(x));
+            dfi.forEach(x => {
+                allEls.push(x);
+            });
 
             const path = e.composedPath();
             for (const p of path) {
