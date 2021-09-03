@@ -33,6 +33,11 @@ namespace webenology.blazor.components
             base.OnInitialized();
         }
 
+        public void Refresh()
+        {
+            Order();
+        }
+
         internal void OnOrderBy(string fieldName, OrderByType orderBy)
         {
             CurrentFieldName = fieldName;
