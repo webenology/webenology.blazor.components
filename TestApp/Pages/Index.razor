@@ -84,17 +84,17 @@ Selected Value @_checkedValue
 
 <div>this is the order by stuff</div>
 
-<OrderByContainer InputList="_orderByClasses" OnOutputList="UpdateOrderBy" TValue="Data.OrderByClass" AllowSortToReset="true">
+<OrderByContainer InputList="_orderByClasses" Context="itm" TValue="Data.OrderByClass" AllowSortToReset="true">
     <table class="table">
         <tr>
             <th>
                 <OrderBy FieldName="Name" FieldText="The Name" TValue="Data.OrderByClass" />
             </th>
             <th>
-                <OrderBy FieldName="Age" FieldText="The Age" TValue="Data.OrderByClass"/>
+                <OrderBy FieldName="Age" FieldText="The Age" TValue="Data.OrderByClass" />
             </th>
         </tr>
-        @foreach (var i in _orderByClasses)
+        @foreach (var i in itm)
         {
             <tr>
                 <td>@i.Name</td>
@@ -102,7 +102,6 @@ Selected Value @_checkedValue
             </tr>
         }
     </table>
-
 </OrderByContainer>
 
 

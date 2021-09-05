@@ -11,26 +11,33 @@ namespace webenology.blazor.components
     public partial class OrderByContainer<TValue> where TValue : class
     {
         [Parameter]
-        public RenderFragment ChildContent { get; set; }
-
+        public RenderFragment<List<TValue>> ChildContent { get; set; }
         [Parameter]
         public List<TValue> InputList { get; set; }
         [Parameter]
-        public EventCallback<List<TValue>> OnOutputList { get; set; }
-        [Parameter]
         public string InitialFieldName { get; set; }
-
         [Parameter] public OrderByType InitialOrderBy { get; set; } = OrderByType.NONE;
         [Parameter] public bool AllowSortToReset { get; set; }
 
         internal string CurrentFieldName = "";
         internal OrderByType OrderType;
+        private RenderFragment<TValue>? _itemRender;
+        private List<TValue> _output;
 
         protected override void OnInitialized()
         {
             CurrentFieldName = InitialFieldName;
             OrderType = InitialOrderBy;
             base.OnInitialized();
+        }
+
+        protected override void OnParametersSet()
+        {
+            if (InputList != null)
+            {
+                Order();
+            }
+            base.OnParametersSet();
         }
 
         public void Refresh()
@@ -53,22 +60,19 @@ namespace webenology.blazor.components
 
         private void Order()
         {
-            List<TValue> outputList;
-
             if (OrderType == OrderByType.ASC)
             {
-                outputList = InputList.OrderBy(x => x.GetType().GetProperty(CurrentFieldName)?.GetValue(x)).ToList();
+                _output = InputList.OrderBy(x => x.GetType().GetProperty(CurrentFieldName)?.GetValue(x)).ToList();
             }
             else if (OrderType == OrderByType.DESC)
             {
-                outputList = InputList.OrderByDescending(x => x.GetType().GetProperty(CurrentFieldName)?.GetValue(x)).ToList();
+                _output = InputList.OrderByDescending(x => x.GetType().GetProperty(CurrentFieldName)?.GetValue(x)).ToList();
             }
             else
             {
-                outputList = InputList;
+                _output = InputList;
             }
-
-            OnOutputList.InvokeAsync(outputList);
+            StateHasChanged();
         }
     }
 }
