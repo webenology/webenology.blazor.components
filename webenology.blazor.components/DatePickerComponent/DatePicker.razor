@@ -4,7 +4,7 @@
 <div class="@CssStyle.DatePickerHolderCss">
     <label class="@CssStyle.DatePickerLabelCss">@Label</label>
     <div class="@(IsInline ? "" : CssStyle.InputGroupCss)">
-        <input type="text" @attributes="Attributes" @ref="_inputRef" value="@DateTimeStr" class="@Css()" />
+        <input type="text" @attributes="Attributes" @ref="_inputRef" value="@DateTimeStr" class="@Css()" disabled="@Readonly" />
         @if (!IsInline)
         {
             <div class="@CssStyle.CalendarIconHolderCss @(_isError ? CssStyle.CalendarIconHolderErrorCss : "")" @onclick="OpenOrClear">

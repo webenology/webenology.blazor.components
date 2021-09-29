@@ -44,6 +44,8 @@ namespace webenology.blazor.components
         public string PlaceHolder { get; set; }
         [Parameter]
         public ComboBoxStyle CssStyle { get; set; } = ComboBoxStyle.WebenologyStyle;
+        [Parameter]
+        public bool Readonly { get; set; }
 
         [Parameter] public int ItemHeight { get; set; } = 40;
         [Parameter] public EventCallback<string> ValueChanged { get; set; }
@@ -96,6 +98,9 @@ namespace webenology.blazor.components
 
         private void openItemsWindow()
         {
+            if (Readonly)
+                return;
+
             _virtualized.RefreshDataAsync();
 
             _areItemsOpen = true;
@@ -122,6 +127,9 @@ namespace webenology.blazor.components
 
         private void toggleItemsWindows()
         {
+            if (Readonly)
+                return;
+
             _elRef.FocusAsync();
             _areItemsOpen = !_areItemsOpen;
         }

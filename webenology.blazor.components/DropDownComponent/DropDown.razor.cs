@@ -31,7 +31,8 @@ namespace webenology.blazor.components
         public EventCallback<string> ValueChanged { get; set; }
         [Parameter]
         public DropDownStyle Style { get; set; } = DropDownStyle.WebenologyDropDownStyle;
-
+        [Parameter]
+        public bool Readonly { get; set; }
         [CascadingParameter]
         private EditContext _editContext { get; set; }
 

@@ -1,7 +1,8 @@
 ﻿@namespace webenology.blazor.components
 
 <div>
-    <select class="@Style.SelectForm @(IsError ? Style.Error : "")" value="@Value" @onchange="onChangeValue">
+    <select class="@Style.SelectForm @(IsError ? Style.Error : "")" value="@Value" @onchange="onChangeValue" 
+            disabled="@Readonly">
         @if (ShowEmpty)
         {
             <option value="@EmptyValue">@EmptyText</option>

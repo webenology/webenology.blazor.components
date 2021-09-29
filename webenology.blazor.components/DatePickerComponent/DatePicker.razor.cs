@@ -32,6 +32,8 @@ namespace webenology.blazor.components
         [Parameter] public bool MakeStatic { get; set; }
         [Parameter]
         public DatePickerStyle CssStyle { get; set; } = DatePickerStyle.WebenologyStyle;
+        [Parameter]
+        public bool Readonly { get; set; }
         [CascadingParameter] private EditContext _editContext { get; set; }
 
         private DatePickerType _oldType = DatePickerType.Single;
@@ -217,6 +219,9 @@ namespace webenology.blazor.components
 
         private async Task OpenOrClear()
         {
+            if (Readonly)
+                return;
+
             if (string.IsNullOrEmpty(DateTimeStr))
                 await OpenCalendar();
             else

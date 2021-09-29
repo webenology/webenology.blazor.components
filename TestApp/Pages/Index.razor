@@ -7,9 +7,9 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-<WebNumberInput TValue="int?" Label="This is a number!" @bind-Number="_num" Max="4"></WebNumberInput>
+<WebNumberInput TValue="int?" Label="This is a number!" @bind-Number="_num" Max="4" Readonly="true"></WebNumberInput>
 
-<WebTextInput HighlightOnFocus="true" @bind-Text="_myhightlightvalue"></WebTextInput>
+<WebTextInput HighlightOnFocus="true" @bind-Text="_myhightlightvalue" Readonly="true"></WebTextInput>
 
 <Button ViewType="Button.ButtonType.Primary" Text="Open Modal" OnClick="@(()=>_modal.OpenModal())"></Button>
 <Button ViewType="Button.ButtonType.Success" Text="Open Modal 2" OnClick="@(()=>_modal2.OpenModal())"></Button>
@@ -41,11 +41,13 @@ myvalue: @_myvalue
 selectedItem: @_selectedItem
 <ComboBox Items="items" TItem="KeyValuePair<string,string>" ValueFieldName="Value" SelectedItem="_selectedItem"
           PlaceHolder="Search for a number..." OnSelectedItem="@((x)=>_selectedItem = x)"
-          ShowRemoveButton="true" OnCreateNewItem="AddNewItem" ValueChanged="@((x)=> _myvalue = x)"></ComboBox>
+          ShowRemoveButton="true" OnCreateNewItem="AddNewItem" ValueChanged="@((x)=> _myvalue = x)"
+          Readonly="true"></ComboBox>
 
-<DropDown Items="items" ShowEmpty="true"></DropDown>
+<DropDown Items="items" ShowEmpty="true" Readonly="true"></DropDown>
 
-<DatePicker Label="date range" @bind-Date="Dates" TValue="List<DateTime?>" DateType="DatePickerType.Range" DateFormat="MM-dd-yyyy"></DatePicker>
+<DatePicker Label="date range" @bind-Date="Dates" TValue="List<DateTime?>" DateType="DatePickerType.Range" DateFormat="MM-dd-yyyy"
+            Readonly="true"></DatePicker>
 <DatePicker Label="dt here" @bind-Date="_dt" TValue="DateTime?"></DatePicker>
 
 <Tabs>

@@ -11,8 +11,9 @@
 
     <OutsideClick OnOutsideClick="OnEnter">
         <div class="@CssStyle.InputGroupCss">
-            <input placeholder="@PlaceHolder" type="text" @attributes="@_attributes" class="@InputCss()" @bind="LocalText" @bind:event="oninput" @onkeyup="onKeyPress" @onclick="openItemsWindow" @ref="_elRef" />
-            @if (ShowRemoveButton && !string.IsNullOrEmpty(_localText))
+            <input placeholder="@PlaceHolder" type="text" @attributes="@_attributes" class="@InputCss()" @bind="LocalText"
+                   @bind:event="oninput" @onkeyup="onKeyPress" @onclick="openItemsWindow" @ref="_elRef" readonly="@Readonly" />
+            @if (ShowRemoveButton && !string.IsNullOrEmpty(_localText) && !Readonly)
             {
                 <div class="@CssStyle.RemoveIconContainerCss">
                     <i class="@CssStyle.RemoveIconCss" @onclick="clearItem"></i>

@@ -6,7 +6,7 @@
         <label class="@CssStyle.LabelCss">@Label</label>
     }
     <div class="@CssStyle.WebInputGroupCss">
-        <input type="@InputType" value="@Text" @oninput="InvokeTextChange" class="@Css()" placeholder="@PlaceHolder" @onfocus="DoOnFocus" @ref="_el" />
+        <input type="@InputType" value="@Text" @oninput="InvokeTextChange" class="@Css()" placeholder="@PlaceHolder" @onfocus="DoOnFocus" @ref="_el" readonly="@Readonly" />
         @if (_isError)
         {
             <span class="@CssStyle.WebInputGroupTextCss">

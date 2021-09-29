@@ -29,6 +29,8 @@ namespace webenology.blazor.components
         public bool HighlightOnFocus { get; set; }
         [Parameter]
         public WebNumberInputStyle CssStyle { get; set; } = WebNumberInputStyle.WebenologyStyle;
+        [Parameter]
+        public bool Readonly { get; set; }
         [CascadingParameter]
         private EditContext _editContext { get; set; }
 
@@ -102,7 +104,8 @@ namespace webenology.blazor.components
 
             if (Max.HasValue)
                 _attributes.Add("max", Max.Value);
-
+            if (Readonly)
+                _attributes.Add("readonly", "readonly");
 
             if (_editContext != null)
             {

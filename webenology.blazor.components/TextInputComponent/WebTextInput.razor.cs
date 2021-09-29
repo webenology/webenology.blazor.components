@@ -36,7 +36,8 @@ namespace webenology.blazor.components
         public WebInputType InputType { get; set; }
         [Parameter]
         public bool HighlightOnFocus { get; set; }
-
+        [Parameter]
+        public bool Readonly { get; set; }
         private bool _isError => !string.IsNullOrEmpty(_errorMessage);
         private string _errorMessage;
         private ElementReference _el { get; set; }
