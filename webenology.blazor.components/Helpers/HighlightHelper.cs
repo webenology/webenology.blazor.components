@@ -30,7 +30,7 @@ namespace webenology.blazor.components.Helpers
 
         public static string Highlight(this string item, string searchTerm)
         {
-            if (string.IsNullOrEmpty(searchTerm))
+            if (string.IsNullOrEmpty(searchTerm) || string.IsNullOrEmpty(item))
                 return item;
 
             var highlighted = new List<HighlightObject>();
@@ -55,7 +55,7 @@ namespace webenology.blazor.components.Helpers
                     }
                 }
 
-                var r = new Regex($"{s}|{searchString}", RegexOptions.IgnoreCase);
+                var r = new Regex($"{s}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{searchString}")}", RegexOptions.IgnoreCase);
 
                 var index = r.Matches(item);
                 foreach (Match match in index)

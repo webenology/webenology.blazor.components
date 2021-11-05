@@ -120,6 +120,16 @@ namespace webenology.blazor.components.Tests
         }
 
         [Fact]
+        public void it_should_highlight_12()
+        {
+            var item = "something";
+
+            var results = item.Highlight("godd");
+
+            Assert.Equal("something", results);
+        }
+
+        [Fact]
         public void it_should_not_fail_on_null_search_term()
         {
             var item = "99.7 Shaylee";
@@ -158,6 +168,9 @@ namespace webenology.blazor.components.Tests
 
             Assert.Equal("", results);
         }
+
+
+      
 
 
     }
