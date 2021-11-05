@@ -30,6 +30,9 @@ namespace webenology.blazor.components.Helpers
 
         public static string Highlight(this string item, string searchTerm)
         {
+            if (string.IsNullOrEmpty(searchTerm))
+                return item;
+
             var highlighted = new List<HighlightObject>();
 
             foreach (var s in searchTerm.Split(" "))

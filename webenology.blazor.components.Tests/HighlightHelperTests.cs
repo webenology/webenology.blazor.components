@@ -1,5 +1,7 @@
 using System;
+
 using webenology.blazor.components.Helpers;
+
 using Xunit;
 
 namespace webenology.blazor.components.Tests
@@ -116,5 +118,47 @@ namespace webenology.blazor.components.Tests
 
             Assert.Equal("<mark>this</mark> is a <mark>very</mark> <mark>very</mark> l<mark>on</mark>g pos<mark>t</mark> <mark>and</mark> <mark>hope</mark>fully I <mark>can</mark> <mark>get</mark> some <mark>high</mark>ligh<mark>t</mark>ing <mark>on</mark> <mark>this</mark>", results);
         }
+
+        [Fact]
+        public void it_should_not_fail_on_null_search_term()
+        {
+            var item = "99.7 Shaylee";
+
+            var results = item.Highlight(null);
+
+            Assert.Equal("99.7 Shaylee", results);
+        }
+
+        [Fact]
+        public void it_should_not_fail_on_empty_search_term()
+        {
+            var item = "99.7 Shaylee";
+
+            var results = item.Highlight("");
+
+            Assert.Equal("99.7 Shaylee", results);
+        }
+
+        [Fact]
+        public void it_should_not_fail_on_empty_item_and_null_search()
+        {
+            var item = "";
+
+            var results = item.Highlight(null);
+
+            Assert.Equal("", results);
+        }
+
+        [Fact]
+        public void it_should_not_fail_on_empty_item_and_empty_search()
+        {
+            var item = "";
+
+            var results = item.Highlight("");
+
+            Assert.Equal("", results);
+        }
+
+
     }
 }
