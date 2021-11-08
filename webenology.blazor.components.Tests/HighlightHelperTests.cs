@@ -47,7 +47,9 @@ namespace webenology.blazor.components.Tests
 
             var results = item.Highlight("he lo");
 
-            Assert.Equal("<mark>He</mark>l<mark>lo</mark> <mark>He</mark>l<mark>lo</mark> <mark>He</mark>l<mark>lo</mark>", results);
+            Assert.Equal(
+                "<mark>He</mark>l<mark>lo</mark> <mark>He</mark>l<mark>lo</mark> <mark>He</mark>l<mark>lo</mark>",
+                results);
         }
 
         [Fact]
@@ -117,7 +119,9 @@ namespace webenology.blazor.components.Tests
 
             var results = item.Highlight("this very pod and hope can ge high on t");
 
-            Assert.Equal("<mark>this</mark> is a <mark>very</mark> <mark>very</mark> l<mark>on</mark>g pos<mark>t</mark> <mark>and</mark> <mark>hope</mark>fully I <mark>can</mark> <mark>get</mark> some <mark>high</mark>ligh<mark>t</mark>ing <mark>on</mark> <mark>this</mark>", results);
+            Assert.Equal(
+                "<mark>this</mark> is a <mark>very</mark> <mark>very</mark> l<mark>on</mark>g pos<mark>t</mark> <mark>and</mark> <mark>hope</mark>fully I <mark>can</mark> <mark>get</mark> some <mark>high</mark>ligh<mark>t</mark>ing <mark>on</mark> <mark>this</mark>",
+                results);
         }
 
         [Fact]
@@ -175,7 +179,8 @@ namespace webenology.blazor.components.Tests
         {
             var sw = new Stopwatch();
             sw.Start();
-            var item = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed tortor nulla. Mauris vitae elit aliquam lorem aliquam tempus. Mauris non augue feugiat, imperdiet leo ac, pretium lectus. Nulla leo dolor, vulputate nec posuere vitae, maximus sit amet diam. Vestibulum hendrerit, odio in feugiat ultricies, elit velit porta nulla, ut consequat nisi lectus at urna. Donec auctor venenatis mi, sit amet pharetra ligula tempor quis. Nullam lacus erat, gravida sit amet erat nec, accumsan sagittis massa. Nulla finibus erat vel elit ultricies lobortis. Vivamus lorem mauris, tempus a metus nec, commodo blandit nisl." +
+            var item =
+                @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed tortor nulla. Mauris vitae elit aliquam lorem aliquam tempus. Mauris non augue feugiat, imperdiet leo ac, pretium lectus. Nulla leo dolor, vulputate nec posuere vitae, maximus sit amet diam. Vestibulum hendrerit, odio in feugiat ultricies, elit velit porta nulla, ut consequat nisi lectus at urna. Donec auctor venenatis mi, sit amet pharetra ligula tempor quis. Nullam lacus erat, gravida sit amet erat nec, accumsan sagittis massa. Nulla finibus erat vel elit ultricies lobortis. Vivamus lorem mauris, tempus a metus nec, commodo blandit nisl." +
                 "Integer facilisis odio eget ipsum mollis pellentesque. Quisque ullamcorper consequat felis non venenatis. Pellentesque eget massa ornare, aliquet nulla id, lacinia felis. In neque nisl, ornare non pharetra in, porta sagittis justo. Suspendisse nec ante sit amet sem maximus varius. Cras commodo risus mollis bibendum maximus. Mauris ac lobortis lorem, lobortis laoreet lectus. Duis non vestibulum massa. Nulla vel blandit mi, rutrum rhoncus ante. Aliquam facilisis sagittis congue. Ut pharetra diam id hendrerit sodales. Phasellus malesuada consequat convallis." +
                 "Integer mattis sodales leo, eget pretium purus tincidunt vitae. Curabitur nisl felis, placerat id fermentum a, fringilla non ipsum. Praesent a sagittis mauris. Donec interdum rhoncus dui, sit amet ultricies ligula gravida at. Duis non luctus ligula, sed vulputate justo. Sed ac placerat purus, vestibulum mattis orci. Maecenas ac erat tempus, dapibus odio a, consectetur risus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut malesuada sed ante eu fringilla. Duis dictum nunc lectus, eget porttitor est gravida quis. Etiam suscipit urna vel sem tempor accumsan. Curabitur molestie urna posuere dolor dignissim congue. Mauris non mauris vel orci rhoncus auctor. Mauris sed sodales dolor, sed cursus erat. Etiam non vulputate eros, ac luctus erat. Sed molestie, tortor nec varius pretium, neque augue dignissim odio, id tempor metus urna interdum sem." +
                 "Nulla lobortis elit a interdum elementum. Nullam a lacus ipsum. Integer maximus lectus at nulla tincidunt luctus. Sed maximus, dolor a elementum gravida, neque elit varius sem, a blandit justo sem vel tortor. Phasellus a massa ipsum. Donec a hendrerit augue. Etiam egestas nisl quis libero elementum dictum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus." +
@@ -204,15 +209,34 @@ namespace webenology.blazor.components.Tests
                 item.Highlight(b);
                 iterations++;
             }
+
             sw.Stop();
 
             Assert.True(true, $"Elapsed: {sw.Elapsed}");
             Assert.Equal(52, iterations);
         }
 
+        [Fact]
+        public void it_should_highlight_and_colorize_1()
+        {
+            var item = "something";
 
+            var results = item.Highlight("methi", true);
 
+            Assert.Equal("so<mark style='background-color:#CE517A'>methi</mark>ng", results);
+        }
 
+        [Fact]
+        public void it_should_highlight_and_colorize_2()
+        {
+            var item =
+                "this is a very very long post and hopefully I can get some highlighting on this, this is a very very long post and hopefully I can get some highlighting on this, this is a very very long post and hopefully I can get some highlighting on this, this is a very very long post and hopefully I can get some highlighting on this";
 
+            var results = item.Highlight("this very pod and hope can get high on t on", true);
+
+            Assert.Equal(
+                "<mark>this</mark> is a <mark>very</mark> <mark>very</mark> l<mark>on</mark>g pos<mark>t</mark> <mark>and</mark> <mark>hope</mark>fully I <mark>can</mark> <mark>get</mark> some <mark>high</mark>ligh<mark>t</mark>ing <mark>on</mark> <mark>this</mark>",
+                results);
+        }
     }
 }
