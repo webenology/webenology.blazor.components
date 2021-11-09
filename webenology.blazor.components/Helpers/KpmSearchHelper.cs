@@ -21,36 +21,20 @@ namespace webenology.blazor.components.Helpers
                     continue;
 
                 results = firstIteration
-                    ? inList.Where(x => Search(term, expression(x)).Count > 0).ToList()
-                    : results.Where(x => Search(term, expression(x)).Count > 0).ToList();
+                    ? inList.Where(x => Search(term, expression(x))).ToList()
+                    : results.Where(x => Search(term, expression(x))).ToList();
 
                 firstIteration = false;
             }
 
             return results;
         }
-
-        private static readonly Dictionary<string, List<char>> _substituteChars = new Dictionary<string, List<char>>
-        {
-            {"a", new List<char> {'o','a','e'}},
-            {"A", new List<char> {'O','A','E'}},
-            {"o", new List<char> {'o', 'a'}},
-            {"O", new List<char> {'O', 'A'}},
-            {"e", new List<char> {'i','e','a'}},
-            {"E", new List<char> {'E','I','A'}},
-            {"i", new List<char> {'e', 'i', 'y'}},
-            {"I", new List<char> {'E', 'I', 'Y'}},
-            {"y", new List<char> {'y', 'i', 'e'}},
-            {"Y", new List<char> {'Y', 'I', 'E'}},
-        };
-
-
-
-        public static List<int> Search(string pat, string txt, bool ignoreCase = true)
+        
+        private static bool Search(string pat, string txt, bool ignoreCase = true)
         {
             var results = new List<int>();
             if (pat.Length == 0)
-                return results;
+                return false;
 
             if (ignoreCase)
             {
@@ -73,9 +57,9 @@ namespace webenology.blazor.components.Helpers
             int i = 0; // index for txt[] 
             while (i < N)
             {
-                if (_substituteChars.ContainsKey(pat[j].ToString()))
+                if (SharedHelper.SubstituteChars.ContainsKey(pat[j]))
                 {
-                    if (_substituteChars[pat[j].ToString()].Any(x => x == txt[i]))
+                    if (SharedHelper.SubstituteChars[pat[j]].Any(x => x == txt[i]))
                     {
                         j++;
                         i++;
@@ -89,14 +73,15 @@ namespace webenology.blazor.components.Helpers
 
                 if (j == M)
                 {
-                    results.Add(i - j);
-                    j = lps[j - 1];
+                    return true;
+                    //j = lps[j - 1];
+                    //results.Add(i - j);
                 }// mismatch after j matches 
                 else if (i < N && pat[j] != txt[i])
                 {
-                    if (_substituteChars.ContainsKey(pat[j].ToString()))
+                    if (SharedHelper.SubstituteChars.ContainsKey(pat[j]))
                     {
-                        if (_substituteChars[pat[j].ToString()].Any(x => x == txt[i]))
+                        if (SharedHelper.SubstituteChars[pat[j]].Any(x => x == txt[i]))
                         {
                             continue;
                         }
@@ -110,7 +95,7 @@ namespace webenology.blazor.components.Helpers
                 }
             }
 
-            return results;
+            return false;
         }
 
         private static void lPSArray(string pat, int M, int[] lps)

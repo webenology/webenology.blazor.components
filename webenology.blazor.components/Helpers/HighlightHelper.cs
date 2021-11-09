@@ -16,33 +16,7 @@ namespace webenology.blazor.components.Helpers
             public int Length { get; set; }
             public string Color { get; set; }
         }
-        private static readonly Dictionary<char, List<char>> _substituteChars = new Dictionary<char, List<char>>
-        {
-            {'a', new List<char> {'o','a','e'}},
-            {'A', new List<char> {'O','A','E'}},
-            {'o', new List<char> {'o', 'a'}},
-            {'O', new List<char> {'O', 'A'}},
-            {'e', new List<char> {'i','e','a'}},
-            {'E', new List<char> {'E','I','A'}},
-            {'i', new List<char> {'e', 'i', 'y'}},
-            {'I', new List<char> {'E', 'I', 'Y'}},
-            {'y', new List<char> {'y', 'i', 'e'}},
-            {'Y', new List<char> {'Y', 'I', 'E'}},
-        };
-
-        private static readonly string[] Colors = new[]
-        {
-            "#CE517A",
-            "#4EED1A",
-            "#4DD783",
-            "#B912E2",
-            "#58B72A",
-            "#77ACDC",
-            "#809134",
-            "#4C78EB",
-            "#B0E347"
-        };
-
+       
         public static string Highlight(this string item, string searchTerm, bool colorize = false)
         {
             if (string.IsNullOrEmpty(searchTerm) || string.IsNullOrEmpty(item))
@@ -60,9 +34,9 @@ namespace webenology.blazor.components.Helpers
 
                 foreach (var v in s)
                 {
-                    if (_substituteChars.ContainsKey(v))
+                    if (SharedHelper.SubstituteChars.ContainsKey(v))
                     {
-                        var chars = string.Join("", _substituteChars[v]);
+                        var chars = string.Join("", SharedHelper.SubstituteChars[v]);
                         searchString.Append($"[{chars}]");
                     }
                     else
@@ -77,27 +51,30 @@ namespace webenology.blazor.components.Helpers
 
                 foreach (Match match in index)
                 {
-                    highlighted.Add(new HighlightObject { Index = match.Index, Length = s.Length, Color = Colors[colorIndex % Colors.Length] });
+                    highlighted.Add(new HighlightObject { Index = match.Index, Length = s.Length, Color = SharedHelper.Colors[colorIndex % SharedHelper.Colors.Length] });
                 }
 
                 colorIndex++;
             }
 
             var results = new StringBuilder();
+            var currentIndex = 0;
 
-            for (int i = 0; i < item.Length; i++)
+            foreach (var highlightObject in highlighted.GroupBy(x => x.Index).OrderBy(x => x.Key))
             {
-                var found = highlighted.Where(x => x.Index == i).ToList();
-                if (found.Any())
-                {
-                    var first = found.OrderByDescending(x => x.Length).First();
-                    results.Append($"<mark{(colorize ? $" style='background-color:{first.Color}'" : "")}>{item.Substring(i, first.Length)}</mark>");
-                    i += first.Length - 1;
-                }
-                else
-                {
-                    results.Append(item[i]);
-                }
+                if (currentIndex > highlightObject.Key)
+                    continue;
+
+                var found = highlightObject.OrderByDescending(x => x.Length).First();
+                results.Append(item[currentIndex..found.Index]);
+                var lastIndex = found.Index + found.Length;
+                results.Append($"<mark{(colorize ? $" style='background-color:{found.Color}'" : "")}>{item[found.Index..lastIndex]}</mark>");
+                currentIndex = lastIndex;
+            }
+
+            if (currentIndex < item.Length)
+            {
+                results.Append(item.Substring(currentIndex));
             }
 
             return results.ToString().Replace("</mark><mark>", "");
