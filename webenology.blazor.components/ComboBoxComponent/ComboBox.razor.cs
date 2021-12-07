@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 
+using webenology.blazor.components.Helpers;
+
 namespace webenology.blazor.components
 {
     public partial class ComboBox<TItem> : IDisposable
@@ -84,7 +86,7 @@ namespace webenology.blazor.components
                 if (string.IsNullOrEmpty(_localText))
                     return Items;
 
-                return Items.Where(x => ContainsIn(x, _localText)).ToList();
+                return Items.Search(_localText, GetValue);
             }
         }
 

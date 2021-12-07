@@ -42,7 +42,7 @@ selectedItem: @_selectedItem
 <ComboBox Items="items" TItem="KeyValuePair<string,string>" ValueFieldName="Value" SelectedItem="_selectedItem"
           PlaceHolder="Search for a number..." OnSelectedItem="@((x)=>_selectedItem = x)"
           ShowRemoveButton="true" OnCreateNewItem="AddNewItem" ValueChanged="@((x)=> _myvalue = x)"
-          Readonly="true"></ComboBox>
+          Readonly="false"></ComboBox>
 
 <DropDown Items="items" ShowEmpty="true" Readonly="true"></DropDown>
 

@@ -2,6 +2,7 @@
 @typeparam TItem
 
 @using Microsoft.AspNetCore.Components.Web.Virtualization
+@using webenology.blazor.components.Helpers
 
 <div class="@CssStyle.ContainerCss">
     @if (!string.IsNullOrEmpty(Label))
@@ -36,7 +37,7 @@
                     {
                         _currentFocused = 0;
                     }
-                    <a class="@ListGroupItemCss(_currentFocused == SearchedItems.IndexOf(itm))" @onclick="@(()=> onSelectItem(itm))" @onclick:preventDefault href="javascript:;" style="height: @($"{ItemHeight}px");">@((MarkupString)SearchHelper.HighlightSearchResult(_localText, GetValue(itm)))</a>
+                    <a class="@ListGroupItemCss(_currentFocused == SearchedItems.IndexOf(itm))" @onclick="@(()=> onSelectItem(itm))" @onclick:preventDefault href="javascript:;" style="height: @($"{ItemHeight}px");">@((MarkupString)GetValue(itm).Highlight(_localText))</a>
                 </Virtualize>
             </div>
             @if (!SearchedItems.Any())

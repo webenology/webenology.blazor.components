@@ -11,9 +11,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input,radio button,order by</PackageTags>
     <PackageReleaseNotes>Added Two helper functions. One for KPM Search and one for Highlighting Text of search. Added Colorization to highlighter and improved search and highligher speed</PackageReleaseNotes>
-    <AssemblyVersion>1.4.5.0</AssemblyVersion>
-    <FileVersion>1.4.5.0</FileVersion>
-    <Version>1.4.5</Version>
+    <AssemblyVersion>1.4.6.0</AssemblyVersion>
+    <FileVersion>1.4.6.0</FileVersion>
+    <Version>1.4.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
