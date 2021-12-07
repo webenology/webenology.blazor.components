@@ -19,6 +19,7 @@ namespace webenology.blazor.components
         public TValue Number { get; set; }
         [Parameter]
         public EventCallback<TValue> NumberChanged { get; set; }
+        [Parameter] public Expression<Func<TValue>>? NumberExpression { get; set; }
         [Parameter]
         public Expression<Func<TValue>> For { get; set; }
 
@@ -49,6 +50,11 @@ namespace webenology.blazor.components
             {
                 _errorMessage = string.Empty;
                 NumberChanged.InvokeAsync(value);
+                if (_editContext != null && NumberExpression != null)
+                {
+                    var field = FieldIdentifier.Create(NumberExpression);
+                    _editContext.NotifyFieldChanged(field);
+                }
             }
         }
 

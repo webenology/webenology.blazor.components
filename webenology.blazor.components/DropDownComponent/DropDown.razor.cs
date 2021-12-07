@@ -29,6 +29,7 @@ namespace webenology.blazor.components
         public string Value { get; set; }
         [Parameter]
         public EventCallback<string> ValueChanged { get; set; }
+        [Parameter] public Expression<Func<string>>? ValueExpression { get; set; }
         [Parameter]
         public DropDownStyle Style { get; set; } = DropDownStyle.WebenologyDropDownStyle;
         [Parameter]
@@ -40,11 +41,16 @@ namespace webenology.blazor.components
         {
             ErrorMessage = string.Empty;
             ValueChanged.InvokeAsync((string)val.Value);
+            if (_editContext != null && ValueExpression != null)
+            {
+                var field = FieldIdentifier.Create(ValueExpression);
+                _editContext.NotifyFieldChanged(field);
+            }
             StateHasChanged();
         }
         public bool IsError => !string.IsNullOrEmpty(ErrorMessage);
         public string ErrorMessage;
-        
+
         protected override void OnInitialized()
         {
             if (_editContext != null)

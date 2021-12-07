@@ -21,6 +21,7 @@ namespace webenology.blazor.components
         [Parameter] public TValue Date { get; set; }
         [Parameter] public string Label { get; set; }
         [Parameter] public EventCallback<TValue> DateChanged { get; set; }
+        [Parameter] public Expression<Func<TValue>>? DateExpression { get; set; }
         [Parameter] public string DateFormat { get; set; }
         [Parameter] public Expression<Func<TValue>> For { get; set; }
         [Parameter] public DatePickerType DateType { get; set; } = DatePickerType.Single;
@@ -138,6 +139,12 @@ namespace webenology.blazor.components
                     newDt.AddRange(dt.Select(x => x.GetValueOrDefault()));
                     DateChanged.InvokeAsync((TValue)(object)newDt);
                 }
+            }
+
+            if (_editContext != null && DateExpression != null)
+            {
+                var field = FieldIdentifier.Create(DateExpression);
+                _editContext.NotifyFieldChanged(field);
             }
         }
 
