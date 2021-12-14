@@ -14,6 +14,7 @@ namespace webenology.blazor.components.BlazorPdfComponent
         byte[] ReadAllBytes(string fileLocation);
         void Delete(string fileLocation);
         string GetTempPath();
+        void WriteAllBytes(string path, byte[] bytes);
     }
     internal class WFileWriter : IWFileWriter
     {
@@ -40,6 +41,11 @@ namespace webenology.blazor.components.BlazorPdfComponent
         public string GetTempPath()
         {
             return Path.GetTempPath();
+        }
+
+        public void WriteAllBytes(string path, byte[] bytes)
+        {
+            File.WriteAllBytes(path, bytes);
         }
     }
 }
