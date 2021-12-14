@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using TestApp.Data;
 using webenology.blazor.components;
+using webenology.blazor.components.BlazorPdfComponent;
 
 namespace TestApp
 {
@@ -32,7 +33,7 @@ namespace TestApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddWebenologyJsHelpers();
+            services.AddWebenologyHelpers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

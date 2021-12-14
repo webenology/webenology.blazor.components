@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using webenology.blazor.components.BlazorPdfComponent;
 
 namespace webenology.blazor.components
 {
     public static class RegisterJsHelpers
     {
-        public static void AddWebenologyJsHelpers(this IServiceCollection service)
+        public static void AddWebenologyHelpers(this IServiceCollection service)
         {
             service.TryAddScoped<IComboBoxJsHelper, ComboBoxJsHelper>();
             service.TryAddScoped<IDateTimerPickerJsHelper, DateTimerPickerJsHelper>();
@@ -20,6 +21,10 @@ namespace webenology.blazor.components
             service.TryAddScoped<IToastrJsHelper, ToastrJsHelper>();
             service.TryAddScoped<IWebPdfViewerJsHelper, WebPdfViewerJsHelper>();
             service.TryAddScoped<IWebTextInputJsHelper, WebTextInputJsHelper>();
+            service.TryAddScoped<IHtmlToPdfManager, HtmlToPdfManager>();
+            service.TryAddScoped<IExecuteProcess, ExecuteProcess>();
+            service.TryAddScoped<IWFileWriter, WFileWriter>();
+            service.TryAddScoped<IBlazorPdf, BlazorPdf>();
         }
     }
 }

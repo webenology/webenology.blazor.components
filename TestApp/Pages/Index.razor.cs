@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Components;
 using Microsoft.Win32.SafeHandles;
 
 using TestApp.Data;
 
 using webenology.blazor.components;
+using webenology.blazor.components.BlazorPdfComponent;
 
 namespace TestApp.Pages
 {
@@ -27,6 +28,8 @@ namespace TestApp.Pages
         private string _myhightlightvalue;
         private string _checkedValue = "All";
         private List<OrderByClass> _orderByClasses = new();
+        [Inject]
+        private IBlazorPdf blazorPdf { get; set; }
 
         private ConfirmStyle confirmStyle()
         {
@@ -39,6 +42,8 @@ namespace TestApp.Pages
         private KeyValuePair<string, string> _selectedItem;
 
         private List<DateTime?> _dates = new();
+        private string _pdfPreview;
+
         private List<DateTime?> Dates
         {
             get => _dates;
@@ -118,6 +123,11 @@ namespace TestApp.Pages
         private void UpdateOrderBy(List<OrderByClass> obj)
         {
             _orderByClasses = obj;
+        }
+
+        private void GeneratePdf()
+        {
+            _pdfPreview = blazorPdf.GetBlazorInPdfBase64<Counter>(x => { }, "abc", null, null);
         }
     }
 }
