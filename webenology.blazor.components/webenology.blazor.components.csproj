@@ -10,10 +10,10 @@
 		<RepositoryUrl>https://github.com/webenology/webenology.blazor.components</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input,radio button,order by</PackageTags>
-		<PackageReleaseNotes>Added PDF Generation ability to the code. Causing breaking changes. Add Wkhtmltopdf as an embedded resouce</PackageReleaseNotes>
-		<AssemblyVersion>2.0.1.0</AssemblyVersion>
-		<FileVersion>2.0.1.0</FileVersion>
-		<Version>2.0.1</Version>
+		<PackageReleaseNotes>Order by component get order by callback to show the field nae and order by value</PackageReleaseNotes>
+		<AssemblyVersion>2.0.2.0</AssemblyVersion>
+		<FileVersion>2.0.2.0</FileVersion>
+		<Version>2.0.2</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

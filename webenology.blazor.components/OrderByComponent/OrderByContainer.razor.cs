@@ -13,6 +13,8 @@ namespace webenology.blazor.components
         [Parameter]
         public RenderFragment<List<TValue>> ChildContent { get; set; }
         [Parameter]
+        public EventCallback<Tuple<string, OrderByType>> OnOrderChange { get; set; }
+        [Parameter]
         public List<TValue> InputList { get; set; }
         [Parameter]
         public string InitialFieldName { get; set; }
@@ -49,6 +51,7 @@ namespace webenology.blazor.components
         {
             CurrentFieldName = fieldName;
             OrderType = orderBy;
+            OnOrderChange.InvokeAsync(new Tuple<string, OrderByType>(fieldName, orderBy));
             Order();
         }
 
