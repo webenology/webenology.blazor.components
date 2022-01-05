@@ -6,11 +6,18 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<DatePicker @bind-Date="_date" MinDate="_minDate" MaxDate="_maxDate"></DatePicker>
+
 @code {
     private int currentCount = 0;
+    private DateTime _date { get; set; } = DateTime.Now.AddDays(-4);
+    private DateTime? _minDate = DateTime.Now.AddDays(-2);
+    private DateTime? _maxDate;
 
     private void IncrementCount()
     {
+        _minDate = DateTime.Now.AddDays(currentCount * -1);
+        _maxDate = DateTime.Now.AddDays(currentCount);
         currentCount++;
     }
 }

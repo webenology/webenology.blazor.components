@@ -27,6 +27,8 @@ namespace webenology.blazor.components
         [Parameter] public DatePickerType DateType { get; set; } = DatePickerType.Single;
         [Parameter] public bool EnableTime { get; set; }
         [Parameter] public bool IsInline { get; set; }
+        [Parameter] public DateTime? MinDate { get; set; }
+        [Parameter] public DateTime? MaxDate { get; set; }
         /// <summary>
         /// Only set to true if using inside a modal
         /// </summary>
@@ -41,6 +43,9 @@ namespace webenology.blazor.components
         public bool _isError => !string.IsNullOrEmpty(_errorMessage);
         public string _errorMessage;
 
+        private DateTime? _oldMinDate;
+        private DateTime? _oldMaxDate;
+        private bool _isLoaded;
         private string DateTimeStr
         {
             get
@@ -57,7 +62,6 @@ namespace webenology.blazor.components
 
                         switch (DateType)
                         {
-
                             case DatePickerType.Multiple:
                                 return string.Join(", ", dtLst.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToList());
                             case DatePickerType.Range:
@@ -99,7 +103,8 @@ namespace webenology.blazor.components
 
         private void UpdateSetting(string setting, string value)
         {
-            js.UpdateSettings(_inputRef, setting, value);
+            if (_isLoaded)
+                js.UpdateSettings(_inputRef, setting, value);
         }
 
         private async Task OpenCalendar()
@@ -162,8 +167,11 @@ namespace webenology.blazor.components
         {
             if (firstRender)
             {
+                var minDate = MinDate?.ToDtFormat(DateFormat, EnableTime);
+                var maxDate = MaxDate?.ToDtFormat(DateFormat, EnableTime);
                 js.SetupPicker(DotNetObjectReference.Create(this), _inputRef, DateType.ToString().ToLower(), EnableTime,
-                    MakeStatic, IsInline);
+                    MakeStatic, IsInline, minDate, maxDate);
+                _isLoaded = true;
             }
 
             base.OnAfterRender(firstRender);
@@ -175,6 +183,18 @@ namespace webenology.blazor.components
             {
                 UpdateSetting("mode", DateType.ToString().ToLower());
                 _oldType = DateType;
+            }
+
+            if (_oldMinDate != MinDate)
+            {
+                UpdateSetting("minDate", MinDate?.ToDtFormat(DateFormat, EnableTime));
+                _oldMinDate = MinDate;
+            }
+
+            if (_oldMaxDate != MaxDate)
+            {
+                UpdateSetting("maxDate", MaxDate?.ToDtFormat(DateFormat, EnableTime));
+                _oldMaxDate = MaxDate;
             }
 
             base.OnParametersSet();
