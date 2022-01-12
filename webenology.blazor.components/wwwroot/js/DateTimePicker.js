@@ -1,4 +1,4 @@
-export function setupPicker(instance, element, type, time, makeStatic, isInline, minDate, maxDate) {
+export function setupPicker(instance, element, type, time, makeStatic, isInline, minDate, maxDate, timeOnly) {
     var config = {
         dateFormat: time ? "m-d-Y G:i:S K" : "m-d-Y",
         weekNumbers: true,
@@ -8,23 +8,28 @@ export function setupPicker(instance, element, type, time, makeStatic, isInline,
         minDate: minDate,
         maxDate: maxDate,
         mode: type,
-        onChange: (e) => {
-            const noTimeZone = [];
-            for (let i = 0; i < e.length; i++) {
-                const offset = e[i].getTimezoneOffset() * 60000;
-                const dateinUtc = e[i].getTime();
-                noTimeZone.push(new Date(dateinUtc - offset));
+        onChange: function (e) {
+            var noTimeZone = [];
+            for (var i = 0; i < e.length; i++) {
+                var offset = e[i].getTimezoneOffset() * 60000;
+                var dateInUtc = e[i].getTime();
+                noTimeZone.push(new Date(dateInUtc - offset));
             }
             instance.invokeMethodAsync("OnChange", noTimeZone);
         }
     };
+    if (timeOnly) {
+        config["enableTime"] = true;
+        config["noCalendar"] = true;
+        config["dateFormat"] = "G:i K";
+    }
     flatpickr(element, config);
 }
 export function updateSetting(element, setting, value) {
-    const el = element._flatpickr;
+    var el = element._flatpickr;
     el.set(setting, value);
 }
 export function openCalendar(element) {
-    const el = element._flatpickr;
+    var el = element._flatpickr;
     el.open();
 }

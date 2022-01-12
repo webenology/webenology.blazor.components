@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +9,12 @@ namespace webenology.blazor.components.Helpers
 {
     public static class KpmSearchHelper
     {
-        public static List<T> Search<T>(this List<T> inList, string searchTerm, Func<T, string> expression)
+        public static IEnumerable<T> Search<T>(this IEnumerable<T> inList, string searchTerm, Func<T, string> expression)
         {
             if (string.IsNullOrEmpty(searchTerm))
                 return inList;
 
-            var results = new List<T>();
+            IEnumerable<T> results = null;
             var firstIteration = true;
             foreach (var term in searchTerm.Split(" "))
             {
@@ -21,8 +22,8 @@ namespace webenology.blazor.components.Helpers
                     continue;
 
                 results = firstIteration
-                    ? inList.Where(x => Search(term, expression(x))).ToList()
-                    : results.Where(x => Search(term, expression(x))).ToList();
+                    ? inList.Where(x => Search(term, expression(x)))
+                    : results.Where(x => Search(term, expression(x)));
 
                 firstIteration = false;
             }
@@ -32,7 +33,6 @@ namespace webenology.blazor.components.Helpers
         
         private static bool Search(string pat, string txt, bool ignoreCase = true)
         {
-            var results = new List<int>();
             if (pat.Length == 0)
                 return false;
 
@@ -77,7 +77,8 @@ namespace webenology.blazor.components.Helpers
                     //j = lps[j - 1];
                     //results.Add(i - j);
                 }// mismatch after j matches 
-                else if (i < N && pat[j] != txt[i])
+
+                if (i < N && pat[j] != txt[i])
                 {
                     if (SharedHelper.SubstituteChars.ContainsKey(pat[j]))
                     {

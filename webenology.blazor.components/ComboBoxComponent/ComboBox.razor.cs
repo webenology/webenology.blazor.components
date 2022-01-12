@@ -86,7 +86,7 @@ namespace webenology.blazor.components
                 if (string.IsNullOrEmpty(_localText))
                     return Items;
 
-                return Items.Search(_localText, GetValue);
+                return (List<TItem>)Items.Search(_localText, GetValue);
             }
         }
 

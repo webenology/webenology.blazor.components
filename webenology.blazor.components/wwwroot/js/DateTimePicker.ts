@@ -1,7 +1,7 @@
 ﻿declare const flatpickr: any;
 
 
-export function setupPicker(instance, element, type, time, makeStatic, isInline, minDate, maxDate) {
+export function setupPicker(instance, element, type, time, makeStatic, isInline, minDate, maxDate, timeOnly) {
     var config = {
         dateFormat: time ? "m-d-Y G:i:S K" : "m-d-Y",
         weekNumbers: true,
@@ -15,12 +15,18 @@ export function setupPicker(instance, element, type, time, makeStatic, isInline,
             const noTimeZone = [];
             for (let i = 0; i < e.length; i++) {
                 const offset = e[i].getTimezoneOffset() * 60000;
-                const dateinUtc = e[i].getTime();
-                noTimeZone.push(new Date(dateinUtc - offset));
+                const dateInUtc = e[i].getTime();
+                noTimeZone.push(new Date(dateInUtc - offset));
             }
             instance.invokeMethodAsync("OnChange", noTimeZone);
         }
     };
+
+    if (timeOnly) {
+        config["enableTime"] = true;
+        config["noCalendar"] = true;
+        config["dateFormat"] = "G:i K";
+    }
 
     flatpickr(element, config);
 }

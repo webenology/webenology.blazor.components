@@ -4,6 +4,7 @@
     {
         Single,
         Multiple,
-        Range
+        Range,
+        TimeOnly
     }
 }

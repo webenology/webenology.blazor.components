@@ -44,5 +44,30 @@ namespace webenology.blazor.components
 
             return dt.Value.ToString(format);
         }
+
+        public static string ToTimeOnly(this DateTime dt, string format)
+        {
+            var baseTime = "hh:mm tt";
+            if (string.IsNullOrEmpty(format))
+            {
+                return dt.ToString(baseTime);
+            }
+
+            return dt.ToString(format);
+        }
+
+        public static string ToTimeOnly(this DateTime? dt, string format)
+        {
+            if (!dt.HasValue)
+                return string.Empty;
+
+            var baseTime = "hh:mm tt";
+            if (string.IsNullOrEmpty(format))
+            {
+                return dt.Value.ToString(baseTime);
+            }
+
+            return dt.Value.ToString(format);
+        }
     }
 }

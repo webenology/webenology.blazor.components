@@ -88,7 +88,7 @@ namespace webenology.blazor.components
                     // ReSharper disable once PossibleNullReferenceException
 
                     var dtSng = (DateTime)Convert.ChangeType(Date, typeof(DateTime));
-                    return dtSng.ToDtFormat(DateFormat, EnableTime);
+                    return DateType == DatePickerType.TimeOnly ? dtSng.ToTimeOnly(DateFormat) : dtSng.ToDtFormat(DateFormat, EnableTime);
                 }
                 catch (Exception e)
                 {
@@ -115,7 +115,7 @@ namespace webenology.blazor.components
         [JSInvokable]
         public void OnChange(List<DateTime?> dt)
         {
-            if (DateType == DatePickerType.Single)
+            if (DateType == DatePickerType.Single || DateType == DatePickerType.TimeOnly)
             {
                 var dtSng = dt.FirstOrDefault();
                 if (typeof(TValue) == typeof(DateTime?))
@@ -169,8 +169,9 @@ namespace webenology.blazor.components
             {
                 var minDate = MinDate?.ToDtFormat(DateFormat, EnableTime);
                 var maxDate = MaxDate?.ToDtFormat(DateFormat, EnableTime);
-                js.SetupPicker(DotNetObjectReference.Create(this), _inputRef, DateType.ToString().ToLower(), EnableTime,
-                    MakeStatic, IsInline, minDate, maxDate);
+                var mode = DateType == DatePickerType.TimeOnly ? "single" : DateType.ToString().ToLower();
+                js.SetupPicker(DotNetObjectReference.Create(this), _inputRef, mode, EnableTime,
+                    MakeStatic, IsInline, minDate, maxDate, DateType == DatePickerType.TimeOnly);
                 _isLoaded = true;
             }
 
@@ -213,6 +214,22 @@ namespace webenology.blazor.components
             else
             {
                 throw new InvalidOperationException($"The type '{targetType}' is not a supported date type.");
+            }
+
+            if (DateType == DatePickerType.Single || DateType == DatePickerType.TimeOnly)
+            {
+                if (targetType == typeof(List<DateTime?>) || targetType == typeof(List<DateTime>))
+                {
+                    throw new InvalidOperationException($"The type '{targetType}' is not a supported with {DateType.ToString()}.");
+                }
+            }
+
+            if (DateType == DatePickerType.Range || DateType == DatePickerType.Multiple)
+            {
+                if (targetType == typeof(DateTime) || targetType == typeof(DateTime))
+                {
+                    throw new InvalidOperationException($"The type '{targetType}' is not a supported with {DateType.ToString()}.");
+                }
             }
 
             if (_editContext != null)
