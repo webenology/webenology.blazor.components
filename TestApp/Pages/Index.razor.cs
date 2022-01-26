@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Microsoft.Win32.SafeHandles;
-
+using PuppeteerSharp;
+using PuppeteerSharp.Media;
 using TestApp.Data;
 
 using webenology.blazor.components;
 using webenology.blazor.components.BlazorPdfComponent;
+using webenology.blazor.components.MailMerge;
+using NavigationException = PuppeteerSharp.NavigationException;
 
 namespace TestApp.Pages
 {
@@ -28,8 +34,12 @@ namespace TestApp.Pages
         private string _myhightlightvalue;
         private string _checkedValue = "All";
         private List<OrderByClass> _orderByClasses = new();
+        [Inject] private IJSRuntime js { get; set; }
         [Inject]
         private IBlazorPdf blazorPdf { get; set; }
+        [Inject]
+        private IMailMergeManager mailMergeManager { get; set; }
+        [Inject] private NavigationManager nav { get; set; }
 
         private ConfirmStyle confirmStyle()
         {
@@ -125,9 +135,31 @@ namespace TestApp.Pages
             _orderByClasses = obj;
         }
 
-        private void GeneratePdf()
+        private async Task GeneratePdf()
         {
-            _pdfPreview = blazorPdf.GetBlazorInPdfBase64<Counter>(x => { }, "abc", null, null);
+            var css = new List<string>
+            {
+                "/css/bootstrap/bootstrap.min.css"
+            };
+            var baseUrl = "https://localhost:44348";
+            var pdfOptions = new PdfOptions
+            {
+                PrintBackground = true,
+                HeaderTemplate = "abc",
+                FooterTemplate = "pageNumber of totalPages",
+                Landscape = true,
+            };
+            _pdfPreview = await blazorPdf.GetBlazorInPdfBase64<Counter>(x => { }, "abc", css, null,pdfOptions, baseUrl, true);
+        }
+
+        private async Task GeneratePdfFromDocx()
+        {
+            var doc = $"{nav.BaseUri}simpletesttwo.docx";
+            await js.InvokeVoidAsync("console.log", doc);
+            var http = new HttpClient();
+            var fs = await http.GetStreamAsync(doc);
+            var obj = new { FirstName = "Jackie", LastName = "Chan" };
+            _pdfPreview = mailMergeManager.Merge(fs, obj, true);
         }
     }
 }

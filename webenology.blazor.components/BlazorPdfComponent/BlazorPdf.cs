@@ -7,13 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using PuppeteerSharp;
 
 namespace webenology.blazor.components.BlazorPdfComponent
 {
     public interface IBlazorPdf
     {
-        string GetBlazorInPdfBase64<TValue>(Action<ComponentParameterCollectionBuilder<TValue>> cParams,
-            string fileName, List<string> cssFiles, List<string> jsFiles) where TValue : IComponent;
+        Task<string> GetBlazorInPdfBase64<TValue>(Action<ComponentParameterCollectionBuilder<TValue>> cParams,
+            string fileName, List<string> cssFiles, List<string> jsFiles, PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false,
+            PdfOrHtml pdfOrHtml = PdfOrHtml.Pdf) where TValue : IComponent;
     }
     public class BlazorPdf : IBlazorPdf
     {
@@ -26,7 +28,10 @@ namespace webenology.blazor.components.BlazorPdfComponent
             _htmlToPdfManager = htmlToPdfManager;
         }
 
-        public string GetBlazorInPdfBase64<TValue>(Action<ComponentParameterCollectionBuilder<TValue>> cParams, string fileName, List<string> cssFiles, List<string> jsFiles) where TValue : IComponent
+        public async Task<string> GetBlazorInPdfBase64<TValue>(
+            Action<ComponentParameterCollectionBuilder<TValue>> cParams, string fileName, List<string> cssFiles,
+            List<string> jsFiles, PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false,
+            PdfOrHtml pdfOrHtml = PdfOrHtml.Pdf) where TValue : IComponent
         {
             var ctx = new TestContext();
             ctx.Services.AddFallbackServiceProvider(_serviceProvider);
@@ -35,7 +40,7 @@ namespace webenology.blazor.components.BlazorPdfComponent
 
             var markup = results.Markup;
 
-            return _htmlToPdfManager.GeneratePdf(markup, fileName, cssFiles, jsFiles);
+            return await _htmlToPdfManager.GeneratePdf(markup, fileName, cssFiles, jsFiles, pdfOptions, baseUrl, useBaseUrl, pdfOrHtml);
         }
     }
 }

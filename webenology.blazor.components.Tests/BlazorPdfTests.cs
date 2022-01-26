@@ -12,6 +12,8 @@ using Microsoft.JSInterop;
 
 using Moq;
 
+using PuppeteerSharp;
+
 using webenology.blazor.components.BlazorPdfComponent;
 
 using Xunit;
@@ -33,18 +35,21 @@ namespace webenology.blazor.components.Tests
         }
 
         [Fact]
-        public void it_should_render()
+        public async Task it_should_render()
         {
             var mockJs = new Mock<IJSRuntime>();
             var service = new WebTextInputJsHelper(mockJs.Object);
             var markup = string.Empty;
 
             _mockServiceProvider.Setup(x => x.GetService(typeof(IWebTextInputJsHelper))).Returns(service);
-            _mockHtmlToPdfManager.Setup(x => x.GeneratePdf(It.IsAny<string>(), "name", null, null)).Returns("abi did this here")
-                .Callback<string, string, List<string>, List<string>>(
-                    delegate (string s, string s1, List<string> arg3, List<string> arg4) { markup = s; });
+            _mockHtmlToPdfManager.Setup(x => x.GeneratePdf(It.IsAny<string>(), "name", null, null, null, null, false, PdfOrHtml.Pdf))
+                .Returns(Task.FromResult("abi did this here"))
+                .Callback<string, string, List<string>, List<string>, PdfOptions, string, bool, PdfOrHtml>(
+                    delegate (string s, string s1, List<string> arg3, List<string> arg4,
+                        PdfOptions arg5, string arg6, bool arg7, PdfOrHtml arg8)
+                    { markup = s; });
 
-            var results = _sut.GetBlazorInPdfBase64<WebTextInput>(x =>
+            var results = await _sut.GetBlazorInPdfBase64<WebTextInput>(x =>
                     x.Add(y => y.Label, "ABC")
                         .Add(y => y.HighlightOnFocus, false)
                         .Add(y => y.InputType, WebInputType.text)
@@ -53,8 +58,8 @@ namespace webenology.blazor.components.Tests
                         .Add(y => y.Readonly, false)
                 , "name", null, null);
 
-            Assert.Equal("abi did this here", results);
             Assert.StartsWith("<div class=\"form-group\" b-m8a5m1i6uj><label class=\"form-label\" b-m8a5m1i6uj>ABC</label><div class=\"input-group\" b-m8a5m1i6uj><input type=\"text\" value=\"ddd\" blazor:oninput=\"1\" class=\"form-control\" placeholder=\"abc\" blazor:onfocus=\"2\" b-m8a5m1i6uj blazor:elementReference=", markup);
+            Assert.Equal("abi did this here", results);
         }
     }
 }

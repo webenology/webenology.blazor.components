@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using webenology.blazor.components.BlazorPdfComponent;
+using webenology.blazor.components.MailMerge;
 
 namespace webenology.blazor.components
 {
-    public static class RegisterJsHelpers
+    public static class RegisterWebenologyHelpers
     {
         public static void AddWebenologyHelpers(this IServiceCollection service)
         {
@@ -25,6 +26,7 @@ namespace webenology.blazor.components
             service.TryAddScoped<IExecuteProcess, ExecuteProcess>();
             service.TryAddScoped<IWFileWriter, WFileWriter>();
             service.TryAddScoped<IBlazorPdf, BlazorPdf>();
+            service.TryAddScoped<IMailMergeManager, MailMergeManager>();
         }
     }
 }

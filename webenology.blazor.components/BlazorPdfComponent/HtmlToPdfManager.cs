@@ -10,27 +10,43 @@ using System.Xml;
 
 using HtmlAgilityPack;
 
+using PuppeteerSharp;
+
 namespace webenology.blazor.components.BlazorPdfComponent
 {
     public interface IHtmlToPdfManager
     {
-        string GeneratePdf(string markup, string title, List<string> cssFiles, List<string> jsFiles);
+        Task<string> GeneratePdf(string markup, string title, List<string> cssFiles, List<string> jsFiles,
+            PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false, PdfOrHtml returnType = PdfOrHtml.Pdf);
     }
     public class HtmlToPdfManager : IHtmlToPdfManager
     {
-        private readonly IExecuteProcess _executeProcess;
         private readonly IWFileWriter _fileWriter;
+        private readonly IExecuteProcess _executeProcess;
 
-        public HtmlToPdfManager(IExecuteProcess executeProcess, IWFileWriter fileWriter)
+        public HtmlToPdfManager(IWFileWriter fileWriter, IExecuteProcess executeProcess)
         {
-            _executeProcess = executeProcess;
             _fileWriter = fileWriter;
+            _executeProcess = executeProcess;
         }
 
-        public string GeneratePdf(string markup, string title, List<string> cssFiles, List<string> jsFiles)
+        public async Task<string> GeneratePdf(string markup, string title, List<string> cssFiles, List<string> jsFiles, PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false, PdfOrHtml returnType = PdfOrHtml.Pdf)
         {
             var doc = new HtmlDocument();
             doc.LoadHtml(markup);
+            if (useBaseUrl)
+            {
+                var baseUrlNode = HtmlNode.CreateNode($"<base href='{baseUrl}'>");
+                if (doc.DocumentNode.ChildNodes.FindFirst("head") != null)
+                {
+                    var headNode = doc.DocumentNode.ChildNodes.FindFirst("head");
+                    headNode.AppendChild(baseUrlNode);
+                }
+                else
+                {
+                    doc.DocumentNode.InsertBefore(baseUrlNode, doc.DocumentNode.FirstChild);
+                }
+            }
             if (cssFiles != null)
             {
                 foreach (var cssLocation in cssFiles)
@@ -44,10 +60,13 @@ namespace webenology.blazor.components.BlazorPdfComponent
             {
                 foreach (var jsLocation in jsFiles)
                 {
-                    var style = HtmlNode.CreateNode($"<script type='text/javascript' src='{jsLocation}'>");
-                    doc.DocumentNode.AppendChild(style);
+                    var script = HtmlNode.CreateNode($"<script type='text/javascript' src='{jsLocation}'>");
+                    doc.DocumentNode.AppendChild(script);
                 }
             }
+
+            if (returnType == PdfOrHtml.Html)
+                return doc.DocumentNode.OuterHtml;
 
             var temp = _fileWriter.GetTempPath();
             var tempFileName = Guid.NewGuid().ToString("N");
@@ -55,14 +74,23 @@ namespace webenology.blazor.components.BlazorPdfComponent
             var tempFile = $"{temp}{tempFileName}";
             try
             {
-                _fileWriter.WriteAllText($"{tempFile}.html", doc.DocumentNode.OuterHtml);
-                _executeProcess.Execute(title, tempFile);
-                
+                if (pdfOptions == null)
+                {
+                    pdfOptions = new PdfOptions
+                    {
+                        PreferCSSPageSize = true,
+                        PrintBackground = false
+                    };
+                }
+
+                await _executeProcess.GeneratePdf(doc.DocumentNode.OuterHtml, $"{tempFile}.pdf", pdfOptions);
+
                 if (_fileWriter.Exists($"{tempFile}.pdf"))
                 {
                     var bytes = _fileWriter.ReadAllBytes($"{tempFile}.pdf");
                     return Convert.ToBase64String(bytes);
                 }
+
             }
             catch (Exception e)
             {
@@ -79,5 +107,11 @@ namespace webenology.blazor.components.BlazorPdfComponent
 
             return string.Empty;
         }
+    }
+
+    public enum PdfOrHtml
+    {
+        Pdf,
+        Html
     }
 }

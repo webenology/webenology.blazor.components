@@ -9,20 +9,13 @@ namespace webenology.blazor.components.BlazorPdfComponent
 {
     public interface IWFileWriter
     {
-        void WriteAllText(string fileLocation, string text);
         bool Exists(string fileLocation);
         byte[] ReadAllBytes(string fileLocation);
         void Delete(string fileLocation);
         string GetTempPath();
-        void WriteAllBytes(string path, byte[] bytes);
     }
     internal class WFileWriter : IWFileWriter
     {
-        public void WriteAllText(string fileLocation, string text)
-        {
-            File.WriteAllText(fileLocation, text);
-        }
-
         public bool Exists(string fileLocation)
         {
             return File.Exists(fileLocation);
@@ -43,9 +36,5 @@ namespace webenology.blazor.components.BlazorPdfComponent
             return Path.GetTempPath();
         }
 
-        public void WriteAllBytes(string path, byte[] bytes)
-        {
-            File.WriteAllBytes(path, bytes);
-        }
     }
 }

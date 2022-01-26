@@ -23,11 +23,11 @@ namespace webenology.blazor.components.Tests
             _mockExecuteProcess = new Mock<IExecuteProcess>();
             _mockFileWriter = new Mock<IWFileWriter>();
 
-            _sut = new HtmlToPdfManager(_mockExecuteProcess.Object, _mockFileWriter.Object);
+            _sut = new HtmlToPdfManager(_mockFileWriter.Object, _mockExecuteProcess.Object);
         }
 
         [Fact]
-        public void it_should_generate_pdf_from_html()
+        public async Task it_should_generate_pdf_from_html()
         {
             var markup = "<div>hello</div>";
             var title = "abi";
@@ -37,11 +37,10 @@ namespace webenology.blazor.components.Tests
             _mockFileWriter.Setup(x => x.GetTempPath()).Returns("abc");
             _mockFileWriter.Setup(x => x.ReadAllBytes(It.IsAny<string>())).Returns(byteResults);
 
-            var results = _sut.GeneratePdf(markup, title, null, null);
+            var results = await _sut.GeneratePdf(markup, title, null, null);
 
             Assert.Equal("AA4=", results);
             _mockFileWriter.Verify(x => x.GetTempPath(), Times.Once);
-            _mockFileWriter.Verify(x=> x.WriteAllText(It.IsAny<string>(), markup), Times.Once);
             _mockFileWriter.Verify(x=> x.ReadAllBytes(It.IsAny<string>()), Times.Once);
         }
     }

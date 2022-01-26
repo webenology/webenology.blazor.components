@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PuppeteerSharp;
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,40 +14,23 @@ namespace webenology.blazor.components.BlazorPdfComponent
 {
     public interface IExecuteProcess
     {
-        void Execute(string title, string tempFile);
+        Task GeneratePdf(string html, string tempFile, PdfOptions pdfOptions);
     }
     internal class ExecuteProcess : IExecuteProcess
     {
-        private readonly IWFileWriter _fileWriter;
 
-        public ExecuteProcess(IWFileWriter fileWriter)
+        public async Task GeneratePdf(string html, string tempFile, PdfOptions pdfOptions)
         {
-            _fileWriter = fileWriter;
-        }
-        public void Execute(string title, string tempFile)
-        {
-            var path = $"{_fileWriter.GetTempPath()}wkhtmltopdf.exe";
-            if (!_fileWriter.Exists(path))
+            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
+            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
             {
-                var fileStream = Assembly.GetCallingAssembly().GetManifestResourceStream("webenology.blazor.components.BlazorPdfComponent.wkhtmltopdf.exe");
-                var ms = new MemoryStream();
-                fileStream?.CopyTo(ms);
-                _fileWriter.WriteAllBytes(path, ms.ToArray());
-            }
+                Headless = true
+            });
+            await using var page = await browser.NewPageAsync();
+            await page.SetContentAsync(html);
 
-            var args = new string[] { "-s Letter", "--print-media-type", $"--title \"{title}\"", "--no-background", "--javascript-delay 500", $"\"{tempFile}.html\"", $"\"{tempFile}.pdf\"" };
-#pragma warning disable CA1416 // Validate platform compatibility
-            ProcessStartInfo startInfo = new ProcessStartInfo
-            {
-                CreateNoWindow = true,
-                UseShellExecute = true,
-                FileName = path,
-                WindowStyle = ProcessWindowStyle.Hidden,
-                Arguments = string.Join(" ", args)
-            };
-            using Process exeProcess = Process.Start(startInfo);
-            if (exeProcess != null) exeProcess.WaitForExit();
-#pragma warning restore CA1416 // Validate platform compatibility
+            await page.PdfAsync(tempFile, pdfOptions);
+
         }
     }
 }
