@@ -28,7 +28,7 @@ namespace webenology.blazor.components.Helpers
                 firstIteration = false;
             }
 
-            return results;
+            return results.Any() ? results : new List<T>();
         }
         
         private static bool Search(string pat, string txt, bool ignoreCase = true)
