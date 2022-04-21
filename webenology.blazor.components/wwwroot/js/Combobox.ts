@@ -6,12 +6,8 @@
     }, false);
 }
 
-export function ScrollTo(scrollToEl: Element, count: number) {
-    let currentHeight = count * 39;
-    if (currentHeight < 156)
-        currentHeight = currentHeight - 117
-    else
-        currentHeight = currentHeight - 78;
+export function ScrollTo(scrollToEl: Element, count: number, pixelHeight: number) {
+    let currentHeight = count * pixelHeight;
 
     scrollToEl.scrollTo(0, currentHeight);
 }

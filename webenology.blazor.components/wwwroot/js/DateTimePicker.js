@@ -33,3 +33,4 @@ export function openCalendar(element) {
     var el = element._flatpickr;
     el.open();
 }
+//# sourceMappingURL=DateTimePicker.js.map

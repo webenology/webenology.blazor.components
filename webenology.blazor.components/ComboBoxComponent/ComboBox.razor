@@ -37,6 +37,10 @@
                     {
                         _currentFocused = 0;
                     }
+                    else if (SelectedItem != null)
+                    {
+                        _currentFocused = SearchedItems.IndexOf(SelectedItem);
+                    }
                     <a class="@ListGroupItemCss(_currentFocused == SearchedItems.IndexOf(itm))" @onclick="@(()=> onSelectItem(itm))" @onclick:preventDefault href="javascript:;" style="height: @($"{ItemHeight}px");">@((MarkupString)GetValue(itm).Highlight(_localText))</a>
                 </Virtualize>
             </div>

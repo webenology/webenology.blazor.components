@@ -9,6 +9,7 @@ using System.Net.Mime;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace webenology.blazor.components.BlazorPdfComponent
 {
@@ -16,15 +17,24 @@ namespace webenology.blazor.components.BlazorPdfComponent
     {
         Task GeneratePdf(string html, string tempFile, PdfOptions pdfOptions);
     }
-    internal class ExecuteProcess : IExecuteProcess
+    public class ExecuteProcess : IExecuteProcess
     {
+        private readonly ILogger<ExecuteProcess> _logger;
+
+        public ExecuteProcess(ILogger<ExecuteProcess> logger)
+        {
+            _logger = logger;
+        }
 
         public async Task GeneratePdf(string html, string tempFile, PdfOptions pdfOptions)
         {
-            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
+            var results = await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
+            
+            _logger.LogDebug("pdf folder {0} and url {1}", results.FolderPath, results.Url);
+
             var browser = await Puppeteer.LaunchAsync(new LaunchOptions
             {
-                Headless = true
+                Headless = true,
             });
             await using var page = await browser.NewPageAsync();
             await page.SetContentAsync(html);

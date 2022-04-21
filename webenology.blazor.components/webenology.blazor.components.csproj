@@ -5,15 +5,15 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>Sehab Veljacic</Authors>
 		<Company>Webenology, Inc</Company>
-		<Copyright>2021 Webenology, Inc</Copyright>
+		<Copyright>2022 Webenology, Inc</Copyright>
 		<Description>Added timeonly to datetime picker</Description>
 		<RepositoryUrl>https://github.com/webenology/webenology.blazor.components</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input,radio button,order by</PackageTags>
 		<PackageReleaseNotes>Added min and max dates to datetime picker</PackageReleaseNotes>
-		<AssemblyVersion>2.0.5.0</AssemblyVersion>
-		<FileVersion>2.0.5.0</FileVersion>
-		<Version>2.0.5</Version>
+		<AssemblyVersion>2.0.9.0</AssemblyVersion>
+		<FileVersion>2.0.9.0</FileVersion>
+		<Version>2.0.9</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 

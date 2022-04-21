@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using DocumentFormat.OpenXml.Office.CustomUI;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -64,6 +66,7 @@ namespace webenology.blazor.components
             get => _localText;
             set
             {
+                filterDown = true;
                 _areItemsOpen = true;
                 _currentFocused = -1;
                 _localText = value;
@@ -78,12 +81,14 @@ namespace webenology.blazor.components
         private ElementReference _scrollEl;
         private Virtualize<TItem> _virtualized;
         private int _currentFocused = -1;
+        private bool filterDown = true;
+        private int scrollTo = 0;
 
         private List<TItem> SearchedItems
         {
             get
             {
-                if (string.IsNullOrEmpty(_localText))
+                if (!filterDown || string.IsNullOrEmpty(_localText))
                     return Items;
 
                 return Items.Search(_localText, GetValue).ToList();
@@ -100,12 +105,27 @@ namespace webenology.blazor.components
 
         private void openItemsWindow()
         {
+            CheckComboBoxDropdownScrollTo();
+
             if (Readonly)
                 return;
 
             _virtualized.RefreshDataAsync();
 
             _areItemsOpen = true;
+
+        }
+
+        private void CheckComboBoxDropdownScrollTo()
+        {
+            if (ComboBoxType == ComboBoxType.Dropdown)
+            {
+                filterDown = false;
+                if (SelectedItem != null)
+                {
+                    scrollTo = SearchedItems.IndexOf(SelectedItem);
+                }
+            }
         }
 
         private void onSelectItem(TItem item)
@@ -129,11 +149,14 @@ namespace webenology.blazor.components
 
         private void toggleItemsWindows()
         {
+            CheckComboBoxDropdownScrollTo();
+
             if (Readonly)
                 return;
 
             _elRef.FocusAsync();
             _areItemsOpen = !_areItemsOpen;
+
         }
 
         private void onAddNewItem()
@@ -159,7 +182,7 @@ namespace webenology.blazor.components
                 else
                     _currentFocused--;
 
-                jsHelper.ScrollTo(_scrollEl, _currentFocused);
+                jsHelper.ScrollTo(_scrollEl, _currentFocused, ItemHeight);
             }
             else if (args.Code == "ArrowDown")
             {
@@ -171,7 +194,7 @@ namespace webenology.blazor.components
                 else
                     _currentFocused++;
 
-                jsHelper.ScrollTo(_scrollEl, _currentFocused);
+                jsHelper.ScrollTo(_scrollEl, _currentFocused, ItemHeight);
             }
             else if (args.Code == "Enter" && _currentFocused > -1)
             {
@@ -314,6 +337,12 @@ namespace webenology.blazor.components
             if (firstRender)
             {
                 jsHelper.StopArrows(_elRef);
+            }
+
+            if (scrollTo > 0)
+            {
+                jsHelper.ScrollTo(_scrollEl, scrollTo, ItemHeight);
+                scrollTo = 0;
             }
             base.OnAfterRender(firstRender);
         }

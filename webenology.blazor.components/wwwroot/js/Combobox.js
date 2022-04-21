@@ -5,12 +5,8 @@ export function StopArrows(el) {
         }
     }, false);
 }
-export function ScrollTo(scrollToEl, count) {
-    var currentHeight = count * 39;
-    if (currentHeight < 156)
-        currentHeight = currentHeight - 117;
-    else
-        currentHeight = currentHeight - 78;
+export function ScrollTo(scrollToEl, count, pixelHeight) {
+    var currentHeight = count * pixelHeight;
     scrollToEl.scrollTo(0, currentHeight);
 }
 //# sourceMappingURL=Combobox.js.map

@@ -12,7 +12,7 @@ namespace webenology.blazor.components
     internal interface IComboBoxJsHelper
     {
         Task StopArrows(ElementReference el);
-        Task ScrollTo(ElementReference el, int count);
+        Task ScrollTo(ElementReference el, int count, int pixelHeight);
     }
     internal class ComboBoxJsHelper : BaseJsHelper, IComboBoxJsHelper
     {
@@ -26,10 +26,10 @@ namespace webenology.blazor.components
             await module.InvokeVoidAsync("StopArrows", el);
         }
 
-        public async Task ScrollTo(ElementReference el, int count)
+        public async Task ScrollTo(ElementReference el, int count, int pixelHeight)
         {
             var module = await ModuleTask.Value;
-            await module.InvokeVoidAsync("ScrollTo", el, count);
+            await module.InvokeVoidAsync("ScrollTo", el, count, pixelHeight);
         }
     }
 }
