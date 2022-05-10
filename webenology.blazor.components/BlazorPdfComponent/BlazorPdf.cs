@@ -15,7 +15,7 @@ namespace webenology.blazor.components.BlazorPdfComponent
     {
         Task<string> GetBlazorInPdfBase64<TValue>(Action<ComponentParameterCollectionBuilder<TValue>> cParams,
             string fileName, List<string> cssFiles, List<string> jsFiles, PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false,
-            PdfOrHtml pdfOrHtml = PdfOrHtml.Pdf) where TValue : IComponent;
+            PdfOrHtml pdfOrHtml = PdfOrHtml.Pdf, string waitForElement = "", int waitForElementTimeoutMs = 1000) where TValue : IComponent;
     }
     public class BlazorPdf : IBlazorPdf
     {
@@ -31,12 +31,15 @@ namespace webenology.blazor.components.BlazorPdfComponent
         public async Task<string> GetBlazorInPdfBase64<TValue>(
             Action<ComponentParameterCollectionBuilder<TValue>> cParams, string fileName, List<string> cssFiles,
             List<string> jsFiles, PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false,
-            PdfOrHtml pdfOrHtml = PdfOrHtml.Pdf) where TValue : IComponent
+            PdfOrHtml pdfOrHtml = PdfOrHtml.Pdf, string waitForElement = "", int waitForElementTimeoutMs = 1000) where TValue : IComponent
         {
             var ctx = new TestContext();
             ctx.Services.AddFallbackServiceProvider(_serviceProvider);
 
             var results = ctx.RenderComponent(cParams);
+
+            if (!string.IsNullOrEmpty(waitForElement))
+                results.WaitForElement(waitForElement, TimeSpan.FromMilliseconds(waitForElementTimeoutMs));
 
             var markup = results.Markup;
 

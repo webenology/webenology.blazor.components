@@ -11,7 +11,7 @@ namespace webenology.blazor.components.Helpers
     {
         public static IEnumerable<T> Search<T>(this IEnumerable<T> inList, string searchTerm, Func<T, string> expression)
         {
-            if (string.IsNullOrEmpty(searchTerm))
+            if (string.IsNullOrEmpty(searchTerm.Trim()))
                 return inList;
 
             IEnumerable<T> results = null;

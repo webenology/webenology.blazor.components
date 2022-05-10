@@ -14,7 +14,7 @@
 </div>
 
 <div class="">
-    <ComboBox TItem="string" ComboBoxType="ComboBoxType.Dropdown" Items="comboBoxItems" SelectedItem="@_selectedItem" OnSelectedItem="@((x)=> _selectedItem = x)"></ComboBox>
+    <ComboBox TItem="string" ComboBoxType="ComboBoxType.Dropdown" ShowRemoveButton="true" Items="comboBoxItems" SelectedItem="@_selectedItem" OnSelectedItem="@((x)=> _selectedItem = x)"></ComboBox>
 </div>
 @code {
     private int currentCount = 0;

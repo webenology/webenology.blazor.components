@@ -6,14 +6,14 @@
 		<Authors>Sehab Veljacic</Authors>
 		<Company>Webenology, Inc</Company>
 		<Copyright>2022 Webenology, Inc</Copyright>
-		<Description>Added timeonly to datetime picker</Description>
+		<Description>Blazor pdf component generator now allows to wait for element</Description>
 		<RepositoryUrl>https://github.com/webenology/webenology.blazor.components</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input,radio button,order by</PackageTags>
-		<PackageReleaseNotes>Added min and max dates to datetime picker</PackageReleaseNotes>
-		<AssemblyVersion>2.0.9.0</AssemblyVersion>
-		<FileVersion>2.0.9.0</FileVersion>
-		<Version>2.0.9</Version>
+		<PackageReleaseNotes>Fix combobox issue when clicking space first before adding any search text.</PackageReleaseNotes>
+		<AssemblyVersion>2.0.11.0</AssemblyVersion>
+		<FileVersion>2.0.11.0</FileVersion>
+		<Version>2.0.11</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
