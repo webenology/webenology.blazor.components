@@ -47,7 +47,7 @@ namespace webenology.blazor.components.Helpers
                         }
                     }
 
-                    var r = new Regex($"{s}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{searchString}")}", RegexOptions.IgnoreCase);
+                    var r = new Regex($"{Regex.Escape(s)}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{Regex.Escape(searchString.ToString())}")}", RegexOptions.IgnoreCase);
 
                     var index = r.Matches(item);
 
@@ -79,7 +79,7 @@ namespace webenology.blazor.components.Helpers
                     results.Append(item.Substring(currentIndex));
                 }
 
-                return results.ToString().Replace("</mark><mark>", "");
+                return Regex.Unescape(results.ToString().Replace("</mark><mark>", ""));
 
             }
             catch (Exception e)
