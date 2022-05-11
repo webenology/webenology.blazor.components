@@ -16,68 +16,77 @@ namespace webenology.blazor.components.Helpers
             public int Length { get; set; }
             public string Color { get; set; }
         }
-       
+
         public static string Highlight(this string item, string searchTerm, bool colorize = false)
         {
             if (string.IsNullOrEmpty(searchTerm) || string.IsNullOrEmpty(item))
                 return item;
 
-            var highlighted = new List<HighlightObject>();
-            var colorIndex = 0;
-
-            foreach (var s in searchTerm.Split(" "))
+            try
             {
-                if (string.IsNullOrEmpty(s))
-                    continue;
+                var highlighted = new List<HighlightObject>();
+                var colorIndex = 0;
 
-                var searchString = new StringBuilder();
-
-                foreach (var v in s)
+                foreach (var s in searchTerm.Split(" "))
                 {
-                    if (SharedHelper.SubstituteChars.ContainsKey(v))
+                    if (string.IsNullOrEmpty(s))
+                        continue;
+
+                    var searchString = new StringBuilder();
+
+                    foreach (var v in s)
                     {
-                        var chars = string.Join("", SharedHelper.SubstituteChars[v]);
-                        searchString.Append($"[{chars}]");
+                        if (SharedHelper.SubstituteChars.ContainsKey(v))
+                        {
+                            var chars = string.Join("", SharedHelper.SubstituteChars[v]);
+                            searchString.Append($"[{chars}]");
+                        }
+                        else
+                        {
+                            searchString.Append(v);
+                        }
                     }
-                    else
+
+                    var r = new Regex($"{s}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{searchString}")}", RegexOptions.IgnoreCase);
+
+                    var index = r.Matches(item);
+
+                    foreach (Match match in index)
                     {
-                        searchString.Append(v);
+                        highlighted.Add(new HighlightObject { Index = match.Index, Length = s.Length, Color = SharedHelper.Colors[colorIndex % SharedHelper.Colors.Length] });
                     }
+
+                    colorIndex++;
                 }
 
-                var r = new Regex($"{s}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{searchString}")}", RegexOptions.IgnoreCase);
+                var results = new StringBuilder();
+                var currentIndex = 0;
 
-                var index = r.Matches(item);
-
-                foreach (Match match in index)
+                foreach (var highlightObject in highlighted.GroupBy(x => x.Index).OrderBy(x => x.Key))
                 {
-                    highlighted.Add(new HighlightObject { Index = match.Index, Length = s.Length, Color = SharedHelper.Colors[colorIndex % SharedHelper.Colors.Length] });
+                    if (currentIndex > highlightObject.Key)
+                        continue;
+
+                    var found = highlightObject.OrderByDescending(x => x.Length).First();
+                    results.Append(item[currentIndex..found.Index]);
+                    var lastIndex = found.Index + found.Length;
+                    results.Append($"<mark{(colorize ? $" style='background-color:{found.Color}'" : "")}>{item[found.Index..lastIndex]}</mark>");
+                    currentIndex = lastIndex;
                 }
 
-                colorIndex++;
+                if (currentIndex < item.Length)
+                {
+                    results.Append(item.Substring(currentIndex));
+                }
+
+                return results.ToString().Replace("</mark><mark>", "");
+
             }
-
-            var results = new StringBuilder();
-            var currentIndex = 0;
-
-            foreach (var highlightObject in highlighted.GroupBy(x => x.Index).OrderBy(x => x.Key))
+            catch (Exception e)
             {
-                if (currentIndex > highlightObject.Key)
-                    continue;
-
-                var found = highlightObject.OrderByDescending(x => x.Length).First();
-                results.Append(item[currentIndex..found.Index]);
-                var lastIndex = found.Index + found.Length;
-                results.Append($"<mark{(colorize ? $" style='background-color:{found.Color}'" : "")}>{item[found.Index..lastIndex]}</mark>");
-                currentIndex = lastIndex;
+                Console.Error.WriteLine(e.ToString());
+                return item;
             }
-
-            if (currentIndex < item.Length)
-            {
-                results.Append(item.Substring(currentIndex));
-            }
-
-            return results.ToString().Replace("</mark><mark>", "");
         }
 
     }

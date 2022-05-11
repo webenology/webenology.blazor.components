@@ -10,11 +10,19 @@
 		<RepositoryUrl>https://github.com/webenology/webenology.blazor.components</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input,radio button,order by</PackageTags>
-		<PackageReleaseNotes>Fix combobox issue when clicking space first before adding any search text.</PackageReleaseNotes>
-		<AssemblyVersion>2.0.11.0</AssemblyVersion>
-		<FileVersion>2.0.11.0</FileVersion>
-		<Version>2.0.11</Version>
+		<PackageReleaseNotes>Fix combobox highlight failure</PackageReleaseNotes>
+		<AssemblyVersion>2.0.12.0</AssemblyVersion>
+		<FileVersion>2.0.12.0</FileVersion>
+		<Version>2.0.12</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
 	</PropertyGroup>
 
 	<ItemGroup>
