@@ -33,10 +33,10 @@ namespace webenology.blazor.components.BlazorPdfComponent
             List<string> jsFiles, PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false,
             PdfOrHtml pdfOrHtml = PdfOrHtml.Pdf, string waitForElement = "", int waitForElementTimeoutMs = 1000) where TValue : IComponent
         {
-            var ctx = new TestContext();
+            using var ctx = new TestContext();
             ctx.Services.AddFallbackServiceProvider(_serviceProvider);
 
-            var results = ctx.RenderComponent(cParams);
+            using var results = ctx.RenderComponent(cParams);
 
             if (!string.IsNullOrEmpty(waitForElement))
                 results.WaitForElement(waitForElement, TimeSpan.FromMilliseconds(waitForElementTimeoutMs));

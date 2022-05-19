@@ -9,7 +9,9 @@ using System.Net.Mime;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 
 namespace webenology.blazor.components.BlazorPdfComponent
 {
@@ -17,7 +19,7 @@ namespace webenology.blazor.components.BlazorPdfComponent
     {
         Task GeneratePdf(string html, string tempFile, PdfOptions pdfOptions);
     }
-    public class ExecuteProcess : IExecuteProcess
+    public class ExecuteProcess : IExecuteProcess, IDisposable
     {
         private readonly ILogger<ExecuteProcess> _logger;
 
@@ -28,19 +30,36 @@ namespace webenology.blazor.components.BlazorPdfComponent
 
         public async Task GeneratePdf(string html, string tempFile, PdfOptions pdfOptions)
         {
-            var results = await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
-            
-            _logger.LogDebug("pdf folder {0} and url {1}", results.FolderPath, results.Url);
-
-            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+            var browserFetcher = new BrowserFetcher(Product.Chrome);
+            if (!browserFetcher.RevisionInfo(BrowserFetcher.DefaultChromiumRevision).Downloaded)
             {
-                Headless = true,
-            });
-            await using var page = await browser.NewPageAsync();
-            await page.SetContentAsync(html);
+                var results = await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
 
-            await page.PdfAsync(tempFile, pdfOptions);
+                _logger.LogDebug("pdf folder {0} and url {1}", results.FolderPath, results.Url);
+            }
 
+            Browser browser = null;
+            try
+            {
+                browser = await Puppeteer.LaunchAsync(new LaunchOptions
+                {
+                    Headless = true,
+                });
+                await using var page = await browser.NewPageAsync();
+                await page.SetContentAsync(html);
+
+                await page.PdfAsync(tempFile, pdfOptions);
+            }
+            finally
+            {
+                if (browser != null)
+                    await browser.CloseAsync();
+            }
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

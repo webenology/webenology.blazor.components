@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
-
+using Microsoft.Net.Http.Headers;
 using webenology.blazor.components.Helpers;
 
 namespace webenology.blazor.components
@@ -116,6 +116,10 @@ namespace webenology.blazor.components
 
         }
 
+        private string GetHeight()
+        {
+            return string.Intern(ItemHeight.ToString());
+        }
         private void CheckComboBoxDropdownScrollTo()
         {
             if (ComboBoxType == ComboBoxType.Dropdown)
@@ -353,6 +357,8 @@ namespace webenology.blazor.components
             {
                 _editContext.OnValidationRequested -= _editContext_OnValidationRequested;
             }
+
+            GC.SuppressFinalize(this);
         }
 
     }

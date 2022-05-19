@@ -19,7 +19,7 @@ namespace webenology.blazor.components.BlazorPdfComponent
         Task<string> GeneratePdf(string markup, string title, List<string> cssFiles, List<string> jsFiles,
             PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false, PdfOrHtml returnType = PdfOrHtml.Pdf);
     }
-    public class HtmlToPdfManager : IHtmlToPdfManager
+    public class HtmlToPdfManager : IHtmlToPdfManager, IDisposable
     {
         private readonly IWFileWriter _fileWriter;
         private readonly IExecuteProcess _executeProcess;
@@ -84,11 +84,11 @@ namespace webenology.blazor.components.BlazorPdfComponent
                 }
 
                 await _executeProcess.GeneratePdf(doc.DocumentNode.OuterHtml, $"{tempFile}.pdf", pdfOptions);
-
+                doc = null;
                 if (_fileWriter.Exists($"{tempFile}.pdf"))
                 {
-                    var bytes = _fileWriter.ReadAllBytes($"{tempFile}.pdf");
-                    return Convert.ToBase64String(bytes);
+                    await using var ms = new MemoryStream(_fileWriter.ReadAllBytes($"{tempFile}.pdf"));
+                    return Convert.ToBase64String(ms.ToArray());
                 }
 
             }
@@ -106,6 +106,11 @@ namespace webenology.blazor.components.BlazorPdfComponent
             }
 
             return string.Empty;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 

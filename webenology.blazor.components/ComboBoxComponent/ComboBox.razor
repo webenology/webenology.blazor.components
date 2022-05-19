@@ -41,7 +41,7 @@
                     {
                         _currentFocused = SearchedItems.IndexOf(SelectedItem);
                     }
-                    <span class="@ListGroupItemCss(_currentFocused == SearchedItems.IndexOf(itm))" @onclick="@(()=> onSelectItem(itm))" style="height: @($"{ItemHeight}px");">@((MarkupString)GetValue(itm).Highlight(_localText))</span>
+                    <span class="@ListGroupItemCss(_currentFocused == SearchedItems.IndexOf(itm))" @onclick="@(()=> onSelectItem(itm))" style="height: @($"{GetHeight()}px");">@((MarkupString)GetValue(itm).Highlight(_localText))</span>
                 </Virtualize>
             </div>
             @if (!SearchedItems.Any())
