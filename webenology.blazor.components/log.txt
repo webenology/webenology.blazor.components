@@ -1,0 +1,1 @@
+{"message":"Invalid triple slash comment is ignored: <!-- Badly formed XML comment ignored for member \"F:webenology.blazor.components.Tabs.TabPages\" -->\r\n","source":"MetadataCommand.ExtractMetadata","date_time":"2022-06-14T05:37:59.3464431Z","message_severity":"warning","correlation_id":"1C28B94A-A422-4D7F-A2B8-5D884973C435.1.1.107"}

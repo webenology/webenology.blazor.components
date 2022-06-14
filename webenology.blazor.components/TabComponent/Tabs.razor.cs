@@ -13,14 +13,31 @@ namespace webenology.blazor.components
 {
     public partial class Tabs : IDisposable
     {
+        /// <summary>
+        /// Tabs content
+        /// </summary>
         [Parameter]
         public RenderFragment ChildContent { get; set; }
+        /// <summary>
+        /// Custom CSS Style, default <typeparam name="TabStyle.WebenologyStyle"></typeparam>
+        /// </summary>
         [Parameter]
         public TabStyle CssStyle { get; set; } = TabStyle.WebenologyStyle;
         [Inject]
         private NavigationManager nav { get; set; }
-
+        /// <summary>
+        /// Active Tab
+        /// </summary>
         public Tab ActivePage;
+
+        /// <summary>
+        /// List of all tabs
+        /// </summary>
+        /// <example>new list</example>
+        /// <example>new list 2</example>
+        /// <example>new list 3</example>
+        /// <code>List&lt;Tab&gt;</code>
+        /// <returns>List&lt;Tab&gt;</returns>
         public List<Tab> TabPages = new();
         private string _oldUrl;
         protected override void OnAfterRender(bool firstRender)
@@ -60,12 +77,20 @@ namespace webenology.blazor.components
             }
         }
 
+        /// <summary>
+        /// Add a new tab to list of tabs
+        /// </summary>
+        /// <param name="tab">Tab object</param>
         public void AddPage(Tab tab)
         {
             TabPages.Add(tab);
             StateHasChanged();
         }
 
+        /// <summary>
+        /// Active a tab
+        /// </summary>
+        /// <param name="tab">Tab object</param>
         public void ActivatePage(Tab tab)
         {
             var tabIndex = TabPages.IndexOf(tab);
@@ -91,6 +116,9 @@ namespace webenology.blazor.components
             }
         }
 
+        /// <summary>
+        /// Dispose tabs when destroying component
+        /// </summary>
         public void Dispose()
         {
             nav.LocationChanged -= Nav_LocationChanged;
