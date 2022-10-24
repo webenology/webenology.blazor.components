@@ -1,4 +1,4 @@
-﻿@font-face {
+@font-face {
   font-family: "Material Design Icons";
   src: url("../fonts/materialdesignicons-webfont.eot?v=5.7.55");
   src: url("../fonts/materialdesignicons-webfont.eot?#iefix&v=5.7.55") format("embedded-opentype"), url("../fonts/materialdesignicons-webfont.woff2?v=5.7.55") format("woff2"), url("../fonts/materialdesignicons-webfont.woff?v=5.7.55") format("woff"), url("../fonts/materialdesignicons-webfont.ttf?v=5.7.55") format("truetype");
@@ -17787,7 +17787,7 @@ button.toast-close-button {
 .flatpickr-months .flatpickr-prev-month.flatpickr-prev-month,
 .flatpickr-months .flatpickr-next-month.flatpickr-prev-month {
   /*
-      /*rtl:begin:ignore*/
+       /*rtl:begin:ignore*/
   left: 0 /*
       /*rtl:end:ignore*/;
 }
@@ -17798,7 +17798,7 @@ button.toast-close-button {
 .flatpickr-months .flatpickr-prev-month.flatpickr-next-month,
 .flatpickr-months .flatpickr-next-month.flatpickr-next-month {
   /*
-      /*rtl:begin:ignore*/
+       /*rtl:begin:ignore*/
   right: 0 /*
       /*rtl:end:ignore*/;
 }
@@ -17929,7 +17929,7 @@ button.toast-close-button {
 }
 .flatpickr-current-month .numInputWrapper {
   width: 6ch;
-  width: 7ch\0;
+  width: 7ch \0;
   display: inline-block;
 }
 .flatpickr-current-month .numInputWrapper span.arrowUp:after {
@@ -18364,6 +18364,9 @@ span.flatpickr-weekday {
 .flatpickr-input[readonly] {
   cursor: pointer;
 }
+input[readonly] {
+  background-color: #777777 !important;
+}
 @-webkit-keyframes fpFadeInDown {
   from {
     opacity: 0;
@@ -18406,3 +18409,4 @@ span.flatpickr-weekday {
   padding-top: 0;
   padding-bottom: 0;
 }
+/*# sourceMappingURL=style.css.map */

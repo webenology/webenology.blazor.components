@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\webenology.blazor.components\webenology.blazor.components.csproj" />
+    <ProjectReference Include="..\webenology.blazor.ss.authentication\webenology.blazor.ss.authentication.csproj" />
   </ItemGroup>
 
 </Project>

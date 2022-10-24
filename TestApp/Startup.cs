@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using TestApp.Data;
 using webenology.blazor.components;
 using webenology.blazor.components.BlazorPdfComponent;
+using webenology.blazor.ss.authentication;
 
 namespace TestApp
 {
@@ -30,6 +31,7 @@ namespace TestApp
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddWebenologyAuth();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();

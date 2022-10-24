@@ -25,7 +25,7 @@ namespace TestApp.Pages
         private Modal _modal2;
         private Confirm _confirm;
         private bool _insideClick;
-        private DateTime? _dt;
+        private DateTime? _dt = DateTime.Today.AddDays(-3);
         private string _text;
         private int? _num;
         private int _count = 0;
@@ -53,11 +53,18 @@ namespace TestApp.Pages
 
         private List<DateTime?> _dates = new();
         private string _pdfPreview;
+        private bool _isDblClickReadonly = true;
 
         private List<DateTime?> Dates
         {
             get => _dates;
             set => _dates = value;
+        }
+
+        private void OnDblClick()
+        {
+            _isDblClickReadonly = false;
+            js.InvokeVoidAsync("alert", "double click");
         }
 
         private void AddNewItem(string s)

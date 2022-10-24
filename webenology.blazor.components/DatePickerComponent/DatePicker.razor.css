@@ -1,5 +1,8 @@
-﻿.flatpickr-input[readonly] {
-  background-color: #fff;
+.flatpickr-input[readonly] {
+  background-color: #fff !important;
+}
+.flatpickr-input[disabled] {
+  background-color: #dfdfdf !important;
 }
 .form-error {
   border: 1px solid red;

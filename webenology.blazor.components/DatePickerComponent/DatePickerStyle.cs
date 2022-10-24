@@ -21,7 +21,11 @@ namespace webenology.blazor.components
             CalendarIconHolderCss = "input-group-text link",
             CalendarIconHolderErrorCss = "error-icon-holder",
             CalendarIcon= "mdi mdi-calendar",
-            CalendarClearIcon = "mdi mdi-calendar-remove text-danger"
+            LockIcon = "mdi mdi-lock",
+            UnlockIcon = "mdi mdi-lock-open-variant",
+            CantUnlockIcon = "mdi mdi-lock-off",
+            CalendarClearIcon = "mdi mdi-calendar-remove text-danger",
+            InputInactiveCss = "webenology-inactive"
         };
 
         public string CalendarIconHolderErrorCss { get; set; }
@@ -36,5 +40,9 @@ namespace webenology.blazor.components
         public string InputGroupCss { get; set; }
         public string ErrorMessageCss { get; set; }
         public string CalendarClearIcon { get; set; }
+        public string LockIcon { get; set; }
+        public string UnlockIcon { get; set; }
+        public string InputInactiveCss { get; set; }
+        public string CantUnlockIcon { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 
 export function setupPicker(instance, element, type, time, makeStatic, isInline, minDate, maxDate, timeOnly) {
-    var config = {
+    const config = {
         dateFormat: time ? "m-d-Y G:i:S K" : "m-d-Y",
         weekNumbers: true,
         enableTime: time,
@@ -11,6 +11,14 @@ export function setupPicker(instance, element, type, time, makeStatic, isInline,
         minDate: minDate,
         maxDate: maxDate,
         mode: type,
+        onOpen: (e) => {
+            instance.invokeMethodAsync("CanOpen").then(canOpen => {
+                console.log(canOpen);
+                if (!canOpen) {
+                    closeCalendar(element);
+                }
+            });
+        },
         onChange: (e) => {
             const noTimeZone = [];
             for (let i = 0; i < e.length; i++) {
@@ -40,4 +48,10 @@ export function updateSetting(element, setting, value) {
 export function openCalendar(element) {
     const el = element._flatpickr;
     el.open();
+}
+
+
+export function closeCalendar(element) {
+    const el = element._flatpickr;
+    el.close();
 }

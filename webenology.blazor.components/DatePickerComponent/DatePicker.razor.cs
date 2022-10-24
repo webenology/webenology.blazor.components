@@ -5,7 +5,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
@@ -18,6 +17,7 @@ namespace webenology.blazor.components
 
         [Parameter(CaptureUnmatchedValues = true)]
         public Dictionary<string, object> Attributes { get; set; }
+
         [Parameter] public TValue Date { get; set; }
         [Parameter] public string Label { get; set; }
         [Parameter] public EventCallback<TValue> DateChanged { get; set; }
@@ -29,23 +29,28 @@ namespace webenology.blazor.components
         [Parameter] public bool IsInline { get; set; }
         [Parameter] public DateTime? MinDate { get; set; }
         [Parameter] public DateTime? MaxDate { get; set; }
+
         /// <summary>
         /// Only set to true if using inside a modal
         /// </summary>
-        [Parameter] public bool MakeStatic { get; set; }
         [Parameter]
-        public DatePickerStyle CssStyle { get; set; } = DatePickerStyle.WebenologyStyle;
-        [Parameter]
-        public bool Readonly { get; set; }
+        public bool MakeStatic { get; set; }
+
+        [Parameter] public DatePickerStyle CssStyle { get; set; } = DatePickerStyle.WebenologyStyle;
+        [Parameter] public bool Readonly { get; set; }
+        [Parameter] public bool? CanUnlock { get; set; }
         [CascadingParameter] private EditContext _editContext { get; set; }
 
         private DatePickerType _oldType = DatePickerType.Single;
         public bool _isError => !string.IsNullOrEmpty(_errorMessage);
         public string _errorMessage;
-
+        private bool MovingMouse = false;
+        private bool CanUnlockReadonly => Readonly && CanUnlock.GetValueOrDefault();
         private DateTime? _oldMinDate;
         private DateTime? _oldMaxDate;
         private bool _isLoaded;
+        private bool _isUnlocked = true;
+
         private string DateTimeStr
         {
             get
@@ -63,9 +68,11 @@ namespace webenology.blazor.components
                         switch (DateType)
                         {
                             case DatePickerType.Multiple:
-                                return string.Join(", ", dtLst.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToList());
+                                return string.Join(", ",
+                                    dtLst.Select(x => x.ToString(CultureInfo.InvariantCulture)).ToList());
                             case DatePickerType.Range:
-                                return $"{dtLst.First().ToDtFormat(DateFormat, EnableTime)} to {dtLst.Last().ToDtFormat(DateFormat, EnableTime)}";
+                                return
+                                    $"{dtLst.First().ToDtFormat(DateFormat, EnableTime)} to {dtLst.Last().ToDtFormat(DateFormat, EnableTime)}";
                         }
                     }
 
@@ -77,25 +84,28 @@ namespace webenology.blazor.components
 
                         switch (DateType)
                         {
-
                             case DatePickerType.Multiple:
-                                return string.Join(", ", dtLst.Where(x => x.HasValue).OrderBy(x => x.Value).Select(x => x.Value.ToDtFormat(DateFormat, EnableTime)).ToList());
+                                return string.Join(", ",
+                                    dtLst.Where(x => x.HasValue).OrderBy(x => x.Value)
+                                        .Select(x => x.Value.ToDtFormat(DateFormat, EnableTime)).ToList());
                             case DatePickerType.Range:
-                                return $"{dtLst.First().ToDtFormat(DateFormat, EnableTime)} to {dtLst.Last().ToDtFormat(DateFormat, EnableTime)}";
+                                return
+                                    $"{dtLst.First().ToDtFormat(DateFormat, EnableTime)} to {dtLst.Last().ToDtFormat(DateFormat, EnableTime)}";
                         }
                     }
 
                     // ReSharper disable once PossibleNullReferenceException
 
                     var dtSng = (DateTime)Convert.ChangeType(Date, typeof(DateTime));
-                    return DateType == DatePickerType.TimeOnly ? dtSng.ToTimeOnly(DateFormat) : dtSng.ToDtFormat(DateFormat, EnableTime);
+                    return DateType == DatePickerType.TimeOnly
+                        ? dtSng.ToTimeOnly(DateFormat)
+                        : dtSng.ToDtFormat(DateFormat, EnableTime);
                 }
                 catch (Exception e)
                 {
                     //probably one of the items in the list was null
                     return null;
                 }
-
             }
         }
 
@@ -128,7 +138,6 @@ namespace webenology.blazor.components
                     var converted = (TValue)Convert.ChangeType(dtSng, typeof(TValue));
                     DateChanged.InvokeAsync(converted);
                 }
-
             }
             else
             {
@@ -153,6 +162,15 @@ namespace webenology.blazor.components
             }
         }
 
+        [JSInvokable]
+        public bool CanOpen()
+        {
+            if (!_isUnlocked)
+                return false;
+
+            return !Readonly || CanUnlockReadonly;
+        }
+
         public string Css()
         {
             var css = new List<string> { CssStyle.InputCss };
@@ -160,6 +178,10 @@ namespace webenology.blazor.components
             if (_isError)
                 css.Add(CssStyle.InputErrorCss);
 
+            if (!_isUnlocked)
+                css.Add(CssStyle.InputInactiveCss);
+
+            css.Add("flatpickr-input");
             return string.Join(" ", css);
         }
 
@@ -173,6 +195,9 @@ namespace webenology.blazor.components
                 js.SetupPicker(DotNetObjectReference.Create(this), _inputRef, mode, EnableTime,
                     MakeStatic, IsInline, minDate, maxDate, DateType == DatePickerType.TimeOnly);
                 _isLoaded = true;
+                if (Readonly || CanUnlockReadonly)
+                    _isUnlocked = false;
+                StateHasChanged();
             }
 
             base.OnAfterRender(firstRender);
@@ -207,7 +232,7 @@ namespace webenology.blazor.components
             if (targetType == typeof(DateTime) ||
                 targetType == typeof(DateTime?) ||
                 targetType == typeof(List<DateTime>) ||
-                    targetType == typeof(List<DateTime?>))
+                targetType == typeof(List<DateTime?>))
             {
                 //do nothing;
             }
@@ -220,7 +245,8 @@ namespace webenology.blazor.components
             {
                 if (targetType == typeof(List<DateTime?>) || targetType == typeof(List<DateTime>))
                 {
-                    throw new InvalidOperationException($"The type '{targetType}' is not a supported with {DateType.ToString()}.");
+                    throw new InvalidOperationException(
+                        $"The type '{targetType}' is not a supported with {DateType.ToString()}.");
                 }
             }
 
@@ -228,7 +254,8 @@ namespace webenology.blazor.components
             {
                 if (targetType == typeof(DateTime) || targetType == typeof(DateTime))
                 {
-                    throw new InvalidOperationException($"The type '{targetType}' is not a supported with {DateType.ToString()}.");
+                    throw new InvalidOperationException(
+                        $"The type '{targetType}' is not a supported with {DateType.ToString()}.");
                 }
             }
 
@@ -236,6 +263,7 @@ namespace webenology.blazor.components
             {
                 _editContext.OnValidationRequested += _editContext_OnValidationRequested;
             }
+
             base.OnInitialized();
         }
 
@@ -263,7 +291,13 @@ namespace webenology.blazor.components
 
         private async Task OpenOrClear()
         {
-            if (Readonly)
+            if (CanUnlockReadonly && !_isUnlocked)
+            {
+                _isUnlocked = true;
+                return;
+            }
+
+            if (Readonly && !CanUnlockReadonly)
                 return;
 
             if (string.IsNullOrEmpty(DateTimeStr))
@@ -272,6 +306,17 @@ namespace webenology.blazor.components
             {
                 await DateChanged.InvokeAsync();
             }
+        }
+
+        private bool IsDisabled()
+        {
+            if (CanUnlockReadonly && !_isUnlocked)
+                return true;
+
+            if (CanUnlockReadonly && _isUnlocked)
+                return false;
+
+            return Readonly;
         }
     }
 }

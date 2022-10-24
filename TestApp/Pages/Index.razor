@@ -46,9 +46,11 @@ selectedItem: @_selectedItem
 
 <DropDown Items="items" ShowEmpty="true" Readonly="true"></DropDown>
 
-<DatePicker Label="date range" @bind-Date="Dates" TValue="List<DateTime?>" DateType="DatePickerType.Range" DateFormat="MM-dd-yyyy"
+<DatePicker Label="date range" @bind-Date="Dates" TValue="List<DateTime?>" 
+            DateType="DatePickerType.Range" DateFormat="MM-dd-yyyy"
             Readonly="true"></DatePicker>
-<DatePicker Label="dt here" @bind-Date="_dt" TValue="DateTime?"></DatePicker>
+<DatePicker Label="dt here" @bind-Date="_dt" TValue="DateTime?" 
+            Readonly="true" CanUnlock="true"></DatePicker>
 
 <Tabs>
     <Tab Title="tab 1" Badge="1">

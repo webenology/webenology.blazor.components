@@ -8,6 +8,14 @@ export function setupPicker(instance, element, type, time, makeStatic, isInline,
         minDate: minDate,
         maxDate: maxDate,
         mode: type,
+        onOpen: function (e) {
+            instance.invokeMethodAsync("CanOpen").then(function (canOpen) {
+                console.log(canOpen);
+                if (!canOpen) {
+                    closeCalendar(element);
+                }
+            });
+        },
         onChange: function (e) {
             var noTimeZone = [];
             for (var i = 0; i < e.length; i++) {
@@ -32,5 +40,9 @@ export function updateSetting(element, setting, value) {
 export function openCalendar(element) {
     var el = element._flatpickr;
     el.open();
+}
+export function closeCalendar(element) {
+    var el = element._flatpickr;
+    el.close();
 }
 //# sourceMappingURL=DateTimePicker.js.map
