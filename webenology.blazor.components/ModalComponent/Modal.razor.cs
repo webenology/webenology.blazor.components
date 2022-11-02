@@ -29,7 +29,8 @@ namespace webenology.blazor.components
         [Parameter] public Func<bool> CanClose { get; set; } = () => true;
         [Parameter]
         public ModalStyle CssStyle { get; set; } = ModalStyle.WebenologyStyle;
-
+        public bool IsOpen => _isOpen;
+        
         private bool _isOpen;
         private bool _showAnimateUp;
         private bool _showAnimateAway;
