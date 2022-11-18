@@ -12,7 +12,7 @@ namespace webenology.blazor.components
         {
             ContainerCss = "form-group",
             LabelCss = "",
-            InputGroupCss = "input-group",
+            InputGroupCss = "input-group combobox-border",
             InputCss = "form-control",
             InputShowRemoveInputCss = "show-remove-input",
             RemoveIconContainerCss = "input-group-text show-remove-remove",
