@@ -30,9 +30,13 @@ Welcome to your new app.
 <div>
     inside click: @_insideClick
     <div style="border:1px solid black">
-        <OutsideClick OnOutsideClick="@(()=> _insideClick = false)" OnInsideFocus="@(()=> _insideClick = true)">
-            hello click anywhere inside here !
-        </OutsideClick>
+        <table>
+            <OutsideClick Type="" OnOutsideClick="@(() => _insideClick = false)" OnInsideFocus="@(() => _insideClick = true)">
+                <td style="background-color: blue;color: white">
+                hello click anywhere inside here !
+                </td>
+            </OutsideClick>
+        </table>
     </div>
 </div>
 
