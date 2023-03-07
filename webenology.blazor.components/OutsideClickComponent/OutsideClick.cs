@@ -20,6 +20,8 @@ namespace webenology.blazor.components
         [Parameter]
         public string? Type { get; set; }
 
+        [Parameter] public string? Style { get; set; }
+
         [Inject] private IOutsideClickJsHelper js { get; set; }
         private ElementReference elRef { get; set; }
         private DotNetObjectReference<OutsideClick> _theInstance;
@@ -54,8 +56,8 @@ namespace webenology.blazor.components
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            builder.OpenElement(0, string.IsNullOrEmpty(Type) ? "div": Type);
-            builder.AddAttribute(1, "style", "display:inherit");
+            builder.OpenElement(0, string.IsNullOrEmpty(Type) ? "div" : Type);
+            builder.AddAttribute(1, "style", Style);
             builder.AddAttribute<FocusEventArgs>(2, "onfocusin",
                 EventCallback.Factory.Create<FocusEventArgs>((object)this, new Action(this.onInsideFocus)));
             builder.AddAttribute<MouseEventArgs>(3, "onclick",

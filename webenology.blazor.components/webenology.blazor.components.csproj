@@ -11,11 +11,11 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input,radio button,order by</PackageTags>
 		<PackageReleaseNotes>Fix memory leak with combobox and iblazorpdf</PackageReleaseNotes>
-		<AssemblyVersion>2.0.16.0</AssemblyVersion>
-		<FileVersion>2.0.16.0</FileVersion>
+		<AssemblyVersion>2.0.20.0</AssemblyVersion>
+		<FileVersion>2.0.20.0</FileVersion>
 		<Version>2.0.15</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>2.0.18</PackageVersion>
+		<PackageVersion>2.0.20</PackageVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
