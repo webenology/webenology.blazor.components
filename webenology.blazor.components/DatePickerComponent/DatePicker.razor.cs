@@ -11,7 +11,7 @@ using Microsoft.JSInterop;
 
 namespace webenology.blazor.components
 {
-    public partial class DatePicker<TValue>
+    public partial class DatePicker<TValue> : IDisposable
     {
         [Inject] private IDateTimerPickerJsHelper js { get; set; }
 
@@ -42,8 +42,8 @@ namespace webenology.blazor.components
         [CascadingParameter] private EditContext _editContext { get; set; }
 
         private DatePickerType _oldType = DatePickerType.Single;
-        public bool _isError => !string.IsNullOrEmpty(_errorMessage);
-        public string _errorMessage;
+        private bool _isError => !string.IsNullOrEmpty(_errorMessage);
+        private string _errorMessage;
         private bool MovingMouse = false;
         private bool CanUnlockReadonly => Readonly && CanUnlock.GetValueOrDefault();
         private DateTime? _oldMinDate;
@@ -110,6 +110,7 @@ namespace webenology.blazor.components
         }
 
         private ElementReference _inputRef;
+        private DotNetObjectReference<DatePicker<TValue>> _instance;
 
         private void UpdateSetting(string setting, string value)
         {
@@ -192,7 +193,8 @@ namespace webenology.blazor.components
                 var minDate = MinDate?.ToDtFormat(DateFormat, EnableTime);
                 var maxDate = MaxDate?.ToDtFormat(DateFormat, EnableTime);
                 var mode = DateType == DatePickerType.TimeOnly ? "single" : DateType.ToString().ToLower();
-                js.SetupPicker(DotNetObjectReference.Create(this), _inputRef, mode, EnableTime,
+                _instance = DotNetObjectReference.Create(this);
+                js.SetupPicker(_instance, _inputRef, mode, EnableTime,
                     MakeStatic, IsInline, minDate, maxDate, DateType == DatePickerType.TimeOnly);
                 _isLoaded = true;
                 if (Readonly || CanUnlockReadonly)
@@ -287,6 +289,7 @@ namespace webenology.blazor.components
             {
                 _editContext.OnValidationRequested -= _editContext_OnValidationRequested;
             }
+            _instance?.Dispose();
         }
 
         private async Task OpenOrClear()
