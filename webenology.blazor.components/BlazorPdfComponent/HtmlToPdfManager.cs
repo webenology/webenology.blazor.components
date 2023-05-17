@@ -7,9 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-
 using HtmlAgilityPack;
-
 using PuppeteerSharp;
 
 namespace webenology.blazor.components.BlazorPdfComponent
@@ -17,8 +15,10 @@ namespace webenology.blazor.components.BlazorPdfComponent
     public interface IHtmlToPdfManager
     {
         Task<string> GeneratePdf(string markup, string title, List<string> cssFiles, List<string> jsFiles,
-            PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false, PdfOrHtml returnType = PdfOrHtml.Pdf);
+            PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false,
+            PdfOrHtml returnType = PdfOrHtml.Pdf);
     }
+
     public class HtmlToPdfManager : IHtmlToPdfManager, IDisposable
     {
         private readonly IWFileWriter _fileWriter;
@@ -30,7 +30,9 @@ namespace webenology.blazor.components.BlazorPdfComponent
             _executeProcess = executeProcess;
         }
 
-        public async Task<string> GeneratePdf(string markup, string title, List<string> cssFiles, List<string> jsFiles, PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false, PdfOrHtml returnType = PdfOrHtml.Pdf)
+        public async Task<string> GeneratePdf(string markup, string title, List<string> cssFiles, List<string> jsFiles,
+            PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false,
+            PdfOrHtml returnType = PdfOrHtml.Pdf)
         {
             var doc = new HtmlDocument();
             doc.LoadHtml(markup);
@@ -47,6 +49,7 @@ namespace webenology.blazor.components.BlazorPdfComponent
                     doc.DocumentNode.InsertBefore(baseUrlNode, doc.DocumentNode.FirstChild);
                 }
             }
+
             if (cssFiles != null)
             {
                 foreach (var cssLocation in cssFiles)
@@ -87,10 +90,9 @@ namespace webenology.blazor.components.BlazorPdfComponent
                 doc = null;
                 if (_fileWriter.Exists($"{tempFile}.pdf"))
                 {
-                    await using var ms = new MemoryStream(_fileWriter.ReadAllBytes($"{tempFile}.pdf"));
-                    return Convert.ToBase64String(ms.ToArray());
+                    var bytes = _fileWriter.ReadAllBytes($"{tempFile}.pdf");
+                    return Convert.ToBase64String(bytes);
                 }
-
             }
             catch (Exception e)
             {
@@ -103,6 +105,7 @@ namespace webenology.blazor.components.BlazorPdfComponent
 
                 if (_fileWriter.Exists($"{tempFile}.pdf"))
                     _fileWriter.Delete($"{tempFile}.pdf");
+
             }
 
             return string.Empty;
@@ -110,7 +113,7 @@ namespace webenology.blazor.components.BlazorPdfComponent
 
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
+            GC.Collect();
         }
     }
 

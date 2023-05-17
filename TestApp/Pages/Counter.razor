@@ -13,9 +13,6 @@
 
 </div>
 
-<div class="">
-    <ComboBox TItem="string" ComboBoxType="ComboBoxType.Dropdown" ShowRemoveButton="true" Items="comboBoxItems" SelectedItem="@_selectedItem" OnSelectedItem="@((x)=> _selectedItem = x)"></ComboBox>
-</div>
 @code {
     private int currentCount = 0;
     private DateTime _date { get; set; } = DateTime.Now.AddDays(-1);
@@ -30,10 +27,10 @@
     {
         if (firstRender)
         {
-            for (int i = 0; i < 9999; i++)
-            {
-                comboBoxItems.Add(i.ToString("0000"));
-            }
+            // for (int i = 0; i < 9999; i++)
+            // {
+            //     comboBoxItems.Add(i.ToString("0000"));
+            // }
             StateHasChanged();
         }
         base.OnAfterRender(firstRender);

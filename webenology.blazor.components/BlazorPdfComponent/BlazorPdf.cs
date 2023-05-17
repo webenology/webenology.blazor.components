@@ -48,22 +48,23 @@ namespace webenology.blazor.components.BlazorPdfComponent
             List<string> jsFiles, PdfOptions pdfOptions = null, string baseUrl = "", bool useBaseUrl = false,
             PdfOrHtml pdfOrHtml = PdfOrHtml.Pdf, string waitForElement = "", int waitForElementTimeoutMs = 1000) where TValue : IComponent
         {
-            using var ctx = new TestContext();
-            ctx.Services.AddFallbackServiceProvider(_serviceProvider);
+            using (var ctx = new TestContext())
+            {
+                ctx.Services.AddFallbackServiceProvider(_serviceProvider);
 
-            using var results = ctx.RenderComponent(cParams);
-
-            if (!string.IsNullOrEmpty(waitForElement))
-                results.WaitForElement(waitForElement, TimeSpan.FromMilliseconds(waitForElementTimeoutMs));
-
-            var markup = results.Markup;
-
-            return await _htmlToPdfManager.GeneratePdf(markup, fileName, cssFiles, jsFiles, pdfOptions, baseUrl, useBaseUrl, pdfOrHtml);
+                using (var results = ctx.RenderComponent(cParams))
+                {
+                    if (!string.IsNullOrEmpty(waitForElement))
+                        results.WaitForElement(waitForElement, TimeSpan.FromMilliseconds(waitForElementTimeoutMs));
+                
+                    return await _htmlToPdfManager.GeneratePdf(results.Markup, fileName, cssFiles, jsFiles, pdfOptions, baseUrl, useBaseUrl, pdfOrHtml);
+                }
+            }
         }
 
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
+            GC.Collect();
         }
     }
 }

@@ -1,8 +1,34 @@
 ﻿@page "/pdfviewer"
+@using PuppeteerSharp
+@using webenology.blazor.components.BlazorPdfComponent
 
 <h3>PdfViewer</h3>
-@code {
+<div>This is pdf generation</div>
+<button class="btn btn-primary" @onclick="GeneratePdf">Generate PDF</button>
+<embed style="width: 100%; height: 650px;" src="data:application/pdf;base64,@_pdfPreview">
 
-    private TheDataSource _dataSource = new TheDataSource();
+
+@code {
+    [Inject]
+    private IBlazorPdf blazorPdf { get; set; }
+
+    private string _pdfPreview;
+
+    private async Task GeneratePdf()
+    {
+        var css = new List<string>
+        {
+            "/css/bootstrap/bootstrap.min.css"
+        };
+        var baseUrl = "https://localhost:44348";
+        var pdfOptions = new PdfOptions
+        {
+            PrintBackground = true,
+            HeaderTemplate = "abc",
+            FooterTemplate = "pageNumber of totalPages",
+            Landscape = true,
+        };
+        _pdfPreview = await blazorPdf.GetBlazorInPdfBase64<Counter>(x => { }, "abc", css, null,pdfOptions, baseUrl, true);
+    }
 
 }

@@ -4,9 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-
 using DocumentFormat.OpenXml.Office.CustomUI;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
@@ -16,51 +14,34 @@ using webenology.blazor.components.Helpers;
 
 namespace webenology.blazor.components
 {
-    public partial class ComboBox<TItem> : IDisposable
+    public partial class ComboBox<TItem> : IAsyncDisposable
     {
-        [Parameter]
-        public string Label { get; set; }
-        [Parameter]
-        public List<TItem> Items { get; set; }
-        [Parameter]
-        public string ValueFieldName { get; set; }
-        [Parameter]
-        public bool CanAddNewItem { get; set; }
-        [Parameter]
-        public EventCallback<string> OnCreateNewItem { get; set; }
-        [Parameter]
-        public EventCallback<TItem> OnSelectedItem { get; set; }
-        [Parameter]
-        public TItem SelectedItem { get; set; }
-        [Parameter]
-        public ComboBoxType ComboBoxType { get; set; }
-        [Parameter]
-        public bool IsEditable { get; set; }
-        [Parameter]
-        public string NewTypeName { get; set; }
-        [Parameter]
-        public bool ShowRemoveButton { get; set; }
-        [Parameter]
-        public int MaxItemsToShow { get; set; }
-        [Parameter]
-        public Expression<Func<object>> For { get; set; }
-        [Parameter]
-        public string PlaceHolder { get; set; }
-        [Parameter]
-        public ComboBoxStyle CssStyle { get; set; } = ComboBoxStyle.WebenologyStyle;
-        [Parameter]
-        public bool Readonly { get; set; }
+        [Parameter] public string Label { get; set; }
+        [Parameter] public List<TItem> Items { get; set; }
+        [Parameter] public string ValueFieldName { get; set; }
+        [Parameter] public bool CanAddNewItem { get; set; }
+        [Parameter] public EventCallback<string> OnCreateNewItem { get; set; }
+        [Parameter] public EventCallback<TItem> OnSelectedItem { get; set; }
+        [Parameter] public TItem SelectedItem { get; set; }
+        [Parameter] public ComboBoxType ComboBoxType { get; set; }
+        [Parameter] public bool IsEditable { get; set; }
+        [Parameter] public string NewTypeName { get; set; }
+        [Parameter] public bool ShowRemoveButton { get; set; }
+        [Parameter] public int MaxItemsToShow { get; set; }
+        [Parameter] public Expression<Func<object>> For { get; set; }
+        [Parameter] public string PlaceHolder { get; set; }
+        [Parameter] public ComboBoxStyle CssStyle { get; set; } = ComboBoxStyle.WebenologyStyle;
+        [Parameter] public bool Readonly { get; set; }
 
         [Parameter] public int ItemHeight { get; set; } = 40;
         [Parameter] public EventCallback<string> ValueChanged { get; set; }
         [Parameter] public bool AllowFreeFormText { get; set; }
-        [CascadingParameter]
-        private EditContext _editContext { get; set; }
+        [CascadingParameter] private EditContext _editContext { get; set; }
 
-        [Inject]
-        private IComboBoxJsHelper jsHelper { get; set; }
+        [Inject] private IComboBoxJsHelper jsHelper { get; set; }
 
         private string _localText;
+
         private string LocalText
         {
             get => _localText;
@@ -70,9 +51,13 @@ namespace webenology.blazor.components
                 _areItemsOpen = true;
                 _currentFocused = -1;
                 _localText = value;
-                _virtualized.RefreshDataAsync();
+                if (!filterDown || string.IsNullOrEmpty(value))
+                    SearchedItems = Items;
+                else
+                    SearchedItems = Items.Search(value, GetValue).ToList();
             }
         }
+
         private bool _areItemsOpen;
         private bool _isError => !string.IsNullOrEmpty(_errorMessage);
         private string _errorMessage;
@@ -84,16 +69,7 @@ namespace webenology.blazor.components
         private bool filterDown = true;
         private int scrollTo = 0;
 
-        private List<TItem> SearchedItems
-        {
-            get
-            {
-                if (!filterDown || string.IsNullOrEmpty(_localText))
-                    return Items;
-
-                return Items.Search(_localText, GetValue).ToList();
-            }
-        }
+        private List<TItem> SearchedItems { get; set; }
 
         private void closeItemsWindow()
         {
@@ -113,13 +89,13 @@ namespace webenology.blazor.components
             _virtualized.RefreshDataAsync();
 
             _areItemsOpen = true;
-
         }
 
         private string GetHeight()
         {
             return string.Intern(ItemHeight.ToString());
         }
+
         private void CheckComboBoxDropdownScrollTo()
         {
             if (ComboBoxType == ComboBoxType.Dropdown)
@@ -147,6 +123,7 @@ namespace webenology.blazor.components
                 OnSelectedItem.InvokeAsync(item);
                 SelectedItem = item;
             }
+
             _currentFocused = -1;
             closeItemsWindow();
         }
@@ -160,7 +137,6 @@ namespace webenology.blazor.components
 
             _elRef.FocusAsync();
             _areItemsOpen = !_areItemsOpen;
-
         }
 
         private void onAddNewItem()
@@ -223,15 +199,6 @@ namespace webenology.blazor.components
                 onSelectItem(default);
             else
                 onSelectItem(item);
-        }
-
-        private ValueTask<ItemsProviderResult<TItem>> GetSearchedItems(
-            ItemsProviderRequest request)
-        {
-            var numSearched = Math.Min(request.Count, SearchedItems.Count - request.StartIndex);
-            var searched = SearchedItems.Skip(request.StartIndex).Take(numSearched);
-
-            return ValueTask.FromResult(new ItemsProviderResult<TItem>(searched, SearchedItems.Count));
         }
 
         private string GetValue(TItem item)
@@ -314,6 +281,7 @@ namespace webenology.blazor.components
 
             return string.Join(" ", css);
         }
+
         private string ListGroupItemCss(bool isFocused)
         {
             var css = new List<string> { CssStyle.ListGroupItemCss };
@@ -333,6 +301,11 @@ namespace webenology.blazor.components
                 _localText = val;
             }
 
+            if (!EqualityComparer<List<TItem>>.Default.Equals(Items, default) && SearchedItems == null)
+            {
+                SearchedItems = Items;
+            }
+
             base.OnParametersSet();
         }
 
@@ -348,18 +321,23 @@ namespace webenology.blazor.components
                 jsHelper.ScrollTo(_scrollEl, scrollTo, ItemHeight);
                 scrollTo = 0;
             }
+
             base.OnAfterRender(firstRender);
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
             if (_editContext != null)
             {
                 _editContext.OnValidationRequested -= _editContext_OnValidationRequested;
             }
 
-            GC.SuppressFinalize(this);
-        }
+            await _virtualized.DisposeAsync();
 
+            SearchedItems = null;
+            Items = null;
+
+            GC.Collect();
+        }
     }
 }

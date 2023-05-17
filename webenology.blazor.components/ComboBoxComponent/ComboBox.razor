@@ -32,7 +32,7 @@
         }
         <div class="@ListGroupCss()" style="top: calc(100%@(_isError ? " - 24px" :""));">
             <div style="max-height: @(Math.Clamp(MaxItemsToShow * ItemHeight, ItemHeight*4, ItemHeight*8))px; overflow-y: auto" @ref="_scrollEl">
-                <Virtualize TItem="TItem" ItemsProvider="GetSearchedItems" @ref="_virtualized" OverscanCount="3" Context="itm">
+                <Virtualize TItem="TItem" Items="SearchedItems" @ref="_virtualized" OverscanCount="3" Context="itm">
                     @if (SearchedItems.Count == 1)
                     {
                         _currentFocused = 0;

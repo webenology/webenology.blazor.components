@@ -1,0 +1,25 @@
+﻿@page "/combobox-tester"
+
+<div class="">
+    <ComboBox TItem="string" ComboBoxType="ComboBoxType.Dropdown" ShowRemoveButton="true" 
+              Items="comboBoxItems" SelectedItem="@_selectedItem" OnSelectedItem="@((x) => _selectedItem = x)"></ComboBox>
+</div>
+
+@code {
+    private List<string> comboBoxItems = new();
+    private string _selectedItem { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            for (int i = 0; i < 9999; i++)
+            {
+                comboBoxItems.Add(i.ToString("0000"));
+            }
+            StateHasChanged();
+        }
+        base.OnAfterRender(firstRender);
+    }
+
+}
