@@ -82,12 +82,11 @@ namespace webenology.blazor.components
         private void openItemsWindow()
         {
             CheckComboBoxDropdownScrollTo();
+            LocalText = _localText;
 
             if (Readonly)
                 return;
-
-            _virtualized.RefreshDataAsync();
-
+            
             _areItemsOpen = true;
         }
 
