@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -11,6 +13,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.Net.Http.Headers;
 using webenology.blazor.components.Helpers;
+using Timer = System.Timers.Timer;
 
 namespace webenology.blazor.components
 {
@@ -39,7 +42,7 @@ namespace webenology.blazor.components
         [CascadingParameter] private EditContext _editContext { get; set; }
 
         [Inject] private IComboBoxJsHelper jsHelper { get; set; }
-
+        
         private string _localText;
 
         private string LocalText
@@ -54,7 +57,9 @@ namespace webenology.blazor.components
                 if (!filterDown || string.IsNullOrEmpty(value))
                     SearchedItems = Items;
                 else
+                {
                     SearchedItems = Items.Search(value, GetValue).ToList();
+                }
             }
         }
 
@@ -69,8 +74,8 @@ namespace webenology.blazor.components
         private bool filterDown = true;
         private int scrollTo = 0;
 
-        private List<TItem> SearchedItems { get; set; }
-
+        private IList<TItem> SearchedItems { get; set; }
+        
         private void closeItemsWindow()
         {
             if (!EqualityComparer<TItem>.Default.Equals(SelectedItem, default))
@@ -86,7 +91,7 @@ namespace webenology.blazor.components
 
             if (Readonly)
                 return;
-            
+
             _areItemsOpen = true;
         }
 
@@ -157,7 +162,7 @@ namespace webenology.blazor.components
                     _areItemsOpen = true;
 
                 if (_currentFocused <= 0)
-                    _currentFocused = SearchedItems.Count - 1;
+                    _currentFocused = SearchedItems.Count() - 1;
                 else
                     _currentFocused--;
 
@@ -168,7 +173,7 @@ namespace webenology.blazor.components
                 if (!_areItemsOpen)
                     _areItemsOpen = true;
 
-                if (_currentFocused >= SearchedItems.Count - 1)
+                if (_currentFocused >= SearchedItems.Count() - 1)
                     _currentFocused = 0;
                 else
                     _currentFocused++;
@@ -246,7 +251,7 @@ namespace webenology.blazor.components
 
             base.OnInitialized();
         }
-
+        
         private void _editContext_OnValidationRequested(object sender, ValidationRequestedEventArgs e)
         {
             _errorMessage = string.Empty;

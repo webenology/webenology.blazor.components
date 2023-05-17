@@ -47,13 +47,18 @@ namespace webenology.blazor.components.Helpers
                         }
                     }
 
-                    var r = new Regex($"{Regex.Escape(s)}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{Regex.Escape(searchString.ToString())}")}", RegexOptions.IgnoreCase);
+                    var pattern =
+                        $"{Regex.Escape(s)}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{Regex.Escape(searchString.ToString())}")}";
 
-                    var index = r.Matches(item);
+                    var index = Regex.Matches(item, pattern, RegexOptions.IgnoreCase);
 
                     foreach (Match match in index)
                     {
-                        highlighted.Add(new HighlightObject { Index = match.Index, Length = s.Length, Color = SharedHelper.Colors[colorIndex % SharedHelper.Colors.Length] });
+                        highlighted.Add(new HighlightObject
+                        {
+                            Index = match.Index, Length = s.Length,
+                            Color = SharedHelper.Colors[colorIndex % SharedHelper.Colors.Length]
+                        });
                     }
 
                     colorIndex++;
@@ -70,7 +75,8 @@ namespace webenology.blazor.components.Helpers
                     var found = highlightObject.OrderByDescending(x => x.Length).First();
                     results.Append(item[currentIndex..found.Index]);
                     var lastIndex = found.Index + found.Length;
-                    results.Append($"<mark{(colorize ? $" style='background-color:{found.Color}'" : "")}>{item[found.Index..lastIndex]}</mark>");
+                    results.Append(
+                        $"<mark{(colorize ? $" style='background-color:{found.Color}'" : "")}>{item[found.Index..lastIndex]}</mark>");
                     currentIndex = lastIndex;
                 }
 
@@ -80,7 +86,6 @@ namespace webenology.blazor.components.Helpers
                 }
 
                 return Regex.Unescape(results.ToString().Replace("</mark><mark>", ""));
-
             }
             catch (Exception e)
             {
@@ -88,6 +93,5 @@ namespace webenology.blazor.components.Helpers
                 return item;
             }
         }
-
     }
 }

@@ -13,7 +13,7 @@
     <OutsideClick OnOutsideClick="OnEnter">
         <div class="@CssStyle.InputGroupCss">
             <input placeholder="@PlaceHolder" type="text" @attributes="@_attributes" class="@InputCss()" @bind="LocalText"
-                   @bind:event="oninput" @onkeyup="onKeyPress" @onclick="openItemsWindow" @ref="_elRef" readonly="@Readonly" />
+                   @bind:event="oninput" @onkeyup="onKeyPress" @onclick="openItemsWindow" @ref="_elRef" readonly="@Readonly"/>
             @if (ShowRemoveButton && !string.IsNullOrEmpty(_localText) && !Readonly)
             {
                 <div class="@CssStyle.RemoveIconContainerCss">
@@ -30,8 +30,8 @@
                 @_errorMessage
             </label>
         }
-        <div class="@ListGroupCss()" style="top: calc(100%@(_isError ? " - 24px" :""));">
-            <div style="max-height: @(Math.Clamp(MaxItemsToShow * ItemHeight, ItemHeight*4, ItemHeight*8))px; overflow-y: auto" @ref="_scrollEl">
+        <div class="@ListGroupCss()" style="top: calc(100%@(_isError ? " - 24px" : ""));">
+            <div style="max-height: @(Math.Clamp(MaxItemsToShow * ItemHeight, ItemHeight * 4, ItemHeight * 8))px; overflow-y: auto" @ref="_scrollEl">
                 <Virtualize TItem="TItem" Items="SearchedItems" @ref="_virtualized" OverscanCount="3" Context="itm">
                     @if (SearchedItems.Count == 1)
                     {
@@ -41,7 +41,8 @@
                     {
                         _currentFocused = SearchedItems.IndexOf(SelectedItem);
                     }
-                    <span class="@ListGroupItemCss(_currentFocused == SearchedItems.IndexOf(itm))" @onclick="@(()=> onSelectItem(itm))" style="height: @($"{GetHeight()}px");">@((MarkupString)GetValue(itm).Highlight(_localText))</span>
+
+                    <span class="@ListGroupItemCss(_currentFocused == SearchedItems.IndexOf(itm))" @onclick="@(() => onSelectItem(itm))" style="height: @($"{GetHeight()}px");">@((MarkupString)GetValue(itm).Highlight(_localText))</span>
                 </Virtualize>
             </div>
             @if (!SearchedItems.Any())
@@ -54,7 +55,7 @@
             {
                 <div class="@CssStyle.AddNewContainerCss" @onclick="onAddNewItem">
                     <i class="@CssStyle.AddNewIconCss"></i>
-                    <b>Ctrl + Enter</b> to create @(string.IsNullOrEmpty(_localText) ? "a": $"\"{_localText}\" as a") new @(string.IsNullOrEmpty(NewTypeName)? "item": NewTypeName)
+                    <b>Ctrl + Enter</b> to create @(string.IsNullOrEmpty(_localText) ? "a" : $"\"{_localText}\" as a") new @(string.IsNullOrEmpty(NewTypeName) ? "item" : NewTypeName)
                 </div>
             }
         </div>

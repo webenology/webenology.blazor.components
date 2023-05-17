@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using AngleSharp.Diffing.Strategies.ElementStrategies;
+using System.Threading;
+using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace webenology.blazor.components.Helpers;
 
@@ -18,7 +20,7 @@ public static class SearchHelper
 
         try
         {
-            var results = new List<TValue>();
+            IEnumerable<TValue> results = null;
             var first = true;
             foreach (var s in searchTerm.Split(" "))
             {
@@ -40,19 +42,20 @@ public static class SearchHelper
                     }
                 }
 
-                var r = new Regex(
-                    $"{Regex.Escape(s)}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{Regex.Escape(searchString.ToString())}")}",
-                    RegexOptions.IgnoreCase);
+                var pattern =
+                    $"{Regex.Escape(s)}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{Regex.Escape(searchString.ToString())}")}";
 
-                results = first
-                    ? tIn.Where(x => r.IsMatch(expression(x))).ToList()
-                    : results.Where(x => r.IsMatch(expression(x))).ToList();
+                if (first)
+                    results = tIn.Where(x => Regex.IsMatch(expression(x), pattern, RegexOptions.IgnoreCase));
 
+                results = results.Where(x => Regex.IsMatch(expression(x), pattern, RegexOptions.IgnoreCase));
+                
                 first = false;
+
                 Debug.WriteLine("call ");
             }
 
-            return results;
+            return results.AsEnumerable();
         }
         catch (Exception e)
         {

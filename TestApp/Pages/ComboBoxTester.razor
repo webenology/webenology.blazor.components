@@ -9,13 +9,18 @@
     private List<string> comboBoxItems = new();
     private string _selectedItem { get; set; }
 
+    private List<string> _randomWords = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque in mi nibh. Nulla ullamcorper metus tortor, ut porttitor lacus rhoncus at. Donec lobortis augue lectus, ut placerat massa iaculis et. Morbi convallis feugiat massa, eu rutrum ipsum ultrices ut. Etiam diam turpis, tempus sed consectetur eget, hendrerit et ex. Proin feugiat, leo sed finibus luctus, purus massa vulputate arcu, quis elementum ligula ipsum quis purus. Donec facilisis molestie libero, ut dictum nisi vehicula id. Aliquam vel blandit velit. Mauris varius egestas aliquet. Nulla sodales elementum finibus. Nulla fermentum est ac ante tempor, et aliquet tortor feugiat. Pellentesque in consectetur ex, et blandit lacus.".Split(",").ToList();
+
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            for (int i = 0; i < 9999; i++)
+            var max = _randomWords.Count();
+            for (int i = 0; i < 99999; i++)
             {
-                comboBoxItems.Add(i.ToString("0000"));
+                var r = new Random((int)DateTime.Now.Ticks);
+                var index = r.Next(max);
+                comboBoxItems.Add(i.ToString("00000") + _randomWords[index]);
             }
             StateHasChanged();
         }
