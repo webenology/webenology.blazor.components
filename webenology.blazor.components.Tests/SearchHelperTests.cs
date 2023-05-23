@@ -1,185 +1,52 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using webenology.blazor.components.Helpers;
-
 using Xunit;
 
-namespace webenology.blazor.components.Tests
+namespace webenology.blazor.components.Tests;
+
+public class SearchHelperTests
 {
-    public class HighlightHelperTests
+    [Fact]
+    public void it_should_do_simple_search()
     {
-        [Fact]
-        public void it_should_highlight_1()
+        var searchKey = "ak";
+        var items = new List<string>
         {
-            var item = "My Item";
-
-            var results = item.Highlight("te");
-
-            Assert.Equal("My I<mark>te</mark>m", results);
-        }
+            "ab", "ok", "ak"
+        };
 
 
-        [Fact]
-        public void it_should_highlight_2()
+        var results = items.Search(searchKey, x => x);
+        
+        Assert.Equal(2, results.Count());
+
+    }
+    
+    [Fact]
+    public void it_should_do_simple_search_without_substitutions()
+    {
+        var searchKey = "ak";
+        var items = new List<string>
         {
-            var item = "My Item";
+            "ab", "ok", "ak"
+        };
+        
+        var results = items.Search(searchKey, x => x, false);
+        
+        Assert.Equal(1, results.Count());
 
-            var results = item.Highlight("tem");
+    }
 
-            Assert.Equal("My I<mark>tem</mark>", results);
-        }
-
-        [Fact]
-        public void it_should_highlight_3()
-        {
-            var item = "My Item";
-
-            var results = item.Highlight("my em");
-
-            Assert.Equal("<mark>My</mark> It<mark>em</mark>", results);
-        }
-
-        [Fact]
-        public void it_should_highlight_4()
-        {
-            var item = "Hello Hello Hello";
-
-            var results = item.Highlight("he lo");
-
-            Assert.Equal(
-                "<mark>He</mark>l<mark>lo</mark> <mark>He</mark>l<mark>lo</mark> <mark>He</mark>l<mark>lo</mark>",
-                results);
-        }
-
-        [Fact]
-        public void it_should_highlight_5()
-        {
-            var item = "1-Db Goddess and Thyro-Drive";
-
-            var results = item.Highlight("thyro godd ");
-
-            Assert.Equal("1-Db <mark>Godd</mark>ess and <mark>Thyro</mark>-Drive", results);
-        }
-
-        [Fact]
-        public void it_should_highlight_6()
-        {
-            var item = "99.7 Shaylee";
-
-            var results = item.Highlight("ee ylee");
-
-            Assert.Equal("99.7 Sha<mark>ylee</mark>", results);
-        }
-
-        [Fact]
-        public void it_should_highlight_7()
-        {
-            var item = "99.7 Shaylee";
-
-            var results = item.Highlight("ee yl");
-
-            Assert.Equal("99.7 Sha<mark>ylee</mark>", results);
-        }
-
-        [Fact]
-        public void it_should_highlight_8()
-        {
-            var item = "99.7 Shaylee";
-
-            var results = item.Highlight("sh ay le");
-
-            Assert.Equal("99.7 <mark>Shayle</mark>e", results);
-        }
-
-        [Fact]
-        public void it_should_highlight_9()
-        {
-            var item = "99.7 Shaylee";
-
-            var results = item.Highlight("ay sh ay le");
-
-            Assert.Equal("99.7 <mark>Shayle</mark>e", results);
-        }
-
-        [Fact]
-        public void it_should_highlight_10()
-        {
-            var item = "99.7 Shaylee";
-
-            var results = item.Highlight("laa");
-
-            Assert.Equal("99.7 Shay<mark>lee</mark>", results);
-        }
-
-        [Fact]
-        public void it_should_highlight_11()
-        {
-            var item = "this is a very very long post and hopefully I can get some highlighting on this";
-
-            var results = item.Highlight("this very pod and hope can ge high on t");
-
-            Assert.Equal(
-                "<mark>this</mark> is a <mark>very</mark> <mark>very</mark> l<mark>on</mark>g pos<mark>t</mark> <mark>and</mark> <mark>hope</mark>fully I <mark>can</mark> <mark>get</mark> some <mark>high</mark>ligh<mark>t</mark>ing <mark>on</mark> <mark>this</mark>",
-                results);
-        }
-
-        [Fact]
-        public void it_should_highlight_12()
-        {
-            var item = "something";
-
-            var results = item.Highlight("godd");
-
-            Assert.Equal("something", results);
-        }
-
-        [Fact]
-        public void it_should_not_fail_on_null_search_term()
-        {
-            var item = "99.7 Shaylee";
-
-            var results = item.Highlight(null);
-
-            Assert.Equal("99.7 Shaylee", results);
-        }
-
-        [Fact]
-        public void it_should_not_fail_on_empty_search_term()
-        {
-            var item = "99.7 Shaylee";
-
-            var results = item.Highlight("");
-
-            Assert.Equal("99.7 Shaylee", results);
-        }
-
-        [Fact]
-        public void it_should_not_fail_on_empty_item_and_null_search()
-        {
-            var item = "";
-
-            var results = item.Highlight(null);
-
-            Assert.Equal("", results);
-        }
-
-        [Fact]
-        public void it_should_not_fail_on_empty_item_and_empty_search()
-        {
-            var item = "";
-
-            var results = item.Highlight("");
-
-            Assert.Equal("", results);
-        }
-
-        [Fact]
-        public void it_should_do_a_large_amount_of_text()
-        {
-            var sw = new Stopwatch();
-            sw.Start();
-            var item =
+    [Fact]
+    private void it_should_do_a_large_search()
+    {
+        var sw = new Stopwatch();
+        sw.Start();
+        var item =
                 @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed tortor nulla. Mauris vitae elit aliquam lorem aliquam tempus. Mauris non augue feugiat, imperdiet leo ac, pretium lectus. Nulla leo dolor, vulputate nec posuere vitae, maximus sit amet diam. Vestibulum hendrerit, odio in feugiat ultricies, elit velit porta nulla, ut consequat nisi lectus at urna. Donec auctor venenatis mi, sit amet pharetra ligula tempor quis. Nullam lacus erat, gravida sit amet erat nec, accumsan sagittis massa. Nulla finibus erat vel elit ultricies lobortis. Vivamus lorem mauris, tempus a metus nec, commodo blandit nisl." +
                 "Integer facilisis odio eget ipsum mollis pellentesque. Quisque ullamcorper consequat felis non venenatis. Pellentesque eget massa ornare, aliquet nulla id, lacinia felis. In neque nisl, ornare non pharetra in, porta sagittis justo. Suspendisse nec ante sit amet sem maximus varius. Cras commodo risus mollis bibendum maximus. Mauris ac lobortis lorem, lobortis laoreet lectus. Duis non vestibulum massa. Nulla vel blandit mi, rutrum rhoncus ante. Aliquam facilisis sagittis congue. Ut pharetra diam id hendrerit sodales. Phasellus malesuada consequat convallis." +
                 "Integer mattis sodales leo, eget pretium purus tincidunt vitae. Curabitur nisl felis, placerat id fermentum a, fringilla non ipsum. Praesent a sagittis mauris. Donec interdum rhoncus dui, sit amet ultricies ligula gravida at. Duis non luctus ligula, sed vulputate justo. Sed ac placerat purus, vestibulum mattis orci. Maecenas ac erat tempus, dapibus odio a, consectetur risus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut malesuada sed ante eu fringilla. Duis dictum nunc lectus, eget porttitor est gravida quis. Etiam suscipit urna vel sem tempor accumsan. Curabitur molestie urna posuere dolor dignissim congue. Mauris non mauris vel orci rhoncus auctor. Mauris sed sodales dolor, sed cursus erat. Etiam non vulputate eros, ac luctus erat. Sed molestie, tortor nec varius pretium, neque augue dignissim odio, id tempor metus urna interdum sem." +
@@ -201,44 +68,16 @@ namespace webenology.blazor.components.Tests
                 "Sed finibus porttitor congue. Nulla ac vehicula purus. Cras vitae lobortis lacus. Ut posuere pretium vehicula. Cras volutpat cursus elit, ac malesuada augue porttitor ut. Phasellus malesuada tincidunt laoreet. Morbi sagittis elit at semper ornare. Vestibulum in viverra erat. Sed fringilla odio leo, ac pretium dui interdum facilisis. Duis cursus ornare dolor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In hac habitasse platea dictumst. Aenean ut interdum mauris. Aliquam in tincidunt nisi. Nam eu ligula urna." +
                 "Sed urna nunc, condimentum a porta vitae, vulputate sit amet lorem. Aliquam quam leo, pellentesque nec placerat eget, faucibus a sapien. Sed luctus, diam eleifend dictum malesuada, lorem nulla bibendum mi, ac pellentesque quam nisi vitae quam. Cras mattis faucibus sapien, vel maximus eros vestibulum non. In eget orci ornare, vehicula nisl nec, convallis lacus. Donec fermentum tristique lectus, vitae ultrices nisl luctus pretium. Duis dolor nulla, varius sed dui vulputate, tempor aliquet est. Proin accumsan vulputate efficitur. Phasellus quis venenatis odio, eu placerat augue. Aliquam blandit aliquam justo, id viverra massa fermentum sed. Nulla facilisi.";
 
-            var search = "velit sem augue eim faci vel just matt eg lu veh lla";
-            var iterations = 0;
-            for (var i = 0; i < search.Length; i++)
-            {
-                var b = search.Substring(0, i);
-                item.Highlight(b);
-                iterations++;
-            }
+            var search = "velit sem augue faci vel just matt eg lu veh lla";
+
+            var listOfItems = new List<string> { item };
+
+            var results = listOfItems.Search(search, x => x);
 
             sw.Stop();
-
-            Assert.True(true, $"Elapsed: {sw.Elapsed}");
-            Assert.Equal(52, iterations);
-
-            Console.WriteLine($"search took: {sw.Elapsed}");
-        }
-
-        [Fact]
-        public void it_should_highlight_and_colorize_1()
-        {
-            var item = "something";
-
-            var results = item.Highlight("methi", true);
-
-            Assert.Equal("so<mark style='background-color:#CE517A'>methi</mark>ng", results);
-        }
-
-        [Fact]
-        public void it_should_highlight_and_colorize_2()
-        {
-            var item =
-                "this is a very very long post and hopefully I can get some highlighting on this, this is a very very long post and hopefully I can get some highlighting on this, this is a very very long post and hopefully I can get some highlighting on this, this is a very very long post and hopefully I can get some highlighting on this";
-
-            var results = item.Highlight("this very pod and hope can get high on t on", true);
-
-            Assert.Equal(
-                "<mark style='background-color:#CE517A'>this</mark> is a <mark style='background-color:#4EED1A'>very</mark> <mark style='background-color:#4EED1A'>very</mark> l<mark style='background-color:#B0E347'>on</mark>g pos<mark style='background-color:#CE517A'>t</mark> <mark style='background-color:#B912E2'>and</mark> <mark style='background-color:#58B72A'>hope</mark>fully I <mark style='background-color:#77ACDC'>can</mark> <mark style='background-color:#809134'>get</mark> some <mark style='background-color:#4C78EB'>high</mark>ligh<mark style='background-color:#CE517A'>t</mark>ing <mark style='background-color:#B0E347'>on</mark> <mark style='background-color:#CE517A'>this</mark>, <mark style='background-color:#CE517A'>this</mark> is a <mark style='background-color:#4EED1A'>very</mark> <mark style='background-color:#4EED1A'>very</mark> l<mark style='background-color:#B0E347'>on</mark>g pos<mark style='background-color:#CE517A'>t</mark> <mark style='background-color:#B912E2'>and</mark> <mark style='background-color:#58B72A'>hope</mark>fully I <mark style='background-color:#77ACDC'>can</mark> <mark style='background-color:#809134'>get</mark> some <mark style='background-color:#4C78EB'>high</mark>ligh<mark style='background-color:#CE517A'>t</mark>ing <mark style='background-color:#B0E347'>on</mark> <mark style='background-color:#CE517A'>this</mark>, <mark style='background-color:#CE517A'>this</mark> is a <mark style='background-color:#4EED1A'>very</mark> <mark style='background-color:#4EED1A'>very</mark> l<mark style='background-color:#B0E347'>on</mark>g pos<mark style='background-color:#CE517A'>t</mark> <mark style='background-color:#B912E2'>and</mark> <mark style='background-color:#58B72A'>hope</mark>fully I <mark style='background-color:#77ACDC'>can</mark> <mark style='background-color:#809134'>get</mark> some <mark style='background-color:#4C78EB'>high</mark>ligh<mark style='background-color:#CE517A'>t</mark>ing <mark style='background-color:#B0E347'>on</mark> <mark style='background-color:#CE517A'>this</mark>, <mark style='background-color:#CE517A'>this</mark> is a <mark style='background-color:#4EED1A'>very</mark> <mark style='background-color:#4EED1A'>very</mark> l<mark style='background-color:#B0E347'>on</mark>g pos<mark style='background-color:#CE517A'>t</mark> <mark style='background-color:#B912E2'>and</mark> <mark style='background-color:#58B72A'>hope</mark>fully I <mark style='background-color:#77ACDC'>can</mark> <mark style='background-color:#809134'>get</mark> some <mark style='background-color:#4C78EB'>high</mark>ligh<mark style='background-color:#CE517A'>t</mark>ing <mark style='background-color:#B0E347'>on</mark> <mark style='background-color:#CE517A'>this</mark>",
-                results);
-        }
+            
+            Console.WriteLine($"took {sw.Elapsed}");
+            
+            Assert.Equal(1, results.Count());
     }
 }

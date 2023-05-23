@@ -12,8 +12,17 @@ namespace webenology.blazor.components.Helpers;
 
 public static class SearchHelper
 {
+    /// <summary>
+    /// Searched through a list and returns the items it finds
+    /// </summary>
+    /// <param name="tIn">Your list</param>
+    /// <param name="searchTerm">The term you are searching for</param>
+    /// <param name="expression">The properties in the list that make up the search parameters</param>
+    /// <param name="includeSubstitution">By default: true, will substitute simple characters, for example: a with e,i,o</param>
+    /// <typeparam name="TValue">List of items</typeparam>
+    /// <returns>The filtered results</returns>
     public static IEnumerable<TValue> Search<TValue>(this IEnumerable<TValue> tIn, string searchTerm,
-        Func<TValue, string> expression)
+        Func<TValue, string> expression, bool includeSubstitution = true)
     {
         if (string.IsNullOrEmpty(searchTerm))
             return tIn;
@@ -31,24 +40,21 @@ public static class SearchHelper
 
                 foreach (var v in s)
                 {
-                    if (SharedHelper.SubstituteChars.TryGetValue(v, out var c))
+                    if (includeSubstitution && SharedHelper.SubstituteChars.TryGetValue(v, out var c))
                     {
                         var chars = string.Join("", c);
                         searchString.Append($"[{chars}]");
                     }
                     else
                     {
-                        searchString.Append(v);
+                        searchString.Append(Regex.Escape(v.ToString()));
                     }
                 }
-
-                var pattern =
-                    $"{Regex.Escape(s)}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{Regex.Escape(searchString.ToString())}")}";
-
+                
                 if (first)
-                    results = tIn.Where(x => Regex.IsMatch(expression(x), pattern, RegexOptions.IgnoreCase));
+                    results = tIn.Where(x => Regex.IsMatch(expression(x), searchString.ToString(), RegexOptions.IgnoreCase));
 
-                results = results.Where(x => Regex.IsMatch(expression(x), pattern, RegexOptions.IgnoreCase));
+                results = results.Where(x => Regex.IsMatch(expression(x), searchString.ToString(), RegexOptions.IgnoreCase));
                 
                 first = false;
 

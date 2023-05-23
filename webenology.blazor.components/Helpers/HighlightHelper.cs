@@ -17,7 +17,7 @@ namespace webenology.blazor.components.Helpers
             public string Color { get; set; }
         }
 
-        public static string Highlight(this string item, string searchTerm, bool colorize = false)
+        public static string Highlight(this string item, string searchTerm, bool colorize = false, bool includeSubstitution = true)
         {
             if (string.IsNullOrEmpty(searchTerm) || string.IsNullOrEmpty(item))
                 return item;
@@ -36,21 +36,18 @@ namespace webenology.blazor.components.Helpers
 
                     foreach (var v in s)
                     {
-                        if (SharedHelper.SubstituteChars.ContainsKey(v))
+                        if (includeSubstitution && SharedHelper.SubstituteChars.TryGetValue(v, out var c))
                         {
-                            var chars = string.Join("", SharedHelper.SubstituteChars[v]);
+                            var chars = string.Join("", c);
                             searchString.Append($"[{chars}]");
                         }
                         else
                         {
-                            searchString.Append(v);
+                            searchString.Append(Regex.Escape(v.ToString()));
                         }
                     }
-
-                    var pattern =
-                        $"{Regex.Escape(s)}{(string.IsNullOrEmpty(searchString.ToString()) ? "" : $"|{Regex.Escape(searchString.ToString())}")}";
-
-                    var index = Regex.Matches(item, pattern, RegexOptions.IgnoreCase);
+                    
+                    var index = Regex.Matches(item, searchString.ToString(), RegexOptions.IgnoreCase);
 
                     foreach (Match match in index)
                     {
