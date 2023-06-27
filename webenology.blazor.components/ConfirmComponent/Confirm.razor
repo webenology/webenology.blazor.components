@@ -14,13 +14,13 @@
         <div class="@CssStyle.CardFooterCss">
             @if (_showCancel)
             {
-                <button class="@CssStyle.CancelButtonCss" @onclick="@(()=> Execute(_onCancel))" disabled="@_isSaving">@cancel</button>
+                <button type="button" class="@CssStyle.CancelButtonCss" @onclick="@(()=> Execute(_onCancel))" disabled="@_isSaving">@cancel</button>
             }
             @if (_showNo)
             {
-                <button class="@CssStyle.NoButtonCss" @onclick="@(()=> Execute(_onNo))" disabled="@_isSaving">@no</button>
+                <button type="button" class="@CssStyle.NoButtonCss" @onclick="@(()=> Execute(_onNo))" disabled="@_isSaving">@no</button>
             }
-            <button class="@CssStyle.YesButtonCss" @onclick="@(()=> Execute(_onYes))" disabled="@_isSaving">
+            <button type="button" class="@CssStyle.YesButtonCss" @onclick="@(()=> Execute(_onYes))" disabled="@_isSaving">
                 @if (_isSaving)
                 {
                     <i class="mdi mdi-spin mdi-loading" style="margin-right: 2px"></i>
