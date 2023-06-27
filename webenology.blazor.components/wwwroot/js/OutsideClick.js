@@ -2,7 +2,9 @@ var isSetup = false;
 var instances = [];
 export function RemoveInstance(el) {
     var instId = el.getAttributeNames().filter(function (x) { return x.substr(0, 4) === "_bl_"; })[0];
-    this.instances = instances.filter(function (x) { return x.id !== instId; });
+    if (Object.isExtensible(this.instances)) {
+        this.instances = this.instances.filter(function (x) { return x.id !== instId; });
+    }
 }
 export function Setup(el, instance) {
     var instId = el.getAttributeNames().filter(function (x) { return x.substr(0, 4) === "_bl_"; })[0];

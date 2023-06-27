@@ -3,7 +3,9 @@ const instances: IInstance[] = [];
 
 export function RemoveInstance(el: Element) {
     const instId = el.getAttributeNames().filter(x => x.substr(0, 4) === "_bl_")[0];
-    this.instances = instances.filter(x => x.id !== instId);
+    if(Object.isExtensible(this.instances)) {
+        this.instances = this.instances.filter(x => x.id !== instId);
+    }
 }
 
 export function Setup(el: Element, instance: any) {
