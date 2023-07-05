@@ -51,16 +51,21 @@ public static class SearchHelper
                     }
                 }
 
-                if (first)
-                    results = tIn.Where(x => Regex.IsMatch(expression(x), searchString.ToString(),
-                        RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(10)));
+                try
+                {
+                    if (first)
+                        results = tIn.Where(x => Regex.IsMatch(expression(x), searchString.ToString(),
+                            RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)));
 
-                results = results.Where(x => Regex.IsMatch(expression(x), searchString.ToString(),
-                    RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(10)));
+                    results = results.Where(x => Regex.IsMatch(expression(x), searchString.ToString(),
+                        RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)));
+                }
+                catch (Exception e)
+                {
+                    results = tIn;
+                }
 
                 first = false;
-
-                Debug.WriteLine("call ");
             }
 
 
