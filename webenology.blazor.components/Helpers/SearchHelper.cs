@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using Task = System.Threading.Tasks.Task;
 
 namespace webenology.blazor.components.Helpers;
 
@@ -36,14 +32,13 @@ public static class SearchHelper
                 if (string.IsNullOrEmpty(s))
                     continue;
 
-                var searchString = new StringBuilder();
+                var searchString = new StringBuilder(searchTerm.Length * 2);
 
                 foreach (var v in s)
                 {
                     if (includeSubstitution && SharedHelper.SubstituteChars.TryGetValue(v, out var c))
                     {
-                        var chars = string.Join("", c);
-                        searchString.Append($"[{chars}]");
+                        searchString.Append($"[{c}]");
                     }
                     else
                     {
@@ -60,16 +55,15 @@ public static class SearchHelper
                     results = results.Where(x => Regex.IsMatch(expression(x), searchString.ToString(),
                         RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     results = tIn;
                 }
 
                 first = false;
             }
-
-
-            return results.AsEnumerable();
+            
+            return results?.AsEnumerable() ?? tIn;
         }
         catch (Exception e)
         {

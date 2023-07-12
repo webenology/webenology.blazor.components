@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 
 namespace webenology.blazor.components.Helpers
@@ -12,9 +11,9 @@ namespace webenology.blazor.components.Helpers
     {
         private record HighlightObject
         {
-            public int Index { get; set; }
-            public int Length { get; set; }
-            public string Color { get; set; }
+            public int Index { get; init; }
+            public int Length { get; init; }
+            public string Color { get; init; }
         }
 
         public static string Highlight(this string item, string searchTerm, bool colorize = false, bool includeSubstitution = true)
@@ -38,8 +37,7 @@ namespace webenology.blazor.components.Helpers
                     {
                         if (includeSubstitution && SharedHelper.SubstituteChars.TryGetValue(v, out var c))
                         {
-                            var chars = string.Join("", c);
-                            searchString.Append($"[{chars}]");
+                            searchString.Append($"[{c}]");
                         }
                         else
                         {
