@@ -77,11 +77,13 @@
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.39" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
 		<PackageReference Include="PuppeteerSharp" Version="6.1.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.0-preview" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include="BlazorPdfComponent\wkhtmltopdf.exe" />
 		<EmbeddedResource Include="BlazorPdfComponent\wkhtmltox.dll" />
 	</ItemGroup>
+
 
 </Project>

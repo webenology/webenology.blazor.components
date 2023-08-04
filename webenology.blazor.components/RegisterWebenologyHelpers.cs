@@ -32,6 +32,7 @@ namespace webenology.blazor.components
             service.TryAddTransient<IWFileWriter, WFileWriter>();
             service.TryAddTransient<IBlazorPdf, BlazorPdf>();
             service.TryAddScoped<IMailMergeManager, MailMergeManager>();
+            service.TryAddScoped<IMetabaseHelpers, MetabaseHelpers>();
         }
     }
 }
