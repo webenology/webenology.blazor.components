@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-
 using webenology.blazor.components.BlazorPdfComponent;
 using webenology.blazor.components.MailMerge;
 
@@ -18,7 +11,7 @@ namespace webenology.blazor.components
         /// Register All the Webenology Helpers
         /// </summary>
         /// <param name="service">Service Collection</param>
-        public static void AddWebenologyHelpers(this IServiceCollection service)
+        public static void AddWebenologyHelpers(this IServiceCollection service, string? metabaeSecretKey = null)
         {
             service.TryAddScoped<IComboBoxJsHelper, ComboBoxJsHelper>();
             service.TryAddScoped<IDateTimerPickerJsHelper, DateTimerPickerJsHelper>();
@@ -32,7 +25,7 @@ namespace webenology.blazor.components
             service.TryAddTransient<IWFileWriter, WFileWriter>();
             service.TryAddTransient<IBlazorPdf, BlazorPdf>();
             service.TryAddScoped<IMailMergeManager, MailMergeManager>();
-            service.TryAddScoped<IMetabaseHelpers, MetabaseHelpers>();
+            service.TryAddScoped<IMetabaseHelper>(x => new MetabaseHelper(metabaeSecretKey));
         }
     }
 }

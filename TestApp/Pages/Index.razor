@@ -5,15 +5,15 @@
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<SurveyPrompt Title="How is Blazor working for you?"/>
 
 <WebNumberInput TValue="int?" Label="This is a number!" @bind-Number="_num" Max="4" Readonly="true"></WebNumberInput>
 
 <WebTextInput HighlightOnFocus="true" @bind-Text="_myhightlightvalue" Readonly="true"></WebTextInput>
 
-<Button ViewType="Button.ButtonType.Primary" Text="Open Modal" OnClick="@(()=>_modal.OpenModal())"></Button>
-<Button ViewType="Button.ButtonType.Success" Text="Open Modal 2" OnClick="@(()=>_modal2.OpenModal())"></Button>
-<Button ViewType="Button.ButtonType.Secondary" Text="Show Confirm" OnClick="@(()=> _confirm.ShowConfirm("Question!","Do you like this?"))" ButtonSecondaryCss="btn-secondary"></Button>
+<Button ViewType="Button.ButtonType.Primary" Text="Open Modal" OnClick="@(() => _modal.OpenModal())"></Button>
+<Button ViewType="Button.ButtonType.Success" Text="Open Modal 2" OnClick="@(() => _modal2.OpenModal())"></Button>
+<Button ViewType="Button.ButtonType.Secondary" Text="Show Confirm" OnClick="@(() => _confirm.ShowConfirm("Question!", "Do you like this?"))" ButtonSecondaryCss="btn-secondary"></Button>
 <Modal @ref="_modal" Size="Modal.ModalSize.Default" HeaderTitle="Groot" SubHeaderTitle="I am Groot">
     <BodyContent>this is the body</BodyContent>
     <FooterContent>this is the footer!</FooterContent>
@@ -33,7 +33,7 @@ Welcome to your new app.
         <table>
             <OutsideClick Type="" OnOutsideClick="@(() => _insideClick = false)" OnInsideFocus="@(() => _insideClick = true)">
                 <td style="background-color: blue;color: white">
-                hello click anywhere inside here !
+                    hello click anywhere inside here !
                 </td>
             </OutsideClick>
         </table>
@@ -41,20 +41,23 @@ Welcome to your new app.
 </div>
 
 myvalue: @_myvalue
-<br />
+<br/>
 selectedItem: @_selectedItem
-<ComboBox Items="items" TItem="KeyValuePair<string,string>" ValueFieldName="Value" SelectedItem="_selectedItem"
-          PlaceHolder="Search for a number..." OnSelectedItem="@((x)=>_selectedItem = x)"
-          ShowRemoveButton="true" OnCreateNewItem="AddNewItem" ValueChanged="@((x)=> _myvalue = x)"
-          Readonly="false"></ComboBox>
+<ComboBox Items="items" TItem="KeyValuePair<string, string>" ValueFieldName="Value" SelectedItem="_selectedItem"
+          PlaceHolder="Search for a number..." OnSelectedItem="@((x) => _selectedItem = x)"
+          ShowRemoveButton="true" OnCreateNewItem="AddNewItem" ValueChanged="@((x) => _myvalue = x)"
+          Readonly="false">
+</ComboBox>
 
 <DropDown Items="items" ShowEmpty="true" Readonly="true"></DropDown>
 
-<DatePicker Label="date range" @bind-Date="Dates" TValue="List<DateTime?>" 
+<DatePicker Label="date range" @bind-Date="Dates" TValue="List<DateTime?>"
             DateType="DatePickerType.Range" DateFormat="MM-dd-yyyy"
-            Readonly="true"></DatePicker>
-<DatePicker Label="dt here" @bind-Date="_dt" TValue="DateTime?" 
-            Readonly="true" CanUnlock="true"></DatePicker>
+            Readonly="true">
+</DatePicker>
+<DatePicker Label="dt here" @bind-Date="_dt" TValue="DateTime?"
+            Readonly="true" CanUnlock="true">
+</DatePicker>
 
 <Tabs>
     <Tab Title="tab 1" Badge="1">
@@ -74,19 +77,18 @@ selectedItem: @_selectedItem
     </Tab>
 </Tabs>
 
-<TreeView TreeNodes="_nodes" StartExpanded="true" AllowSelectAll="true" OnNodeSelectionChange="onSelected" />
-
+<TreeView TreeNodes="_nodes" StartExpanded="true" AllowSelectAll="true" OnNodeSelectionChange="onSelected"/>
 
 
 <WebTextInput @bind-Text="_text"></WebTextInput>
-<br />
+<br/>
 
 Selected Value @_checkedValue
 <RadioButton TItem="string" CheckedValue="@("All")" Name="is-checked" @bind-Value="_checkedValue"></RadioButton> All
 <RadioButton TItem="string" CheckedValue="@("None")" Name="is-checked" @bind-Value="_checkedValue"></RadioButton> None
 <RadioButton TItem="string" CheckedValue="@("Some")" Name="is-checked" @bind-Value="_checkedValue"></RadioButton> Some
-<br />
-<br />
+<br/>
+<br/>
 <Notification @ref="_notification"></Notification>
 <Button OnClick="AddNotification" Text="add notification"></Button>
 
@@ -96,10 +98,10 @@ Selected Value @_checkedValue
     <table class="table">
         <tr>
             <th>
-                <OrderBy FieldName="Name" FieldText="The Name" TValue="Data.OrderByClass" />
+                <OrderBy FieldName="Name" FieldText="The Name" TValue="Data.OrderByClass"/>
             </th>
             <th>
-                <OrderBy FieldName="Age" FieldText="The Age" TValue="Data.OrderByClass" />
+                <OrderBy FieldName="Age" FieldText="The Age" TValue="Data.OrderByClass"/>
             </th>
         </tr>
         @foreach (var i in itm)
@@ -116,3 +118,6 @@ Selected Value @_checkedValue
 <button class="btn btn-primary" @onclick="GeneratePdf">Generate PDF</button>
 <button class="btn btn-primary" @onclick="GeneratePdfFromDocx">Generate PDF from Word Document</button>
 <embed style="width: 100%; height: 650px;" src="data:application/pdf;base64,@_pdfPreview">
+
+<div>This is metabase generator</div>
+<MetabaseEmbed IsDashboard="true" ResourceId="1"/>
