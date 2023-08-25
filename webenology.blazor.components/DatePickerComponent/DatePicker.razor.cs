@@ -172,7 +172,7 @@ namespace webenology.blazor.components
             return !Readonly || CanUnlockReadonly;
         }
 
-        public string Css()
+        private string Css()
         {
             var css = new List<string> { CssStyle.InputCss };
 
@@ -190,8 +190,8 @@ namespace webenology.blazor.components
         {
             if (firstRender)
             {
-                var minDate = MinDate?.ToDtFormat(DateFormat, EnableTime);
-                var maxDate = MaxDate?.ToDtFormat(DateFormat, EnableTime);
+                var minDate = MinDate?.ToDtFormat("yyyy-MM-dd HH:mm", EnableTime);
+                var maxDate = MaxDate?.ToDtFormat("yyyy-MM-dd HH:mm", EnableTime);
                 var mode = DateType == DatePickerType.TimeOnly ? "single" : DateType.ToString().ToLower();
                 _instance = DotNetObjectReference.Create(this);
                 js.SetupPicker(_instance, _inputRef, mode, EnableTime,
@@ -215,13 +215,13 @@ namespace webenology.blazor.components
 
             if (_oldMinDate != MinDate)
             {
-                UpdateSetting("minDate", MinDate?.ToDtFormat(DateFormat, EnableTime));
+                UpdateSetting("minDate", MinDate?.ToDtFormat("yyyy-MM-dd HH:mm", EnableTime));
                 _oldMinDate = MinDate;
             }
 
             if (_oldMaxDate != MaxDate)
             {
-                UpdateSetting("maxDate", MaxDate?.ToDtFormat(DateFormat, EnableTime));
+                UpdateSetting("maxDate", MaxDate?.ToDtFormat("yyyy-MM-dd HH:mm", EnableTime));
                 _oldMaxDate = MaxDate;
             }
 

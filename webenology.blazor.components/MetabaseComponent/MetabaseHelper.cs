@@ -1,15 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Text;
+using AngleSharp.Common;
 using HtmlAgilityPack;
 using Microsoft.IdentityModel.Tokens;
+using Spire.Doc.Documents;
 
 namespace webenology.blazor.components;
 
 public interface IMetabaseHelper
 {
-    string GenerateJwt(int resourceId, string secretKey, bool isDashboard, string oldJwt);
+    string GenerateJwt(int resourceId, string secretKey, bool isDashboard, Dictionary<string, string>? jwtParameters,
+        string oldJwt);
 }
 
 public class MetabaseHelper : IMetabaseHelper
@@ -21,13 +25,31 @@ public class MetabaseHelper : IMetabaseHelper
         _metabaseSecretKey = metabaseSecretKey;
     }
 
-    public string GenerateJwt(int resourceId, string? secretKey, bool isDashboard, string oldJwt)
+    public string GenerateJwt(int resourceId, string secretKey, bool isDashboard,
+        Dictionary<string, string>? jwtParameters, string oldJwt)
     {
         var handler = new JwtSecurityTokenHandler();
         if (!string.IsNullOrEmpty(oldJwt))
         {
             var token = handler.ReadJwtToken(oldJwt);
-            if (token.ValidTo > DateTime.Now.AddMinutes(3))
+            var jwtParams = token.Payload["params"];
+            var sameParams = true;
+            if (jwtParameters != null)
+            {
+                var dict = jwtParams.ToDictionary();
+                foreach (var key in jwtParameters.Keys)
+                {
+                    if (dict.ContainsKey(key))
+                    {
+                        if (dict[key] == jwtParameters[key])
+                            continue;
+                    }
+
+                    sameParams = false;
+                }
+            }
+
+            if (sameParams && token.ValidTo > DateTime.Now.AddMinutes(3))
                 return oldJwt;
         }
 
@@ -43,6 +65,14 @@ public class MetabaseHelper : IMetabaseHelper
         var resParam = new Dictionary<string, int> { { isDashboard ? "dashboard" : "question", resourceId } };
 
         var pars = new Dictionary<string, string>();
+        if (jwtParameters != null)
+        {
+            foreach (var jwt in jwtParameters)
+            {
+                pars.Add(jwt.Key, jwt.Value);
+            }
+        }
+
         var expiration = DateTime.Now.AddMinutes(10);
 
         var payload = new JwtPayload

@@ -10,7 +10,6 @@ using Microsoft.Win32.SafeHandles;
 using PuppeteerSharp;
 using PuppeteerSharp.Media;
 using TestApp.Data;
-
 using webenology.blazor.components;
 using webenology.blazor.components.BlazorPdfComponent;
 using webenology.blazor.components.MailMerge;
@@ -35,10 +34,8 @@ namespace TestApp.Pages
         private string _checkedValue = "All";
         private List<OrderByClass> _orderByClasses = new();
         [Inject] private IJSRuntime js { get; set; }
-        [Inject]
-        private IBlazorPdf blazorPdf { get; set; }
-        [Inject]
-        private IMailMergeManager mailMergeManager { get; set; }
+        [Inject] private IBlazorPdf blazorPdf { get; set; }
+        [Inject] private IMailMergeManager mailMergeManager { get; set; }
         [Inject] private NavigationManager nav { get; set; }
 
         private ConfirmStyle confirmStyle()
@@ -54,6 +51,14 @@ namespace TestApp.Pages
         private List<DateTime?> _dates = new();
         private string _pdfPreview;
         private bool _isDblClickReadonly = true;
+
+        private Dictionary<string, string> _metabaseData = new()
+        {
+            { "StartDate", "2023-08-01" },
+            { "EndDate", "2023-08-31" },
+            { "ClientId", null },
+            { "VendorId", null }
+        };
 
         private List<DateTime?> Dates
         {
@@ -83,18 +88,22 @@ namespace TestApp.Pages
 
             _count++;
 
-            var warning = new NotificationModel { Body = $"Count: {_count}", ShowTimeoutBar = true, Type = NotificationType.Warning };
+            var warning = new NotificationModel
+                { Body = $"Count: {_count}", ShowTimeoutBar = true, Type = NotificationType.Warning };
 
             _notification.AddNotification(warning);
 
             _count++;
 
-            var danger = new NotificationModel { Body = $"Count: {_count}", Header = "what what what", ShowTimeoutBar = true, Type = NotificationType.Danger, TimeoutInSeconds = 5 };
+            var danger = new NotificationModel
+            {
+                Body = $"Count: {_count}", Header = "what what what", ShowTimeoutBar = true,
+                Type = NotificationType.Danger, TimeoutInSeconds = 5
+            };
 
             _notification.AddNotification(danger);
 
             _count++;
-
         }
 
         private void onSelected(List<string> claims)
@@ -109,10 +118,12 @@ namespace TestApp.Pages
                 items.Add(new KeyValuePair<string, string>(i.ToString(), i.ToString()));
             }
 
-            items.Add(new KeyValuePair<string, string>("abc", "ajsdl;fjas lkdfj asl;k dfalsk; fdl;aksjfl;kas jflk;asj dfl;aj slkfasldf alks flkasd jfdlkasj fl;asj flkasjdflkasjd fl;ka jl;jas;dlfj asl;kdfj al;skdjf l;as djfklasj df;lkajs dfl;ajsdfl;kjasdl;fhajskdhfjkah lka;sjdflk; jl;asdjfla sdl;fkj asd;lfjoi;wuofhalsdkfjal;ksdjfa ;lsdfjl;kasjdfl;kajs df;lj"));
+            items.Add(new KeyValuePair<string, string>("abc",
+                "ajsdl;fjas lkdfj asl;k dfalsk; fdl;aksjfl;kas jflk;asj dfl;aj slkfasldf alks flkasd jfdlkasj fl;asj flkasjdflkasjd fl;ka jl;jas;dlfj asl;kdfj al;skdjf l;as djfklasj df;lkajs dfl;ajsdfl;kjasdl;fhajskdhfjkah lka;sjdflk; jl;asdjfla sdl;fkj asd;lfjoi;wuofhalsdkfjal;ksdjfa ;lsdfjl;kasjdfl;kajs df;lj"));
 
             var homeNode = new TreeNode("1-abi", "main page");
-            homeNode.Nodes.Add(new TreeNode("second node", "another node that you need to look at,this one does stuff"));
+            homeNode.Nodes.Add(new TreeNode("second node",
+                "another node that you need to look at,this one does stuff"));
             homeNode.Nodes.Add(new TreeNode { Node = "third node", IsDisabled = true });
             var fourthNode = new TreeNode("fourth node");
             fourthNode.Nodes.Add(new TreeNode("fourth + 1 node"));
@@ -158,7 +169,8 @@ namespace TestApp.Pages
                 FooterTemplate = "pageNumber of totalPages",
                 Landscape = true,
             };
-            _pdfPreview = await blazorPdf.GetBlazorInPdfBase64<Counter>(x => { }, "abc", css, null,pdfOptions, baseUrl, true);
+            _pdfPreview =
+                await blazorPdf.GetBlazorInPdfBase64<Counter>(x => { }, "abc", css, null, pdfOptions, baseUrl, true);
         }
 
         private async Task GeneratePdfFromDocx()
