@@ -190,8 +190,8 @@ namespace webenology.blazor.components
         {
             if (firstRender)
             {
-                var minDate = MinDate?.ToDtFormat("yyyy-MM-dd HH:mm", EnableTime);
-                var maxDate = MaxDate?.ToDtFormat("yyyy-MM-dd HH:mm", EnableTime);
+                var minDate = MinDate?.ToMinMaxDtFormat(DateFormat, EnableTime);
+                var maxDate = MaxDate?.ToMinMaxDtFormat(DateFormat, EnableTime);
                 var mode = DateType == DatePickerType.TimeOnly ? "single" : DateType.ToString().ToLower();
                 _instance = DotNetObjectReference.Create(this);
                 js.SetupPicker(_instance, _inputRef, mode, EnableTime,
@@ -215,13 +215,13 @@ namespace webenology.blazor.components
 
             if (_oldMinDate != MinDate)
             {
-                UpdateSetting("minDate", MinDate?.ToDtFormat("yyyy-MM-dd HH:mm", EnableTime));
+                UpdateSetting("minDate", MinDate?.ToMinMaxDtFormat(DateFormat, EnableTime));
                 _oldMinDate = MinDate;
             }
 
             if (_oldMaxDate != MaxDate)
             {
-                UpdateSetting("maxDate", MaxDate?.ToDtFormat("yyyy-MM-dd HH:mm", EnableTime));
+                UpdateSetting("maxDate", MaxDate?.ToMinMaxDtFormat(DateFormat, EnableTime));
                 _oldMaxDate = MaxDate;
             }
 

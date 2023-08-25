@@ -52,10 +52,9 @@ selectedItem: @_selectedItem
 <DropDown Items="items" ShowEmpty="true" Readonly="true"></DropDown>
 
 <DatePicker Label="date range" @bind-Date="Dates" TValue="List<DateTime?>"
-            DateType="DatePickerType.Range" DateFormat="MM-dd-yyyy"
-            Readonly="true">
+            DateType="DatePickerType.Range" DateFormat="MM-dd-yyyy" MinDate="DateTime.Now.AddMinutes(-50)">
 </DatePicker>
-<DatePicker Label="dt here" @bind-Date="_dt" TValue="DateTime?"
+<DatePicker Label="dt here" @bind-Date="_dt" TValue="DateTime?" MinDate="DateTime.Now.AddDays(-3).AddMinutes(-50)"
             Readonly="true" CanUnlock="true">
 </DatePicker>
 

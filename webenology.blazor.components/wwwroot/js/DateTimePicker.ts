@@ -35,7 +35,6 @@ export function setupPicker(instance, element, type, time, makeStatic, isInline,
         config["noCalendar"] = true;
         config["dateFormat"] = "G:i K";
     }
-
     flatpickr(element, config);
 }
 
