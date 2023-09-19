@@ -57,6 +57,9 @@ public static class SearchHelper
 
     public static string[] ToSearchBreakout(this string searchTerm, bool includeSubstitution = true)
     {
+        if (string.IsNullOrEmpty(searchTerm))
+            return null;
+        
         var splitData = searchTerm.Split(" ");
         var results = new List<string>();
         foreach (var s in splitData)
