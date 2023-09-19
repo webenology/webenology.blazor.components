@@ -59,6 +59,28 @@ public class SearchHelperTests
 
         Assert.Single(results);
     }
+    
+    [Fact]
+    public void it_should_do_simple_substitution()
+    {
+        var searchKey = "hello";
+
+        var results = searchKey.ToSearchBreakout();
+        
+        Assert.Equal("h[iea]ll[oa]", results[0]);
+        Assert.Single(results);
+    }
+    
+    [Fact]
+    public void it_should_do_no_simple_substitution()
+    {
+        var searchKey = "hello";
+
+        var results = searchKey.ToSearchBreakout(false);
+        
+        Assert.Equal("hello", results[0]);
+        Assert.Single(results);
+    }
 
     [Fact]
     private void it_should_do_a_large_search()

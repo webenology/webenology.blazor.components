@@ -27,32 +27,15 @@ public static class SearchHelper
         {
             IEnumerable<TValue> results = null;
             var first = true;
-            foreach (var s in searchTerm.Split(" "))
+            foreach (var s in searchTerm.ToSearchBreakout(includeSubstitution))
             {
-                if (string.IsNullOrEmpty(s))
-                    continue;
-
-                var searchString = new StringBuilder(searchTerm.Length * 2);
-
-                foreach (var v in s)
-                {
-                    if (includeSubstitution && SharedHelper.SubstituteChars.TryGetValue(v, out var c))
-                    {
-                        searchString.Append($"[{c}]");
-                    }
-                    else
-                    {
-                        searchString.Append(Regex.Escape(v.ToString()));
-                    }
-                }
-
                 try
                 {
                     if (first)
-                        results = tIn.Where(x => Regex.IsMatch(expression(x), searchString.ToString(),
+                        results = tIn.Where(x => Regex.IsMatch(expression(x), s,
                             RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)));
 
-                    results = results.Where(x => Regex.IsMatch(expression(x), searchString.ToString(),
+                    results = results.Where(x => Regex.IsMatch(expression(x), s,
                         RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)));
                 }
                 catch (Exception)
@@ -62,7 +45,7 @@ public static class SearchHelper
 
                 first = false;
             }
-            
+
             return results?.AsEnumerable() ?? tIn;
         }
         catch (Exception e)
@@ -70,5 +53,34 @@ public static class SearchHelper
             Console.Error.WriteLine(e.ToString());
             return tIn;
         }
+    }
+
+    public static string[] ToSearchBreakout(this string searchTerm, bool includeSubstitution = true)
+    {
+        var splitData = searchTerm.Split(" ");
+        var results = new List<string>();
+        foreach (var s in splitData)
+        {
+            if (string.IsNullOrEmpty(s))
+                continue;
+
+            var searchString = new StringBuilder(searchTerm.Length * 2);
+
+            foreach (var v in s)
+            {
+                if (includeSubstitution && SharedHelper.SubstituteChars.TryGetValue(v, out var c))
+                {
+                    searchString.Append($"[{c}]");
+                }
+                else
+                {
+                    searchString.Append(Regex.Escape(v.ToString()));
+                }
+            }
+
+            results.Add(searchString.ToString());
+        }
+
+        return results.ToArray();
     }
 }
