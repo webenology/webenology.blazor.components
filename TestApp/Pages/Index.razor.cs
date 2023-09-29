@@ -60,6 +60,7 @@ namespace TestApp.Pages
         };
 
         private List<DateTime?> Dates { get; set; } = new();
+        public DateTime? Date { get; set; } = new DateTime(2023, 09, 22);
 
         private void OnDblClick()
         {

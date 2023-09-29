@@ -18,8 +18,13 @@ public partial class WebenologyDatePicker
     public List<DateTime?> DateRange { get; set; }
     [Parameter]
     public EventCallback<List<DateTime?>> DateRangeChanged { get; set; }
-    [Parameter] public bool IsRangeCalendar { get; set; } = true;
+    [Parameter]
+    public DateTime? Date { get; set; }
+    [Parameter]
+    public EventCallback<DateTime?> DateChanged { get; set; }
+    [Parameter] public bool? IsRangeCalendar { get; set; }
     [Parameter] public bool IsSmall { get; set; }
+    private bool _isRangeCalendar;
     private bool _isCalendarVisible;
     private int middleMonth;
     private DateTime today = DateTime.Today;
@@ -38,6 +43,25 @@ public partial class WebenologyDatePicker
         "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER",
         "DECEMBER"
     };
+
+    protected override void OnParametersSet()
+    {
+        if (DateRange != null && Date.HasValue)
+            throw new ArgumentException("You can only set a date range or a single date");
+
+        _isRangeCalendar = (DateRangeChanged.HasDelegate || DateRange != null) && (IsRangeCalendar.HasValue && IsRangeCalendar.Value || !IsRangeCalendar.HasValue);
+
+        if (Date.HasValue)
+        {
+            CurrentDateRange = new List<DateTime?>
+            {
+                Date.Value,
+                Date.Value
+            };
+        }
+
+        base.OnParametersSet();
+    }
 
     protected override void OnInitialized()
     {
@@ -135,7 +159,7 @@ public partial class WebenologyDatePicker
         var monthAndYear = GetNewMonthAndYear(i);
         var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day);
 
-        if (!IsRangeCalendar)
+        if (!_isRangeCalendar)
         {
             CurrentDateRange = new List<DateTime?>
             {
@@ -271,7 +295,7 @@ public partial class WebenologyDatePicker
 
     private Task OnSelectMonth(int month)
     {
-        if(!IsRangeCalendar)
+        if (!_isRangeCalendar)
             return Task.CompletedTask;
 
         var monthAndYear = GetNewMonthAndYear(month);
@@ -332,13 +356,20 @@ public partial class WebenologyDatePicker
         var str = new StringBuilder();
         DateTime? date1 = null;
         DateTime? date2 = null;
-        if (DateRange == null || !DateRange.Any())
+        if (!Date.HasValue)
         {
-            return "NONE";
-        }
+            if (DateRange == null || !DateRange.Any())
+            {
+                return "NONE";
+            }
 
-        date1 = DateRange.First();
-        date2 = DateRange.Last();
+            date1 = DateRange.First();
+            date2 = DateRange.Last();
+        }
+        else
+        {
+            date1 = Date.GetValueOrDefault();
+        }
         str.Append(date1.GetValueOrDefault().ToString("MM-dd-yyyy"));
         if (date2 != null && date1 != date2)
         {
@@ -381,11 +412,15 @@ public partial class WebenologyDatePicker
         {
             if (DateRangeChanged.HasDelegate)
                 DateRangeChanged.InvokeAsync(CurrentDateRange);
+            if (DateChanged.HasDelegate)
+                DateChanged.InvokeAsync(CurrentDateRange.Last());
         }
         else if (DateRange.Any())
         {
             if (DateRangeChanged.HasDelegate)
                 DateRangeChanged.InvokeAsync(DateRange);
+            if (DateChanged.HasDelegate)
+                DateChanged.InvokeAsync(DateRange.Last());
         }
 
         return Reset();
