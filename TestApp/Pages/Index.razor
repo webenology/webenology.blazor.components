@@ -7,6 +7,8 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?"/>
 
+<WebenologyDatePicker  @bind-DateRange="Dates"/>
+
 <WebNumberInput TValue="int?" Label="This is a number!" @bind-Number="_num" Max="4" Readonly="true"></WebNumberInput>
 
 <WebTextInput HighlightOnFocus="true" @bind-Text="_myhightlightvalue" Readonly="true"></WebTextInput>
@@ -50,13 +52,6 @@ selectedItem: @_selectedItem
 </ComboBox>
 
 <DropDown Items="items" ShowEmpty="true" Readonly="true"></DropDown>
-
-<DatePicker Label="date range" @bind-Date="Dates" TValue="List<DateTime?>"
-            DateType="DatePickerType.Range" DateFormat="MM-dd-yyyy" MinDate="DateTime.Now.AddMinutes(-50)">
-</DatePicker>
-<DatePicker Label="dt here" @bind-Date="_dt" TValue="DateTime?" MinDate="DateTime.Now.AddDays(-3).AddMinutes(-50)"
-            Readonly="true" CanUnlock="true">
-</DatePicker>
 
 <Tabs>
     <Tab Title="tab 1" Badge="1">
@@ -120,4 +115,4 @@ Selected Value @_checkedValue
 
 <div>This is metabase generator</div>
 
-<MetabaseEmbed JwtParameters="_metabaseData" IsDashboard="false" BaseUrl="https://mtreports.createdbywebenology.com" SecretKey="25a182fbfa028e44ce59c50b0971c6d0abd0e8e87ea5974786a59f2891756fbc" IsBordered="false" IsTitled="false" Height="calc(100vh - 400px)" Width="80vw" ResourceId="1"/>
+@* <MetabaseEmbed JwtParameters="_metabaseData" IsDashboard="false" BaseUrl="https://mtreports.createdbywebenology.com" SecretKey="25a182fbfa028e44ce59c50b0971c6d0abd0e8e87ea5974786a59f2891756fbc" IsBordered="false" IsTitled="false" Height="calc(100vh - 400px)" Width="80vw" ResourceId="1"/> *@

@@ -48,7 +48,6 @@ namespace TestApp.Pages
         private List<KeyValuePair<string, string>> items = new();
         private KeyValuePair<string, string> _selectedItem;
 
-        private List<DateTime?> _dates = new();
         private string _pdfPreview;
         private bool _isDblClickReadonly = true;
 
@@ -60,11 +59,7 @@ namespace TestApp.Pages
             { "VendorId", null }
         };
 
-        private List<DateTime?> Dates
-        {
-            get => _dates;
-            set => _dates = value;
-        }
+        private List<DateTime?> Dates { get; set; } = new();
 
         private void OnDblClick()
         {
