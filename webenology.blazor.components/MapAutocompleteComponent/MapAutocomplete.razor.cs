@@ -196,7 +196,7 @@ public partial class MapAutocomplete
 
         using var http = new HttpClient();
         http.BaseAddress = new Uri("https://autocomplete.search.hereapi.com/v1/");
-        var encodedQuery = WebUtility.HtmlEncode(query);
+        var encodedQuery = WebUtility.UrlEncode(query);
         var lat = CentralLat?.ToString(CultureInfo.InvariantCulture) ?? "37.0902";
         var lng = CentralLng?.ToString(CultureInfo.InvariantCulture) ?? "-95.7129";
         var countryCode = Country.ToString().Replace(" ", "");
