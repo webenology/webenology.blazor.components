@@ -59,6 +59,8 @@ namespace TestApp.Pages
             { "VendorId", null }
         };
 
+        private GeoAutoAddress _address;
+
         private List<DateTime?> Dates { get; set; } = new();
         public DateTime? Date { get; set; } = new DateTime(2023, 09, 22);
 
@@ -177,6 +179,12 @@ namespace TestApp.Pages
             var fs = await http.GetStreamAsync(doc);
             var obj = new { FirstName = "Jackie", LastName = "Chan" };
             _pdfPreview = mailMergeManager.Merge(fs, obj, true);
+        }
+
+        private Task SetAddress(GeoAutoAddress arg)
+        {
+            _address = arg;
+            return Task.CompletedTask;
         }
     }
 }
