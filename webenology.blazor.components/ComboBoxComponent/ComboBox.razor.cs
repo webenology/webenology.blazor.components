@@ -117,7 +117,6 @@ namespace webenology.blazor.components
             if (EqualityComparer<TItem>.Default.Equals(item, default) && AllowFreeFormText)
             {
                 SelectedItem = default;
-                OnSelectedItem.InvokeAsync(default);
                 ValueChanged.InvokeAsync(_localText);
             }
             else
