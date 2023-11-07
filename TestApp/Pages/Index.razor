@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using System.Security.Cryptography.X509Certificates
 @using System.Text.Json
 
 <h1>Hello, world!</h1>
@@ -8,7 +7,8 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?"/>
 
-<WebenologyDatePicker @bind-DateRange="Dates"/>
+<WebenologyDatePicker @bind-DateRange="Dates" BlackoutDates="new List<DateTime> { DateTime.Today}"
+                      />
 Date: @Date
 
 <MapAutocomplete ApiKey="" DefaultSearch="23 conne" OnSelectAddress="SetAddress" />

@@ -1,7 +1,8 @@
-﻿@namespace webenology.blazor.components
+﻿@namespace webenology.blazor.components.calendar
+
 <OutsideClick OnOutsideClick="HideCalendar">
 
-    <div class="webenology-calendar-outline">
+    <div class="webenology-calendar-outline @(IsDisabled ? "disabled":"")">
         <div class="input" @onclick="ToggleCalendar">
             <span>
                 @GetDateRangeForInput()

@@ -1,29 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-
-using DocumentFormat.OpenXml.Bibliography;
-
+﻿using System.Text;
 using Microsoft.AspNetCore.Components;
 
-namespace webenology.blazor.components;
+namespace webenology.blazor.components.calendar;
 
 public partial class WebenologyDatePicker
 {
-    [Parameter]
-    public List<DateTime?> DateRange { get; set; }
-    [Parameter]
-    public EventCallback<List<DateTime?>> DateRangeChanged { get; set; }
-    [Parameter]
-    public DateTime? Date { get; set; }
-    [Parameter]
-    public EventCallback<DateTime?> DateChanged { get; set; }
+    [Parameter] public List<DateTime?> DateRange { get; set; }
+    [Parameter] public EventCallback<List<DateTime?>> DateRangeChanged { get; set; }
+    [Parameter] public DateTime? Date { get; set; }
+    [Parameter] public EventCallback<DateTime?> DateChanged { get; set; }
     [Parameter] public bool? IsRangeCalendar { get; set; }
     [Parameter] public bool IsSmall { get; set; }
+    [Parameter] public DateTime? MinDateTime { get; set; }
+    [Parameter] public DateTime? MaxDateTime { get; set; }
+    [Parameter] public List<DateTime>? BlackoutDates { get; set; }
+    [Parameter] public bool IsDisabled { get; set; }
     private bool _isRangeCalendar;
     private bool _isCalendarVisible;
     private int middleMonth;
@@ -49,7 +40,8 @@ public partial class WebenologyDatePicker
         if (DateRange != null && Date.HasValue)
             throw new ArgumentException("You can only set a date range or a single date");
 
-        _isRangeCalendar = (DateRangeChanged.HasDelegate || DateRange != null) && (IsRangeCalendar.HasValue && IsRangeCalendar.Value || !IsRangeCalendar.HasValue);
+        _isRangeCalendar = (DateRangeChanged.HasDelegate || DateRange != null) &&
+                           (IsRangeCalendar.HasValue && IsRangeCalendar.Value || !IsRangeCalendar.HasValue);
 
         if (Date.HasValue)
         {
@@ -79,6 +71,9 @@ public partial class WebenologyDatePicker
 
     private Task ToggleCalendar()
     {
+        if (IsDisabled)
+            return Task.CompletedTask;
+        
         _isCalendarVisible = !_isCalendarVisible;
         return Task.CompletedTask;
     }
@@ -115,6 +110,9 @@ public partial class WebenologyDatePicker
         if (isSelected)
             str.Append("selected ");
 
+        if (IsDisabledDate(dt))
+            str.Append("disabled ");
+
         var isClicked = IsClicked(dt);
         if (isClicked)
             str.Append("clicked ");
@@ -122,18 +120,35 @@ public partial class WebenologyDatePicker
         return str.ToString();
     }
 
+    private bool IsDisabledDate(DateTime dt)
+    {
+        var isInMinMaxDisabled = MinDateTime.HasValue && dt <= MinDateTime.Value ||
+                                 MaxDateTime.HasValue && dt >= MaxDateTime.Value;
+
+        if (_isRangeCalendar)
+            return isInMinMaxDisabled;
+
+        return isInMinMaxDisabled ||
+               BlackoutDates != null && BlackoutDates.Any(x => x.Date == dt.Date);
+    }
+
     private bool IsSelected(DateTime currentDate)
     {
+        if (IsDisabledDate(currentDate))
+            return false;
+
         if (CurrentDateRange == null)
         {
             if (DateRange != null && DateRange.Any())
             {
-                return DateRange.First().GetValueOrDefault().Date <= currentDate.Date && DateRange.Last().GetValueOrDefault().Date >= currentDate;
+                return DateRange.First().GetValueOrDefault().Date <= currentDate.Date &&
+                       DateRange.Last().GetValueOrDefault().Date >= currentDate;
             }
         }
         else
         {
-            return CurrentDateRange.First().GetValueOrDefault().Date <= currentDate.Date && CurrentDateRange.Last().GetValueOrDefault().Date >= currentDate;
+            return CurrentDateRange.First().GetValueOrDefault().Date <= currentDate.Date &&
+                   CurrentDateRange.Last().GetValueOrDefault().Date >= currentDate;
         }
 
         return false;
@@ -141,6 +156,9 @@ public partial class WebenologyDatePicker
 
     private bool IsClicked(DateTime currentDate)
     {
+        if (IsDisabledDate(currentDate))
+            return false;
+
         if (FirstDate.HasValue && LastDate.HasValue)
         {
             return FirstDate.Value.Date <= currentDate.Date && LastDate >= currentDate.Date;
@@ -158,6 +176,8 @@ public partial class WebenologyDatePicker
     {
         var monthAndYear = GetNewMonthAndYear(i);
         var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day);
+        if (IsDisabledDate(dt))
+            return;
 
         if (!_isRangeCalendar)
         {
@@ -275,7 +295,8 @@ public partial class WebenologyDatePicker
                 break;
             case QuickSelect.LastThreeWeeks:
                 var thisSaturdayAgain = today.AddDays(6 - (int)today.DayOfWeek);
-                CurrentDateRange = new List<DateTime?> { thisSaturdayAgain.AddDays(-27), thisSaturdayAgain.AddDays(-7) };
+                CurrentDateRange = new List<DateTime?>
+                    { thisSaturdayAgain.AddDays(-27), thisSaturdayAgain.AddDays(-7) };
                 break;
             case QuickSelect.MonthToDate:
                 var startOfMonth = new DateTime(today.Year, today.Month, 1);
@@ -287,10 +308,32 @@ public partial class WebenologyDatePicker
                 break;
         }
 
+        UpdateQuickSelect();
+
         visibleYear = today.Year;
         middleMonth = today.Month;
 
         return Task.CompletedTask;
+    }
+
+    private void UpdateQuickSelect()
+    {
+        if (MinDateTime.HasValue && CurrentDateRange.First().Value < MinDateTime.Value)
+        {
+            CurrentDateRange.RemoveAt(0);
+            CurrentDateRange.Insert(0, MinDateTime.Value.AddDays(1));
+        }
+
+        if (MaxDateTime.HasValue && CurrentDateRange.Last().Value > MaxDateTime.Value)
+        {
+            CurrentDateRange.RemoveAt(1);
+            CurrentDateRange.Insert(1, MaxDateTime.Value.AddDays(-1));
+        }
+
+        if (CurrentDateRange[1] < CurrentDateRange[0])
+        {
+            CurrentDateRange[1] = CurrentDateRange[0];
+        }
     }
 
     private Task OnSelectMonth(int month)
@@ -370,6 +413,7 @@ public partial class WebenologyDatePicker
         {
             date1 = Date.GetValueOrDefault();
         }
+
         str.Append(date1.GetValueOrDefault().ToString("MM-dd-yyyy"));
         if (date2 != null && date1 != date2)
         {
@@ -387,7 +431,6 @@ public partial class WebenologyDatePicker
             var last = CurrentDateRange.Last().GetValueOrDefault();
             visibleYear = last.Year;
             middleMonth = last.Month;
-
         }
         else if (DateRange != null && DateRange.Any())
         {

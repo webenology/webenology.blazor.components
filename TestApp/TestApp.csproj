@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\webenology.blazor.components.calendar\webenology.blazor.components.calendar.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.dropdown\webenology.blazor.components.dropdown.csproj" />
     <ProjectReference Include="..\webenology.blazor.components\webenology.blazor.components.csproj" />
     <ProjectReference Include="..\webenology.blazor.ss.authentication\webenology.blazor.ss.authentication.csproj" />
   </ItemGroup>

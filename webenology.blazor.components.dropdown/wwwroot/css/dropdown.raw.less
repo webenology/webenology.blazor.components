@@ -1,0 +1,66 @@
+@tailwind base;
+
+.webenology_drop-down-wrapper {
+    @apply w-full relative bg-white;
+
+    .drop-down-input-wrapper {
+        @apply flex border border-black items-center;
+
+        .unselect {
+            @apply text-gray-400 hover:text-slate-800 cursor-pointer px-1;
+        }
+
+        .drop-down-input {
+            @apply p-2 text-gray-600 flex-1 outline-none;
+        }
+
+        .drop-down-arrow {
+            @apply p-2 border-l cursor-pointer;
+        }
+    }
+
+    .drop-down-body {
+        @apply border border-gray-400 shadow-sm absolute w-full overflow-y-auto hidden;
+        max-height: 260px;
+
+        .add {
+            @apply text-slate-800 hover:text-indigo-500 hover:bg-indigo-200 cursor-pointer border-b py-1 px-1 text-center;
+
+            span {
+                @apply italic font-bold text-sm;
+            }
+        }
+
+        &.active {
+            @apply flex flex-col z-10;
+        }
+
+        .item {
+            @apply text-slate-800 hover:bg-indigo-500 hover:text-white cursor-pointer border-b py-1 px-1 bg-white;
+
+            &:hover mark {
+                @apply bg-indigo-500 text-white;
+            }
+
+            &.selected {
+                @apply bg-indigo-800 text-white;
+
+                ::deep mark {
+                    @apply bg-indigo-800 text-white;
+                }
+            }
+
+            &.disabled {
+                @apply text-opacity-50 hover:bg-gray-100 hover:text-gray-400 cursor-not-allowed;
+
+                &:hover mark {
+                    @apply bg-yellow-400 text-black;
+                }
+            }
+        }
+    }
+}
+
+::deep mark {
+    @apply inline-block p-0 bg-yellow-400;
+}
