@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\webenology.blazor.components.shared\webenology.blazor.components.shared.csproj" />
     <ProjectReference Include="..\webenology.blazor.components\webenology.blazor.components.csproj" />
   </ItemGroup>
 

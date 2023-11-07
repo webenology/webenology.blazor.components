@@ -13,7 +13,7 @@ namespace webenology.blazor.components.DropDownComponent
             SelectForm = "form-select",
             Error = "error"
         };
-
+        
         public string SelectForm { get; set; }
         public string Error { get; set; }
     }

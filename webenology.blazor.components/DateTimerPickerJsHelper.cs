@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Xml.Schema;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -12,7 +12,9 @@ namespace webenology.blazor.components
     internal interface IDateTimerPickerJsHelper
     {
         Task SetupPicker<TRef>(DotNetObjectReference<TRef> instance, ElementReference el, string type, bool time,
-            bool isStatic, bool isInline, string minDate, string maxDate, bool timeOnly) where TRef : class;
+            bool isStatic, bool isInline, string minDate, string maxDate, bool timeOnly)
+            where TRef : class;
+
         Task UpdateSettings(ElementReference el, string setting, string value);
         Task OpenCalendar(ElementReference el);
     }
@@ -21,7 +23,8 @@ namespace webenology.blazor.components
     {
         private readonly IJSRuntime _jsRuntime;
 
-        public DateTimerPickerJsHelper(IJSRuntime jsRuntime) : base(jsRuntime, "./_content/webenology.blazor.components/js/datetimepicker.js")
+        public DateTimerPickerJsHelper(IJSRuntime jsRuntime) : base(jsRuntime,
+            "./_content/webenology.blazor.components/js/datetimepicker.js")
         {
             _jsRuntime = jsRuntime;
             jsRuntime.InvokeAsync<IJSObjectReference>(
@@ -29,7 +32,8 @@ namespace webenology.blazor.components
         }
 
         public async Task SetupPicker<TRef>(DotNetObjectReference<TRef> instance, ElementReference el, string type,
-            bool time, bool isStatic, bool isInline, string minDate, string maxDate, bool timeOnly) where TRef : class
+            bool time, bool isStatic, bool isInline, string minDate, string maxDate,
+            bool timeOnly) where TRef : class
         {
             var module = await ModuleTask.Value;
             await module.InvokeVoidAsync("setupPicker", instance, el, type, time, isStatic, isInline, minDate, maxDate, timeOnly);

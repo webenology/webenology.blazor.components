@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
 
-namespace webenology.blazor.components.Helpers;
+namespace webenology.blazor.components.shared;
 
 public static class SearchHelper
 {

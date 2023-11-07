@@ -1,0 +1,65 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center
+}
+
+.input {
+    width: 100%;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(191 219 254 / var(--tw-border-opacity));
+    padding-left: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-right: 2.5rem;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    border-style: solid;
+}
+
+.input:focus {
+    --tw-border-opacity: 1;
+    border-color: rgb(151 179 214 / var(--tw-border-opacity));
+}
+
+.results {
+    position: absolute;
+    top: 100%;
+    z-index: 10;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    border-style: solid;
+    --tw-bg-opacity: 1;
+    --tw-border-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    border-color: rgb(191 219 254 / var(--tw-border-opacity));
+}
+
+.results-item {
+    cursor: pointer;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem
+}
+
+.results-item:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(191 219 254 / var(--tw-bg-opacity))
+}
+
+::deep mark {
+    background-color: #caff70;
+    padding: 0;
+}
+    

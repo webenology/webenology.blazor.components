@@ -14,9 +14,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webenology.blazor.components.Tests", "webenology.blazor.components.Tests\webenology.blazor.components.Tests.csproj", "{93F2868E-79F1-41C3-938F-76C420CCDDCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.ss.authentication", "webenology.blazor.ss.authentication\webenology.blazor.ss.authentication.csproj", "{CB687139-4EB8-457E-870B-F2A74CFDF62B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webenology.blazor.ss.authentication", "webenology.blazor.ss.authentication\webenology.blazor.ss.authentication.csproj", "{CB687139-4EB8-457E-870B-F2A74CFDF62B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmarking", "Benchmarking\Benchmarking.csproj", "{5202EF18-763A-49BC-9C82-3CEB2AA0359D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmarking", "Benchmarking\Benchmarking.csproj", "{5202EF18-763A-49BC-9C82-3CEB2AA0359D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webenology.blazor.components.dropdown", "webenology.blazor.components.dropdown\webenology.blazor.components.dropdown.csproj", "{B5B2E36D-03A9-44CE-A3ED-C0F37929F1F3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webenology.blazor.components.shared", "webenology.blazor.components.shared\webenology.blazor.components.shared.csproj", "{7B316E3C-0B6A-474C-8886-319F5878254C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.calendar", "webenology.blazor.components.calendar\webenology.blazor.components.calendar.csproj", "{A912F97D-83E8-4B90-97B6-1AC33F2719B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +50,18 @@ Global
 		{5202EF18-763A-49BC-9C82-3CEB2AA0359D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5202EF18-763A-49BC-9C82-3CEB2AA0359D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5202EF18-763A-49BC-9C82-3CEB2AA0359D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5B2E36D-03A9-44CE-A3ED-C0F37929F1F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5B2E36D-03A9-44CE-A3ED-C0F37929F1F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5B2E36D-03A9-44CE-A3ED-C0F37929F1F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5B2E36D-03A9-44CE-A3ED-C0F37929F1F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B316E3C-0B6A-474C-8886-319F5878254C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B316E3C-0B6A-474C-8886-319F5878254C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B316E3C-0B6A-474C-8886-319F5878254C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B316E3C-0B6A-474C-8886-319F5878254C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A912F97D-83E8-4B90-97B6-1AC33F2719B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A912F97D-83E8-4B90-97B6-1AC33F2719B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A912F97D-83E8-4B90-97B6-1AC33F2719B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A912F97D-83E8-4B90-97B6-1AC33F2719B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

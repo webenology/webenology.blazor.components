@@ -8,13 +8,13 @@
 		<Description>Blazor Components used at webenology</Description>
 		<RepositoryUrl>https://github.com/webenology/webenology.blazor.components</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input,radio button,order by</PackageTags>
-		<PackageReleaseNotes>Fix memory leak with combobox and iblazorpdf</PackageReleaseNotes>
+		<PackageTags>blazor, components, button, combobox, confirm, datepicker,dropdown,modal,notification,number,outside,tab,text input,radio button,order by,metabase</PackageTags>
+		<PackageReleaseNotes>Fixed auto complete map to url encode</PackageReleaseNotes>
 		<AssemblyVersion>2.0.20.0</AssemblyVersion>
 		<FileVersion>2.0.20.0</FileVersion>
 		<Version>2.0.15</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageVersion>2.1.7</PackageVersion>
+		<PackageVersion>2.3.1</PackageVersion>
 		<TargetFramework>net7.0</TargetFramework>
 	</PropertyGroup>
 
@@ -68,20 +68,18 @@
 
 	<ItemGroup>
 		<PackageReference Include="bunit.web" Version="1.3.42" />
-		<PackageReference Include="docfx.console" Version="2.59.2">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="DocumentFormat.OpenXml" Version="2.15.0" />
 		<PackageReference Include="FreeSpire.Doc" Version="9.9.7" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.39" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
 		<PackageReference Include="PuppeteerSharp" Version="6.1.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.0-preview" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include="BlazorPdfComponent\wkhtmltopdf.exe" />
 		<EmbeddedResource Include="BlazorPdfComponent\wkhtmltox.dll" />
 	</ItemGroup>
+
 
 </Project>
