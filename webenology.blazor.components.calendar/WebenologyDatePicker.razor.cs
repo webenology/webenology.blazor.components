@@ -1,4 +1,5 @@
 ﻿using System.Text;
+
 using Microsoft.AspNetCore.Components;
 
 namespace webenology.blazor.components.calendar;
@@ -73,7 +74,7 @@ public partial class WebenologyDatePicker
     {
         if (IsDisabled)
             return Task.CompletedTask;
-        
+
         _isCalendarVisible = !_isCalendarVisible;
         return Task.CompletedTask;
     }
@@ -274,6 +275,7 @@ public partial class WebenologyDatePicker
         LastThreeWeeks,
         MonthToDate,
         YearToDate,
+        Year
     }
 
     private Task OnQuickSelect(QuickSelect quickSelect)
@@ -305,6 +307,9 @@ public partial class WebenologyDatePicker
             case QuickSelect.YearToDate:
                 var startOfYear = new DateTime(today.Year, 1, 1);
                 CurrentDateRange = new List<DateTime?> { startOfYear, today };
+                break;
+            case QuickSelect.Year:
+                CurrentDateRange = new List<DateTime?> { new DateTime(today.Year, 1, 1), new DateTime(today.Year, 12, 31) };
                 break;
         }
 
@@ -481,5 +486,38 @@ public partial class WebenologyDatePicker
             DateRangeChanged.InvokeAsync(dt);
 
         return Reset();
+    }
+
+    private Task AddYear(int year)
+    {
+        if (CurrentDateRange is { Count: > 1 })
+        {
+            CurrentDateRange[0] = CurrentDateRange[0]?.AddYears(year);
+            CurrentDateRange[1] = CurrentDateRange[1]?.AddYears(year);
+            if (DateRangeChanged.HasDelegate)
+                DateRangeChanged.InvokeAsync(CurrentDateRange);
+        }
+        else if (CurrentDateRange is { Count: 1 })
+        {
+            CurrentDateRange[0] = CurrentDateRange[0]?.AddYears(year);
+            if (DateChanged.HasDelegate)
+                DateChanged.InvokeAsync(CurrentDateRange.Last());
+        }
+        else if (DateRange is { Count: > 1 })
+        {
+            DateRange[0] = DateRange[0]?.AddYears(year);
+            DateRange[1] = DateRange[1]?.AddYears(year);
+            if (DateRangeChanged.HasDelegate)
+                DateRangeChanged.InvokeAsync(DateRange);
+        }
+        else if (DateRange is { Count: 1 })
+        {
+            DateRange[0] = DateRange[0]?.AddYears(year);
+            if (DateChanged.HasDelegate)
+                DateChanged.InvokeAsync(DateRange.Last());
+        }
+
+        visibleYear += year;
+        return Task.CompletedTask;
     }
 }

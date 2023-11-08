@@ -1,5 +1,12 @@
 export function Register(el, ref) {
     document.addEventListener("click", (e) => onClickReg(e, el, ref));
+    const input = el.querySelector("input[type='text']");
+    var len = input.value.length;
+    input.addEventListener("keydown", (e) => {
+        if (e.key == "Enter") {
+            e.preventDefault();
+        }
+    });
     ScrollToActive(el);
 }
 

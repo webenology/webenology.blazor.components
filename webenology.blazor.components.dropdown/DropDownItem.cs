@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-
-namespace webenology.blazor.components.dropdown;
+﻿namespace webenology.blazor.components.dropdown;
 
 public class DropDownItem<T> where T : IConvertible
 {

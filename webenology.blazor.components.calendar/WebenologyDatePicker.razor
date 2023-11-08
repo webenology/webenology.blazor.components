@@ -14,13 +14,13 @@
         </div>
         <div class="webenology-calendar-holder @(_isCalendarVisible ? "visible" : "")">
             <div class="header">
-                <div @onclick="@(()=> visibleYear--)">
+                <div @onclick="@(() => AddYear(-1))">
                     @GetYear(-1)
                 </div>
                 <div @onclick="@(GoToLastMonthSelected)">
                     @GetDateRangeData()
                 </div>
-                <div @onclick="@(()=> visibleYear++)">
+                <div @onclick="@(()=> AddYear(1))">
                     @GetYear(1)
                 </div>
             </div>
@@ -41,6 +41,7 @@
                     <div @onclick="@(()=> OnQuickSelect(QuickSelect.LastThreeWeeks))">Last 3 Weeks</div>
                     <div @onclick="@(()=> OnQuickSelect(QuickSelect.MonthToDate))">MTD</div>
                     <div @onclick="@(()=> OnQuickSelect(QuickSelect.YearToDate))">YTD</div>
+                    <div @onclick="@(()=> OnQuickSelect(QuickSelect.Year))">Year</div>
                 </div>
             }
             @for (var i = StartingInt; i <= EndingInt; i++)

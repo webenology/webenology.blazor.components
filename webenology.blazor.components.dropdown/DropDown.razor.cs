@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Text;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 
@@ -9,9 +10,9 @@ namespace webenology.blazor.components.dropdown;
 public partial class DropDown<TValue> : ComponentBase where TValue : IConvertible
 {
     [Parameter] public List<DropDownItem<TValue>> Items { get; set; }
-    [Parameter] public EventCallback<DropDownItem<TValue>> OnSelected { get; set; }
-    [Parameter] public DropDownItem<TValue> SelectedItem { get; set; }
     private DropDownItem<TValue> _oldSelectedItem { get; set; }
+    [Parameter] public DropDownItem<TValue> SelectedItem { get; set; }
+    [Parameter] public EventCallback<DropDownItem<TValue>> SelectedItemChanged { get; set; }
     [Parameter] public RenderFragment<DropDownItem<TValue>> ItemContent { get; set; }
     [Parameter] public EventCallback<string> OnAddNew { get; set; }
     [Parameter] public string Value { get; set; }
@@ -96,8 +97,8 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
         if (item.IsDisabled)
             return;
 
-        if (OnSelected.HasDelegate)
-            await OnSelected.InvokeAsync(item);
+        if (SelectedItemChanged.HasDelegate)
+            await SelectedItemChanged.InvokeAsync(item);
 
         isActive = false;
     }
@@ -136,8 +137,8 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
 
     private Task UnSelect()
     {
-        if (OnSelected.HasDelegate)
-            OnSelected.InvokeAsync(null);
+        if (SelectedItemChanged.HasDelegate)
+            SelectedItemChanged.InvokeAsync(null);
 
         Search = string.Empty;
         isActive = false;
@@ -220,8 +221,7 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
         }
 
         await Task.Yield();
-        await _jsObj.ScrollToActive("smooth");
-
+        await _jsObj.ScrollToActive();
     }
 
     private int GetAvailableIndex(List<DropDownItem<TValue>> items, int currentIndex, int goIndex)
