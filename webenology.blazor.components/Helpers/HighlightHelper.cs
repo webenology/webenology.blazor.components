@@ -23,9 +23,8 @@ namespace webenology.blazor.components.Helpers
 
             try
             {
-                var highlighted = new List<HighlightObject>();
                 var colorIndex = 0;
-
+                var highlighted = new List<HighlightObject>();
                 foreach (var s in searchTerm.Split(" "))
                 {
                     if (string.IsNullOrEmpty(s))
@@ -44,17 +43,15 @@ namespace webenology.blazor.components.Helpers
                             searchString.Append(Regex.Escape(v.ToString()));
                         }
                     }
+
                     
                     var index = Regex.Matches(item, searchString.ToString(), RegexOptions.IgnoreCase);
-
-                    foreach (Match match in index)
+                    highlighted.AddRange(index.Select(match => new HighlightObject
                     {
-                        highlighted.Add(new HighlightObject
-                        {
-                            Index = match.Index, Length = s.Length,
-                            Color = SharedHelper.Colors[colorIndex % SharedHelper.Colors.Length]
-                        });
-                    }
+                        Index = match.Index,
+                        Length = s.Length,
+                        Color = SharedHelper.Colors[colorIndex % SharedHelper.Colors.Length]
+                    }).ToList());
 
                     colorIndex++;
                 }

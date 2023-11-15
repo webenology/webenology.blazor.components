@@ -221,8 +221,7 @@ namespace webenology.blazor.components.Tests
 
             Assert.True(true, $"Elapsed: {sw.Elapsed}");
             Assert.Equal(52, iterations);
-
-            Console.WriteLine($"search took: {sw.Elapsed}");
+            _testOutputHelper.WriteLine($"search took: {sw.Elapsed}");
         }
 
         [Fact]

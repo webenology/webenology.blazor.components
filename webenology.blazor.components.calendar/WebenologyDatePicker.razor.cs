@@ -29,6 +29,7 @@ public partial class WebenologyDatePicker
     private List<DateTime?> CurrentDateRange { get; set; }
     private int StartingInt => IsSmall ? 0 : -1;
     private int EndingInt => IsSmall ? 0 : 1;
+    private int dayOfToday = DateTime.Now.Day;
 
     private static string[] MONTHS =
     {
