@@ -1,0 +1,25 @@
+﻿@namespace webenology.blazor.components.DropDownComponent
+
+<div>
+    <select class="@Style.SelectForm @(IsError ? Style.Error : "")" value="@Value" @onchange="onChangeValue" 
+            disabled="@Readonly">
+        @if (ShowEmpty)
+        {
+            <option value="@EmptyValue">@EmptyText</option>
+        }
+        @if (Items != null)
+        {
+            foreach (var i in Items)
+            {
+                <option value="@i.Value">@i.Key</option>
+            }
+        }
+    </select>
+    @if (IsError)
+    {
+        <label class="@Style.Error">
+            @ErrorMessage
+        </label>
+    }
+</div>
+

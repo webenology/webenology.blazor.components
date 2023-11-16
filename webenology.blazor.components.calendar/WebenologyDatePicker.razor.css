@@ -145,7 +145,7 @@ input::placeholder, textarea::placeholder {
 .webenology-calendar-outline .input > .icon {
     width: 32px;
     --tw-bg-opacity: 1;
-    background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
     padding-left: 0.25rem;
     padding-right: 0.25rem
 }

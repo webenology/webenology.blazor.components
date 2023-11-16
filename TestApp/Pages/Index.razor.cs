@@ -12,8 +12,10 @@ using PuppeteerSharp.Media;
 using TestApp.Data;
 using webenology.blazor.components;
 using webenology.blazor.components.BlazorPdfComponent;
+using webenology.blazor.components.ConfirmComponent;
 using webenology.blazor.components.MailMerge;
-using NavigationException = PuppeteerSharp.NavigationException;
+using webenology.blazor.components.ModalComponent;
+using webenology.blazor.components.NotificationComponent;
 
 namespace TestApp.Pages
 {

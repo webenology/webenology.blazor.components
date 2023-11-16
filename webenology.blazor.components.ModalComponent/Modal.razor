@@ -1,0 +1,19 @@
+﻿@namespace webenology.blazor.components.ModalComponent
+
+<CascadingValue Value="this">
+
+    <div class="@GetBackdropCss()" @onclick="CloseByBackdrop">
+        <div class="@GetModalCss()" @ref="_modal" @onclick:stopPropagation>
+            @if (HeaderContent == null)
+            {
+                <ModalHeader Header="@HeaderTitle" SubHeader="@SubHeaderTitle" HideClose="@HeaderHideClose"></ModalHeader>
+            }
+            else
+            {
+                @HeaderContent
+            }
+            <ModalBody>@BodyContent</ModalBody>
+            <ModalFooter>@FooterContent</ModalFooter>
+        </div>
+    </div>
+</CascadingValue>

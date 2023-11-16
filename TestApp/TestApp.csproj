@@ -5,8 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\webenology.blazor.components.BlazorPdfComponent\webenology.blazor.components.BlazorPdfComponent.csproj" />
     <ProjectReference Include="..\webenology.blazor.components.calendar\webenology.blazor.components.calendar.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.ComboBoxComponents\webenology.blazor.components.ComboBoxComponents.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.ConfirmComponent\webenology.blazor.components.ConfirmComponent.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.DropDownComponent\webenology.blazor.components.DropDownComponent.csproj" />
     <ProjectReference Include="..\webenology.blazor.components.dropdown\webenology.blazor.components.dropdown.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.ModalComponent\webenology.blazor.components.ModalComponent.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.NotificationComponent\webenology.blazor.components.NotificationComponent.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.OrderByComponent\webenology.blazor.components.OrderByComponent.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.shared.Tests\webenology.blazor.components.shared.Tests.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.shared\webenology.blazor.components.shared.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.TabComponent\webenology.blazor.components.TabComponent.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.Tests\webenology.blazor.components.Tests.csproj" />
     <ProjectReference Include="..\webenology.blazor.components\webenology.blazor.components.csproj" />
     <ProjectReference Include="..\webenology.blazor.ss.authentication\webenology.blazor.ss.authentication.csproj" />
   </ItemGroup>

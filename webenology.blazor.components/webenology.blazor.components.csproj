@@ -41,11 +41,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="BlazorPdfComponent\wkhtmltopdf.exe" />
-		<None Remove="BlazorPdfComponent\wkhtmltox.dll" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<_ContentIncludedByDefault Remove="wwwroot\js\Combobox.min.js" />
 		<_ContentIncludedByDefault Remove="wwwroot\js\OutsideClick.min.js" />
 	</ItemGroup>
@@ -74,11 +69,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
 		<PackageReference Include="PuppeteerSharp" Version="6.1.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.0-preview" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Include="BlazorPdfComponent\wkhtmltopdf.exe" />
-		<EmbeddedResource Include="BlazorPdfComponent\wkhtmltox.dll" />
 	</ItemGroup>
 
 

@@ -1,0 +1,29 @@
+﻿@using System.Data
+@namespace webenology.blazor.components.ModalComponent
+ 
+<div class="@Modal.CssStyle.ModalHeaderCss">
+    <h4 class="@Modal.CssStyle.ModalHeaderTitleCss">
+        @Header
+        @if (!string.IsNullOrEmpty(SubHeader))
+        {
+        <small class="@Modal.CssStyle.ModalHeaderSubheadingCss">@SubHeader</small>
+        }
+    </h4>
+    @if (!HideClose)
+    {
+    <span class="@Modal.CssStyle.ModalCloseCss" @onclick="OnClose" aria-lable="Close">
+        <i class="@Modal.CssStyle.ModalCloseIconCss"></i>
+    </span>
+    }
+</div>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        if (Modal == null)
+            throw new NoNullAllowedException("ModalHeader must be a child of Modal Component");
+        base.OnInitialized();
+    }
+
+}

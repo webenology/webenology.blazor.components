@@ -198,6 +198,8 @@ public partial class WebenologyDatePicker
             return;
         }
 
+        LastDate ??= dt;
+
         CurrentDateRange = new List<DateTime?>
         {
             FirstDate.GetValueOrDefault(),

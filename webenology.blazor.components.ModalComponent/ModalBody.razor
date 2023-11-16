@@ -1,0 +1,21 @@
+﻿@using System.Data
+@namespace webenology.blazor.components.ModalComponent
+
+<div class="@Modal.CssStyle.ModalBodyCss">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [CascadingParameter]
+    public Modal Modal { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Modal == null)
+            throw new NoNullAllowedException("ModalBody must be a child of Modal Component");
+        base.OnInitialized();
+    }
+
+}

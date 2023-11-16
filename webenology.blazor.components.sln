@@ -27,6 +27,22 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webenology.blazor.component
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webenology.blazor.components.shared.Tests", "webenology.blazor.components.shared.Tests\webenology.blazor.components.shared.Tests.csproj", "{B8D8B9B5-B928-4245-BC44-0B40699539DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.ConfirmComponent", "webenology.blazor.components.ConfirmComponent\webenology.blazor.components.ConfirmComponent.csproj", "{1A3F9A7E-A90E-41F1-ACBD-7577C0C49411}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.NotificationComponent", "webenology.blazor.components.NotificationComponent\webenology.blazor.components.NotificationComponent.csproj", "{50736AEE-7419-49E6-8DF1-BA7AB94D0465}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.TabComponent", "webenology.blazor.components.TabComponent\webenology.blazor.components.TabComponent.csproj", "{99D8BE08-CA44-46AC-985C-7BE8E450195F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.ComboBoxComponents", "webenology.blazor.components.ComboBoxComponents\webenology.blazor.components.ComboBoxComponents.csproj", "{D4C519CE-972B-4855-A958-D3E0374E4AFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.OrderByComponent", "webenology.blazor.components.OrderByComponent\webenology.blazor.components.OrderByComponent.csproj", "{4D366435-63D0-438A-AD95-17A0C8D1B54C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.ModalComponent", "webenology.blazor.components.ModalComponent\webenology.blazor.components.ModalComponent.csproj", "{655CF160-6E09-4AD0-9C13-10A15746F991}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.BlazorPdfComponent", "webenology.blazor.components.BlazorPdfComponent\webenology.blazor.components.BlazorPdfComponent.csproj", "{342BF80C-D9BA-4397-A29D-710BC5C52F6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.DropDownComponent", "webenology.blazor.components.DropDownComponent\webenology.blazor.components.DropDownComponent.csproj", "{B47E037D-14E4-4DE7-AB8E-8C995A798657}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +85,38 @@ Global
 		{B8D8B9B5-B928-4245-BC44-0B40699539DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8D8B9B5-B928-4245-BC44-0B40699539DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8D8B9B5-B928-4245-BC44-0B40699539DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A3F9A7E-A90E-41F1-ACBD-7577C0C49411}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A3F9A7E-A90E-41F1-ACBD-7577C0C49411}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A3F9A7E-A90E-41F1-ACBD-7577C0C49411}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A3F9A7E-A90E-41F1-ACBD-7577C0C49411}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50736AEE-7419-49E6-8DF1-BA7AB94D0465}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50736AEE-7419-49E6-8DF1-BA7AB94D0465}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50736AEE-7419-49E6-8DF1-BA7AB94D0465}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50736AEE-7419-49E6-8DF1-BA7AB94D0465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99D8BE08-CA44-46AC-985C-7BE8E450195F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99D8BE08-CA44-46AC-985C-7BE8E450195F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99D8BE08-CA44-46AC-985C-7BE8E450195F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99D8BE08-CA44-46AC-985C-7BE8E450195F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4C519CE-972B-4855-A958-D3E0374E4AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C519CE-972B-4855-A958-D3E0374E4AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C519CE-972B-4855-A958-D3E0374E4AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C519CE-972B-4855-A958-D3E0374E4AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D366435-63D0-438A-AD95-17A0C8D1B54C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D366435-63D0-438A-AD95-17A0C8D1B54C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D366435-63D0-438A-AD95-17A0C8D1B54C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D366435-63D0-438A-AD95-17A0C8D1B54C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{655CF160-6E09-4AD0-9C13-10A15746F991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{655CF160-6E09-4AD0-9C13-10A15746F991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{655CF160-6E09-4AD0-9C13-10A15746F991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{655CF160-6E09-4AD0-9C13-10A15746F991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{342BF80C-D9BA-4397-A29D-710BC5C52F6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{342BF80C-D9BA-4397-A29D-710BC5C52F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{342BF80C-D9BA-4397-A29D-710BC5C52F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{342BF80C-D9BA-4397-A29D-710BC5C52F6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B47E037D-14E4-4DE7-AB8E-8C995A798657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B47E037D-14E4-4DE7-AB8E-8C995A798657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B47E037D-14E4-4DE7-AB8E-8C995A798657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B47E037D-14E4-4DE7-AB8E-8C995A798657}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
