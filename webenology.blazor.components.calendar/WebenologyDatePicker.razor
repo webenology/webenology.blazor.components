@@ -1,109 +1,108 @@
-﻿@namespace webenology.blazor.components.calendar
+﻿@using webenology.blazor.components.OutsideClickComponent
 
-<OutsideClick OnOutsideClick="HideCalendar">
+@namespace webenology.blazor.components.calendar
 
-    <div class="webenology-calendar-outline @(IsDisabled ? "disabled":"")">
-        <div class="input" @onclick="ToggleCalendar">
-            <span>
-                @GetDateRangeForInput()
-            </span>
+<OutsideClick OnLoseFocus="HideCalendar" class="@_wrapperCss">
+    <div class="input" @onclick="ToggleCalendar">
+        <span>
+        @GetDateRangeForInput()
+        </span>
 
-           <svg class="icon" viewBox="0 0 48 48"  style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <g transform="matrix(0.256499,0,0,0.256499,-321.151,-170.602)">
-        <rect id="Artboard1" x="1252.06" y="665.119" width="187.135" height="187.135" style="fill:none;"/>
-        <clipPath id="_clip1">
-            <rect id="Artboard11" serif:id="Artboard1" x="1252.06" y="665.119" width="187.135" height="187.135"/>
-        </clipPath>
-        <g clip-path="url(#_clip1)">
-            <g>
-                <g transform="matrix(11.6958,0,0,9.83756,1144.88,569.07)">
-                                <path d="M25.164,12.745C25.164,11.098 24.041,9.764 22.656,9.764L11.671,9.764C10.286,9.764 9.164,11.098 9.164,12.745L9.164,25.805C9.164,27.451 10.286,28.786 11.671,28.786L22.656,28.786C24.041,28.786 25.164,27.451 25.164,25.805L25.164,12.745Z" style="fill:@(_isCalendarVisible ? "rgb(255 0 0)" : "rgb(158 171 190)");" />
-                </g>
-                <g transform="matrix(12.0772,0,0,7.92933,1181.28,584.067)">
-                    <path d="M19.742,19.318C19.742,17.281 18.658,15.63 17.32,15.63C15.171,15.63 12.046,15.63 9.896,15.63C8.559,15.63 7.475,17.281 7.475,19.318C7.475,21.836 7.475,25.158 7.475,27.676C7.475,29.713 8.559,31.364 9.896,31.364C12.046,31.364 15.171,31.364 17.32,31.364C18.658,31.364 19.742,29.713 19.742,27.676C19.742,25.158 19.742,21.836 19.742,19.318Z" style="fill:white;"/>
-                </g>
-            </g>
-            <g>
-                <g id="Date" style="display:@(_isCalendarVisible ? "none":"block")" transform="matrix(7.02071,0,0,7.02071,1174.6,594.726)">
-                    <g transform="matrix(16.1965,0,0,16.1965,34.3791,30.7417)">
+        <svg class="icon" viewBox="0 0 48 48" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+            <g transform="matrix(0.256499,0,0,0.256499,-321.151,-170.602)">
+                <rect id="Artboard1" x="1252.06" y="665.119" width="187.135" height="187.135" style="fill:none;" />
+                <clipPath id="_clip1">
+                    <rect id="Artboard11" serif:id="Artboard1" x="1252.06" y="665.119" width="187.135" height="187.135" />
+                </clipPath>
+                <g clip-path="url(#_clip1)">
+                    <g>
+                        <g transform="matrix(11.6958,0,0,9.83756,1144.88,569.07)">
+                            <path d="M25.164,12.745C25.164,11.098 24.041,9.764 22.656,9.764L11.671,9.764C10.286,9.764 9.164,11.098 9.164,12.745L9.164,25.805C9.164,27.451 10.286,28.786 11.671,28.786L22.656,28.786C24.041,28.786 25.164,27.451 25.164,25.805L25.164,12.745Z" style="fill:@(_isCalendarVisible ? "rgb(255 0 0)" : "rgb(158 171 190)");" />
+                        </g>
+                        <g transform="matrix(12.0772,0,0,7.92933,1181.28,584.067)">
+                            <path d="M19.742,19.318C19.742,17.281 18.658,15.63 17.32,15.63C15.171,15.63 12.046,15.63 9.896,15.63C8.559,15.63 7.475,17.281 7.475,19.318C7.475,21.836 7.475,25.158 7.475,27.676C7.475,29.713 8.559,31.364 9.896,31.364C12.046,31.364 15.171,31.364 17.32,31.364C18.658,31.364 19.742,29.713 19.742,27.676C19.742,25.158 19.742,21.836 19.742,19.318Z" style="fill:white;" />
+                        </g>
                     </g>
-                    <text x="50%" text-anchor="middle" y="30.742px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:600;font-size:14px;fill:rgb(33 40 55)">@dayOfToday</text>
-                </g>
-                <g id="Close" style="display:@(_isCalendarVisible ? "block":"none");" transform="matrix(5.76118,0,0,5.76118,1496.13,643.496)">
-                    <path d="M-22.023,15.101L-19.201,17.923L-23.302,22.024L-19.201,26.125L-22.023,28.948L-26.124,24.847L-30.225,28.948L-33.047,26.125L-28.946,22.024L-33.047,17.923L-30.225,15.101L-26.124,19.202L-22.023,15.101Z" style="fill:rgb(255,0,0);"/>
+                    <g>
+                        <g id="Date" style="display:@(_isCalendarVisible ? "none":"block")" transform="matrix(7.02071,0,0,7.02071,1174.6,594.726)">
+                            <g transform="matrix(16.1965,0,0,16.1965,34.3791,30.7417)">
+                            </g>
+                            <text x="50%" text-anchor="middle" y="30.742px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:600;font-size:14px;fill:rgb(33 40 55)">@dayOfToday</text>
+                        </g>
+                        <g id="Close" style="display:@(_isCalendarVisible ? "block":"none");" transform="matrix(5.76118,0,0,5.76118,1496.13,643.496)">
+                            <path d="M-22.023,15.101L-19.201,17.923L-23.302,22.024L-19.201,26.125L-22.023,28.948L-26.124,24.847L-30.225,28.948L-33.047,26.125L-28.946,22.024L-33.047,17.923L-30.225,15.101L-26.124,19.202L-22.023,15.101Z" style="fill:rgb(255,0,0);" />
+                        </g>
+                    </g>
                 </g>
             </g>
-        </g>
-    </g>
-</svg>
+        </svg>
+    </div>
+    <div class="webenology-calendar-holder @(_isCalendarVisible ? "visible" : "")">
+        <div class="header">
+            <div @onclick="@(() => AddYear(-1))">
+                @GetYear(-1)
+            </div>
+            <div @onclick="@(GoToLastMonthSelected)">
+                @GetDateRangeData()
+            </div>
+            <div @onclick="@(()=> AddYear(1))">
+                @GetYear(1)
+            </div>
         </div>
-        <div class="webenology-calendar-holder @(_isCalendarVisible ? "visible" : "")">
-            <div class="header">
-                <div @onclick="@(() => AddYear(-1))">
-                    @GetYear(-1)
-                </div>
-                <div @onclick="@(GoToLastMonthSelected)">
-                    @GetDateRangeData()
-                </div>
-                <div @onclick="@(()=> AddYear(1))">
-                    @GetYear(1)
+        <div class="left" @onclick="@(()=> UpdateMiddleMonth(-1))">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <polyline points="15 6 9 12 15 18" />
+            </svg>
+        </div>
+        @if (_isRangeCalendar)
+        {
+            <div class="quick-selects">
+                <div @onclick="@(()=> OnQuickSelect(QuickSelect.Today))">Today</div>
+                <div @onclick="@(()=> OnQuickSelect(QuickSelect.Yesterday))">Yesterday</div>
+                <div @onclick="@(()=> OnQuickSelect(QuickSelect.LastSevenDays))">Last 7 Days</div>
+                <div @onclick="@(()=> OnQuickSelect(QuickSelect.LastWeek))">Last Week</div>
+                <div @onclick="@(()=> OnQuickSelect(QuickSelect.LastThreeWeeks))">Last 3 Weeks</div>
+                <div @onclick="@(()=> OnQuickSelect(QuickSelect.MonthToDate))">MTD</div>
+                <div @onclick="@(()=> OnQuickSelect(QuickSelect.YearToDate))">YTD</div>
+                <div @onclick="@(()=> OnQuickSelect(QuickSelect.Year))">Year</div>
+            </div>
+        }
+        @for (var i = StartingInt; i <= EndingInt; i++)
+        {
+            var ii = i;
+            <div class="webenology-calendar">
+                <div class="month" @onclick="@(()=> OnSelectMonth(ii))">@GetMonthName(i)</div>
+                <div class="days">
+                    <div class="week-day">S</div>
+                    <div class="week-day">M</div>
+                    <div class="week-day">T</div>
+                    <div class="week-day">W</div>
+                    <div class="week-day">T</div>
+                    <div class="week-day">F</div>
+                    <div class="week-day">S</div>
+                    @for (var j = 1; j <= GetDaysInMonth(i); j++)
+                    {
+                        var jj = j;
+                        var css = BuildCss(ii, jj);
+                        <div class="day @css" @onmouseover="@(()=> SetLastDate(ii,jj))" @onclick="@(()=> OnClickDate(ii, jj))">@j</div>
+                    }
                 </div>
             </div>
-            <div class="left" @onclick="@(()=> UpdateMiddleMonth(-1))">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <polyline points="15 6 9 12 15 18"/>
-                </svg>
-            </div>
-            @if (_isRangeCalendar)
-            {
-                <div class="quick-selects">
-                    <div @onclick="@(()=> OnQuickSelect(QuickSelect.Today))">Today</div>
-                    <div @onclick="@(()=> OnQuickSelect(QuickSelect.Yesterday))">Yesterday</div>
-                    <div @onclick="@(()=> OnQuickSelect(QuickSelect.LastSevenDays))">Last 7 Days</div>
-                    <div @onclick="@(()=> OnQuickSelect(QuickSelect.LastWeek))">Last Week</div>
-                    <div @onclick="@(()=> OnQuickSelect(QuickSelect.LastThreeWeeks))">Last 3 Weeks</div>
-                    <div @onclick="@(()=> OnQuickSelect(QuickSelect.MonthToDate))">MTD</div>
-                    <div @onclick="@(()=> OnQuickSelect(QuickSelect.YearToDate))">YTD</div>
-                    <div @onclick="@(()=> OnQuickSelect(QuickSelect.Year))">Year</div>
-                </div>
-            }
-            @for (var i = StartingInt; i <= EndingInt; i++)
-            {
-                var ii = i;
-                <div class="webenology-calendar">
-                    <div class="month" @onclick="@(()=> OnSelectMonth(ii))">@GetMonthName(i)</div>
-                    <div class="days">
-                        <div class="week-day">S</div>
-                        <div class="week-day">M</div>
-                        <div class="week-day">T</div>
-                        <div class="week-day">W</div>
-                        <div class="week-day">T</div>
-                        <div class="week-day">F</div>
-                        <div class="week-day">S</div>
-                        @for (var j = 1; j <= GetDaysInMonth(i); j++)
-                        {
-                            var jj = j;
-                            var css = BuildCss(ii, jj);
-                            <div class="day @css" @onmouseover="@(()=> SetLastDate(ii,jj))" @onclick="@(()=> OnClickDate(ii, jj))">@j</div>
-                        }
-                    </div>
-                </div>
-            }
+        }
 
-            <div class="right" @onclick="@(()=> UpdateMiddleMonth(1))">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <polyline points="9 6 15 12 9 18"/>
-                </svg>
-            </div>
-            <div class="footer">
-                <button class="clear" type="button" @onclick="Clear">Clear</button>
-                <button class="cancel" type="button" @onclick="Reset">Cancel</button>
-                <button type="button" @onclick="SelectDateRange">Ok</button>
-            </div>
+        <div class="right" @onclick="@(()=> UpdateMiddleMonth(1))">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <polyline points="9 6 15 12 9 18" />
+            </svg>
+        </div>
+        <div class="footer">
+            <button class="clear" type="button" @onclick="Clear">Clear</button>
+            <button class="cancel" type="button" @onclick="Reset">Cancel</button>
+            <button type="button" @onclick="SelectDateRange">Ok</button>
         </div>
     </div>
 </OutsideClick>

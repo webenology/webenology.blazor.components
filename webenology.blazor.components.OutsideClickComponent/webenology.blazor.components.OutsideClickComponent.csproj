@@ -15,12 +15,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.13" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\css\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\webenology.blazor.components.OutsideClickComponent\webenology.blazor.components.OutsideClickComponent.csproj" />
-  </ItemGroup>
-
 </Project>
