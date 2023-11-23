@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\css\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\webenology.blazor.components.OutsideClickComponent\webenology.blazor.components.OutsideClickComponent.csproj" />
   </ItemGroup>
 
