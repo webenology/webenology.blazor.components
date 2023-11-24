@@ -37,7 +37,7 @@
             </g>
         </svg>
     </div>
-    <div class="webenology-calendar-holder @(_isCalendarVisible ? "visible" : "") @(IsSmall ? "small" : "large")">
+    <div class="webenology-calendar-holder @(_isCalendarVisible ? "visible" : "") @(IsSmall ? "small" : "large") @(IsRangeCalendar.GetValueOrDefault() ? "range": "single")">
         <div class="header">
             <div @onclick="@(() => AddYear(-1))">
                 @GetYear(-1)

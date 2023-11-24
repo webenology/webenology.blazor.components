@@ -180,6 +180,10 @@ input::placeholder, textarea::placeholder {
         grid-template-columns: 30px 1fr 1fr 1fr 30px;
     }
 
+    .webenology-calendar-holder.large.range {
+        grid-template-columns: 30px 1fr 1fr 1fr 1fr 30px;
+    }
+
 
     .webenology-calendar-holder .header {
         display: grid;
