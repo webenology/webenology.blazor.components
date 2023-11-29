@@ -16,7 +16,7 @@ public partial class WebenologyDatePicker
     [Parameter] public DateTime? MaxDateTime { get; set; }
     [Parameter] public List<DateTime>? BlackoutDates { get; set; }
     [Parameter] public bool IsDisabled { get; set; }
-    private string _wrapperCss => IsDisabled ? "webenology-calendar-outline disabled" : "webenology-calendar-outline";
+    private string _wrapperCss => IsDisabled ? "webenology-calendar_outline disabled" : "webenology-calendar_outline";
     private bool _isRangeCalendar;
     private bool _isCalendarVisible;
     private int middleMonth;
