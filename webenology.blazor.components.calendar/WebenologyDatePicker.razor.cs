@@ -16,7 +16,7 @@ public partial class WebenologyDatePicker
     [Parameter] public DateTime? MaxDateTime { get; set; }
     [Parameter] public List<DateTime>? BlackoutDates { get; set; }
     [Parameter] public bool IsDisabled { get; set; }
-    private string _wrapperCss => IsDisabled ? "webenology-calendar_outline disabled" : "webenology-calendar_outline";
+    private string _wrapperCss => IsDisabled ? "wc-outline wc-disabled" : "wc-outline";
     private bool _isRangeCalendar;
     private bool _isCalendarVisible;
     private int middleMonth;
@@ -100,25 +100,25 @@ public partial class WebenologyDatePicker
         var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day);
         if (day == 1)
         {
-            var skipIt = $"skip-{(int)dt.DayOfWeek}";
+            var skipIt = $"wc-skip-{(int)dt.DayOfWeek}";
             str.Append(skipIt);
             str.Append(" ");
         }
 
         var isToday = dt.Date == today;
         if (isToday)
-            str.Append("today ");
+            str.Append("wc-today ");
 
         var isSelected = IsSelected(dt);
         if (isSelected)
-            str.Append("selected ");
+            str.Append("wc-selected ");
 
         if (IsDisabledDate(dt))
-            str.Append("disabled ");
+            str.Append("wc-disabled ");
 
         var isClicked = IsClicked(dt);
         if (isClicked)
-            str.Append("clicked ");
+            str.Append("wc-clicked ");
 
         return str.ToString();
     }
@@ -435,13 +435,13 @@ public partial class WebenologyDatePicker
 
     private Task GoToLastMonthSelected()
     {
-        if (CurrentDateRange != null && CurrentDateRange.Any())
+        if (CurrentDateRange != null && CurrentDateRange.Any() && CurrentDateRange.Last().HasValue)
         {
-            var last = CurrentDateRange.Last().GetValueOrDefault();
+            var last = CurrentDateRange.Last().Value;
             visibleYear = last.Year;
             middleMonth = last.Month;
         }
-        else if (DateRange != null && DateRange.Any())
+        else if (DateRange != null && DateRange.Any() && DateRange.Last().HasValue)
         {
             var last = DateRange.Last().GetValueOrDefault();
             visibleYear = last.Year;
