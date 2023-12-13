@@ -9,15 +9,16 @@ using Microsoft.JSInterop;
 
 namespace webenology.blazor.components
 {
-    internal interface IOutsideClickJsHelper
+    internal interface IOutsideClickJsHelper : IAsyncDisposable
     {
         Task Register<TRef>(ElementReference el, DotNetObjectReference<TRef> instance) where TRef : class;
         Task UnRegister<TRef>(ElementReference el, DotNetObjectReference<TRef> instance) where TRef : class;
     }
 
-    internal class OutsideClickJsHelper : IOutsideClickJsHelper, IAsyncDisposable
+    internal class OutsideClickJsHelper : IOutsideClickJsHelper
     {
         public Lazy<Task<IJSObjectReference>> _moduleTask { get; set; }
+        private IJSObjectReference _classReference;
 
         public OutsideClickJsHelper(IJSRuntime jsRuntime)
         {
@@ -28,13 +29,12 @@ namespace webenology.blazor.components
         public async Task Register<TRef>(ElementReference el, DotNetObjectReference<TRef> instance) where TRef : class
         {
             var module = await _moduleTask.Value;
-            await module.InvokeVoidAsync("Register", el, instance);
+            _classReference = await module.InvokeAsync<IJSObjectReference>("CreateOutsideClick", el, instance);
         }
 
         public async Task UnRegister<TRef>(ElementReference el, DotNetObjectReference<TRef> instance) where TRef : class
         {
-            var module = await _moduleTask.Value;
-            await module.InvokeVoidAsync("UnRegister", el, instance);
+            await _classReference.InvokeVoidAsync("unregister");
         }
 
         public async ValueTask DisposeAsync()

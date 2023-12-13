@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
@@ -6,7 +7,7 @@ using Microsoft.JSInterop;
 
 namespace webenology.blazor.components.OutsideClickComponent
 {
-    public class OutsideClick : ComponentBase, IDisposable
+    public class OutsideClick : ComponentBase, IAsyncDisposable
     {
         [Parameter] public EventCallback OnLoseFocus { get; set; }
         [Parameter] public EventCallback OnGainFocus { get; set; }
@@ -23,16 +24,22 @@ namespace webenology.blazor.components.OutsideClickComponent
 
         [Parameter] public string? Style { get; set; }
 
-        [Inject] private IOutsideClickJsHelper js { get; set; }
+        private IOutsideClickJsHelper js { get; set; }
+        [Inject] private IJSRuntime _jsRuntime { get; set; }
         private ElementReference elRef { get; set; }
         private DotNetObjectReference<OutsideClick> _theInstance;
 
+        protected override void OnInitialized()
+        {
+            js = new OutsideClickJsHelper(_jsRuntime);
+            _theInstance = DotNetObjectReference.Create(this);
+            base.OnInitialized();
+        }
 
         protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {
-                _theInstance = DotNetObjectReference.Create(this);
                 js.Register(elRef, _theInstance);
             }
 
@@ -49,7 +56,7 @@ namespace webenology.blazor.components.OutsideClickComponent
         [JSInvokable]
         public void OnOutsideClick()
         {
-            if(OnLoseFocus.HasDelegate)
+            if (OnLoseFocus.HasDelegate)
                 OnLoseFocus.InvokeAsync();
         }
 
@@ -64,10 +71,11 @@ namespace webenology.blazor.components.OutsideClickComponent
             builder.CloseElement();
         }
 
-        public void Dispose()
+        public async ValueTask DisposeAsync()
         {
-            js.UnRegister(elRef, _theInstance);
-            _theInstance?.Dispose();
+            await js.UnRegister(elRef, _theInstance);
+            _theInstance.Dispose();
+            await js.DisposeAsync();
         }
     }
 }

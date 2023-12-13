@@ -1,23 +1,43 @@
-export function Register(el, ref) {
-    document.addEventListener("click", (e) => onClickReg(e, el, ref));
-}
+class OutsideClick {
+    constructor(el, ref) {
+        this._el = el;
+        this._ref = ref;
+        this._binded = this.onClickReg.bind(this);
+        console.log(this._ref);
+        this.register();
+    }
+    register() {        
+        document.addEventListener("click", this._binded);
+    }
 
-export function UnRegister(el, ref) {
-    document.removeEventListener("click", (e) => onClickReg(e, el, ref));
-}
+    unregister() {
+        console.log("unregister", this._ref);
+        document.removeEventListener("click", this._binded);
+        return true;
+    }
 
-function onClickReg(e, el, ref) {
-    let isInside = false;
-    const path = e.composedPath();
-    for (let index in path) {
-        if (path[index] === el) {
-            isInside = true;
-            break;
+    onClickReg(e) {
+        let isInside = false;
+        const path = e.composedPath();
+        for (let index in path) {
+            if (path[index] === this._el) {
+                isInside = true;
+                break;
+            }
+        }
+
+        if (this._ref == null)
+            return;
+        if (isInside) {
+            this._ref.invokeMethodAsync("OnInsideClick");
+        } else {
+            this._ref.invokeMethodAsync("OnOutsideClick");
         }
     }
-    if (isInside) {
-        ref.invokeMethodAsync("OnInsideClick");
-    } else {
-        ref.invokeMethodAsync("OnOutsideClick");
-    }
+}
+
+window.OutsideClick = OutsideClick;
+
+export function CreateOutsideClick(el, ref) {
+    return new OutsideClick(el, ref);
 }
