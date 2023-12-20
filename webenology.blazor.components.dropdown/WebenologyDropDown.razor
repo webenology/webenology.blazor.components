@@ -1,0 +1,44 @@
+﻿@namespace webenology.blazor.components.dropdown
+@using webenology.blazor.components.shared
+@using webenology.blazor.components.OutsideClickComponent
+@typeparam TValue
+
+<div style="display:inline-block;width:100%;" class="@BaseCssClass">
+    <OutsideClick class="webenology_drop-down-wrapper" OnLoseFocus="OnOutsideClick">
+        <div class="drop-down-input-wrapper" @ref="el">
+            <input type="text" disabled="@IsDisabled" class="drop-down-input" placeholder="@Placeholder" @onkeydown="OnKeyDown" @onkeydown:stopPropagation="true" @onclick="SetActive" @bind="Search" @bind:event="oninput" @bind:after="DoFilter" />
+            @if (SelectedItem != null)
+            {
+                <i @onclick="UnSelect" class="unselect mdi mdi-close"></i>
+            }
+            <div class="drop-down-arrow" @onclick="SetToggle">
+                <i class="mdi mdi-chevron-down"></i>
+            </div>
+        </div>
+        <div class="drop-down-body @(isActive ? "active" : "")">
+            @foreach (var i in GetSearched())
+            {
+                if (ItemContent != null)
+                {
+                    <div @key="i" @onclick="() => _onSelected(i)"
+                         class="item @(i.IsSelected ? "selected" : "") @(i.IsDisabled ? "disabled" : "")">
+                        @ItemContent(i)
+                    </div>
+                }
+                else
+                {
+                    <div @key="i" @onclick="() => _onSelected(i)"
+                         class="item @(i.IsSelected ? "selected" : "") @(i.IsDisabled ? "disabled" : "")">
+                        @((MarkupString)i.Value.Highlight(_searchText))
+                    </div>
+                }
+            }
+            @if (CanShowAddNew())
+            {
+                <div class="add" @onclick="OnAddNewItem">
+                    Add "<span>@Search</span>" Click or CTRL + Enter
+                </div>
+            }
+        </div>
+    </OutsideClick>
+</div>

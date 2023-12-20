@@ -534,7 +534,7 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.webenology_drop-down-wrapper {
+::deep .webenology_drop-down-wrapper {
   position: relative;
   width: 100%;
   --tw-bg-opacity: 1;
@@ -580,11 +580,12 @@ video {
 .webenology_drop-down-wrapper .drop-down-body {
   position: absolute;
   display: none;
-  width: 100%;
   overflow-y: auto;
   border-width: 1px;
   --tw-border-opacity: 1;
   border-color: rgb(156 163 175 / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);

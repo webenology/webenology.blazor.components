@@ -1,6 +1,9 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Net;
+using System.Text;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace webenology.blazor.components.calendar;
 
@@ -16,11 +19,15 @@ public partial class WebenologyDatePicker
     [Parameter] public DateTime? MaxDateTime { get; set; }
     [Parameter] public List<DateTime>? BlackoutDates { get; set; }
     [Parameter] public bool IsDisabled { get; set; }
+    [Parameter] public bool ShowTime { get; set; }
+    [Parameter] public string? BaseCssClass { get; set; }
+    [Inject]
+    private IJSRuntime jsRuntime { get; set; }
     private string _wrapperCss => IsDisabled ? "wc-outline wc-disabled" : "wc-outline";
     private bool _isRangeCalendar;
     private bool _isCalendarVisible;
     private int middleMonth;
-    private DateTime today = DateTime.Today;
+    private DateTime today = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified);
     private int selectedYear;
     private int currentYear;
     private int visibleYear;
@@ -31,6 +38,10 @@ public partial class WebenologyDatePicker
     private int StartingInt => IsSmall ? 0 : -1;
     private int EndingInt => IsSmall ? 0 : 1;
     private int dayOfToday = DateTime.Now.Day;
+    private ElementReference _el;
+    private CalendarJsHelper _jsHelper;
+    private WebenologyTime _fromTime = new();
+    private WebenologyTime? _toTime = new();
 
     private static string[] MONTHS =
     {
@@ -53,9 +64,26 @@ public partial class WebenologyDatePicker
                 Date.Value,
                 Date.Value
             };
+            _fromTime = SetTimeFromDateTime(Date.Value);
+            _toTime = null;
+        }
+        else
+        {
+            _fromTime = SetTimeFromDateTime(DateRange?.FirstOrDefault(new DateTime?()).GetValueOrDefault() ?? new DateTime());
+            _toTime = SetTimeFromDateTime(DateRange?.LastOrDefault(new DateTime?()).GetValueOrDefault() ?? new DateTime());
         }
 
         base.OnParametersSet();
+    }
+
+    private WebenologyTime SetTimeFromDateTime(DateTime dt)
+    {
+        var isPm = dt.Hour > 12;
+        var hour = isPm ? dt.Hour - 12 : dt.Hour;
+        if (hour == 0)
+            hour = 12;
+
+        return new WebenologyTime(hour, dt.Minute, isPm ? MeridianEnum.PM : MeridianEnum.AM);
     }
 
     protected override void OnInitialized()
@@ -63,6 +91,7 @@ public partial class WebenologyDatePicker
         middleMonth = DateTime.Now.Month;
         currentYear = DateTime.Now.Year;
         visibleYear = currentYear;
+        _jsHelper = new CalendarJsHelper(jsRuntime);
         base.OnInitialized();
     }
 
@@ -78,6 +107,8 @@ public partial class WebenologyDatePicker
             return Task.CompletedTask;
 
         _isCalendarVisible = !_isCalendarVisible;
+        if (_isCalendarVisible)
+            UpdateCalendarPosition();
         return Task.CompletedTask;
     }
 
@@ -97,7 +128,7 @@ public partial class WebenologyDatePicker
     {
         var str = new StringBuilder();
         var monthAndYear = GetNewMonthAndYear(i);
-        var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day);
+        var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day, 0, 0, 0, 0, DateTimeKind.Unspecified);
         if (day == 1)
         {
             var skipIt = $"wc-skip-{(int)dt.DayOfWeek}";
@@ -105,7 +136,7 @@ public partial class WebenologyDatePicker
             str.Append(" ");
         }
 
-        var isToday = dt.Date == today;
+        var isToday = dt.Date == today.Date;
         if (isToday)
             str.Append("wc-today ");
 
@@ -178,7 +209,8 @@ public partial class WebenologyDatePicker
     private void OnClickDate(int i, int day)
     {
         var monthAndYear = GetNewMonthAndYear(i);
-        var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day);
+        var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day, 0, 0, 0, 0, DateTimeKind.Unspecified);
+
         if (IsDisabledDate(dt))
             return;
 
@@ -214,7 +246,7 @@ public partial class WebenologyDatePicker
     private Task SetLastDate(int i, int day)
     {
         var monthAndYear = GetNewMonthAndYear(i);
-        var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day);
+        var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day, 0, 0, 0, 0, DateTimeKind.Unspecified);
 
         if (ClickedDate.HasValue)
         {
@@ -305,15 +337,16 @@ public partial class WebenologyDatePicker
                     { thisSaturdayAgain.AddDays(-27), thisSaturdayAgain.AddDays(-7) };
                 break;
             case QuickSelect.MonthToDate:
-                var startOfMonth = new DateTime(today.Year, today.Month, 1);
+                var startOfMonth = new DateTime(today.Year, today.Month, 1, 0, 0, 0, 0, DateTimeKind.Unspecified);
                 CurrentDateRange = new List<DateTime?> { startOfMonth, today };
                 break;
             case QuickSelect.YearToDate:
-                var startOfYear = new DateTime(today.Year, 1, 1);
+                var startOfYear = new DateTime(today.Year, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified);
                 CurrentDateRange = new List<DateTime?> { startOfYear, today };
                 break;
             case QuickSelect.Year:
-                CurrentDateRange = new List<DateTime?> { new DateTime(today.Year, 1, 1), new DateTime(today.Year, 12, 31) };
+                CurrentDateRange = new List<DateTime?> { new DateTime(today.Year, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                    new DateTime(today.Year, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) };
                 break;
         }
 
@@ -354,8 +387,8 @@ public partial class WebenologyDatePicker
         var daysInMonth = GetDaysInMonth(month);
         CurrentDateRange = new List<DateTime?>
         {
-            new DateTime(monthAndYear.Item2, monthAndYear.Item1, 1),
-            new DateTime(monthAndYear.Item2, monthAndYear.Item1, daysInMonth),
+            new DateTime(monthAndYear.Item2, monthAndYear.Item1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+            new DateTime(monthAndYear.Item2, monthAndYear.Item1, daysInMonth, 0, 0, 0, 0, DateTimeKind.Unspecified),
         };
         return Task.CompletedTask;
     }
@@ -365,6 +398,8 @@ public partial class WebenologyDatePicker
         var str = new StringBuilder();
         DateTime? date1 = null;
         DateTime? date2 = null;
+        WebenologyTime? time1 = null;
+        WebenologyTime? time2 = null;
 
         if (FirstDate.HasValue && LastDate.HasValue)
         {
@@ -387,6 +422,12 @@ public partial class WebenologyDatePicker
             date2 = DateRange.Last();
         }
 
+        if (ShowTime)
+        {
+            time1 = _fromTime;
+            time2 = _toTime ?? new WebenologyTime();
+        }
+
         if (date1 == null)
         {
             str.Append("NONE");
@@ -394,10 +435,20 @@ public partial class WebenologyDatePicker
         }
 
         str.Append(date1.GetValueOrDefault().ToString("ddd, MMM dd, yyyy"));
+        if (ShowTime)
+        {
+            str.Append(" ");
+            str.Append(time1);
+        }
         if (date2 != null && date1 != date2)
         {
             str.Append(" to ");
             str.Append(date2.GetValueOrDefault().ToString("ddd, MMM dd, yyyy"));
+            if (ShowTime)
+            {
+                str.Append(" ");
+                str.Append(time2);
+            }
         }
 
         return str.ToString();
@@ -408,6 +459,7 @@ public partial class WebenologyDatePicker
         var str = new StringBuilder();
         DateTime? date1 = null;
         DateTime? date2 = null;
+
         if (!Date.HasValue)
         {
             if (DateRange == null || !DateRange.Any())
@@ -424,10 +476,20 @@ public partial class WebenologyDatePicker
         }
 
         str.Append(date1.GetValueOrDefault().ToString("MM-dd-yyyy"));
+        if (ShowTime)
+        {
+            str.Append(" ");
+            str.Append(date1.GetValueOrDefault().ToString("hh:mm tt"));
+        }
         if (date2 != null && date1 != date2)
         {
             str.Append(" to ");
             str.Append(date2.GetValueOrDefault().ToString("MM-dd-yyyy"));
+            if (ShowTime)
+            {
+                str.Append(" ");
+                str.Append(date2.GetValueOrDefault().ToString("hh:mm tt"));
+            }
         }
 
         return str.ToString();
@@ -460,8 +522,13 @@ public partial class WebenologyDatePicker
 
     private Task SelectDateRange()
     {
+        var time1 = _fromTime;
+        var time2 = _isRangeCalendar ? _toTime ?? new WebenologyTime() : _fromTime;
+
         if (CurrentDateRange != null && CurrentDateRange.Any())
         {
+            CurrentDateRange[0] = SetDateAndTime(CurrentDateRange[0].GetValueOrDefault(), time1);
+            CurrentDateRange[1] = SetDateAndTime(CurrentDateRange[1].GetValueOrDefault(), time2);
             if (DateRangeChanged.HasDelegate)
                 DateRangeChanged.InvokeAsync(CurrentDateRange);
             if (DateChanged.HasDelegate)
@@ -469,6 +536,8 @@ public partial class WebenologyDatePicker
         }
         else if (DateRange.Any())
         {
+            DateRange[0] = SetDateAndTime(DateRange[0].GetValueOrDefault(), time1);
+            DateRange[1] = SetDateAndTime(DateRange[1].GetValueOrDefault(), time2);
             if (DateRangeChanged.HasDelegate)
                 DateRangeChanged.InvokeAsync(DateRange);
             if (DateChanged.HasDelegate)
@@ -476,6 +545,17 @@ public partial class WebenologyDatePicker
         }
 
         return Reset();
+    }
+
+    private DateTime SetDateAndTime(DateTime date, WebenologyTime time)
+    {
+        var hour = time.Hour;
+        if (time.Meridian == MeridianEnum.PM)
+            hour += 12;
+        else if (time is { Meridian: MeridianEnum.AM, Hour: 12 })
+            hour = 0;
+
+        return new DateTime(date.Year, date.Month, date.Day, hour, time.Minute, 0, DateTimeKind.Unspecified);
     }
 
     private int GetYear(int i)
@@ -524,4 +604,43 @@ public partial class WebenologyDatePicker
         visibleYear += year;
         return Task.CompletedTask;
     }
+
+    private async void UpdateCalendarPosition()
+    {
+        await _jsHelper.PositionCalendar(_el);
+    }
+}
+
+internal class WebenologyTime
+{
+    public int Hour { get; set; }
+    public int Minute { get; set; }
+    public MeridianEnum Meridian { get; set; }
+
+    public WebenologyTime() : this(12, 0, MeridianEnum.AM)
+    {
+    }
+    public WebenologyTime(int hour) : this(hour, 0, MeridianEnum.AM)
+    {
+    }
+    public WebenologyTime(int hour, int minute) : this(hour, minute, MeridianEnum.AM)
+    {
+    }
+    public WebenologyTime(int hour, int minute, MeridianEnum meridian)
+    {
+        Hour = hour;
+        Minute = minute;
+        Meridian = meridian;
+    }
+
+    public override string ToString()
+    {
+        return $"{Hour:00}:{Minute:00} {Meridian.ToString()}";
+    }
+}
+
+public enum MeridianEnum
+{
+    AM,
+    PM
 }

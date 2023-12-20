@@ -1,8 +1,10 @@
 @tailwind base;
 
-.webenology_drop-down-wrapper {
+::deep .webenology_drop-down-wrapper {
     @apply w-full relative bg-white;
+}
 
+.webenology_drop-down-wrapper {
     .drop-down-input-wrapper {
         @apply flex border border-black items-center;
 
@@ -20,7 +22,7 @@
     }
 
     .drop-down-body {
-        @apply border border-gray-400 shadow-sm absolute w-full overflow-y-auto hidden;
+        @apply border border-gray-400 shadow-sm absolute overflow-y-auto hidden bg-white w-full;
         max-height: 260px;
 
         .add {

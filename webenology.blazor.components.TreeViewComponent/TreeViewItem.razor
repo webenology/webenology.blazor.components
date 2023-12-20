@@ -1,0 +1,80 @@
+﻿@namespace webenology.blazor.components.TreeViewComponent
+
+@foreach (var t in TreeNodes)
+{
+    <ul class="@CssStyle.UlCss">
+        <li class="@CssStyle.LiCss @(t.IsDisabled ? "disabled" : "")">
+            <div class="@CssStyle.LiHolderCss">
+                @if (t.Nodes.Any())
+                {
+                    if (t.IsExpanded)
+                    {
+                        <i class="@CssStyle.MinusCss @CssStyle.LinkCss" @onclick="@(()=> t.IsExpanded =false)"></i>
+                    }
+                    else if (!t.IsExpanded)
+                    {
+                        <i class="@CssStyle.PlusCss @CssStyle.LinkCss" @onclick="@(()=> t.IsExpanded =true)"></i>
+                    }
+                }
+                else
+                {
+                    <i style="@CssStyle.EmptyStyle"></i>
+                }
+
+                <span class="@CssStyle.LinkCss" style="margin-left: 0.5em" @onclick="@(()=> ToggleCheck(t))">
+                    @if (_treeView.Selectable)
+                    {
+
+                        @if (t.Nodes.Any())
+                        {
+                            if (t.Nodes.AreAllSelected(new List<bool>()))
+                            {
+                                t.IsSelected = true;
+                                <i class="@CssStyle.CheckCheckedCss"></i>
+                            }
+                            else if (t.Nodes.AreAnySelected(new List<bool>()))
+                            {
+                                t.IsSelected = false;
+                                <i class="@CssStyle.IntermediateCss"></i>
+                            }
+                            else
+                            {
+                                t.IsSelected = false;
+                                <i class="@CssStyle.CheckUncheckedCss"></i>
+                            }
+                        }
+                        else
+                        {
+                            if (t.IsDisabled)
+                            {
+                                <i class="@CssStyle.CheckDisabledCss"></i>
+                            }
+                            else if (t.IsSelected)
+                            {
+                                <i class="@CssStyle.CheckCheckedCss"></i>
+                            }
+                            else
+                            {
+                                <i class="@CssStyle.CheckUncheckedCss"></i>
+                            }
+                        }
+                    }
+                    <span style="margin-left:0.5em">
+                        <b>@t.Node</b>
+                        <span>
+                            @(!string.IsNullOrEmpty(t.NodeDescription) ? $" - {t.NodeDescription}" : "")
+                            @if (!t.IsExpanded)
+                            {
+                                <text> (@t.Nodes.Count)</text>
+                            }
+                        </span>
+                    </span>
+                </span>
+            </div>
+            @if (t.IsExpanded)
+            {
+                <TreeViewItem TreeNodes="@t.Nodes" ParentNode="@t" CssStyle="CssStyle" />
+            }
+        </li>
+    </ul>
+}

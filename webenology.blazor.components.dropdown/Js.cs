@@ -17,19 +17,11 @@ internal class Js : IAsyncDisposable
         _ref = DotNetObjectReference.Create(this);
     }
 
-    public async Task Register(ElementReference el, Action onOutsideClick, Action? onInsideClick = null)
+    public async Task SetElement(ElementReference el)
     {
-        _onOutsideClick = onOutsideClick;
-        _onInsideClick = onInsideClick;
         _el = el;
         var value = await ModuleTask.Value;
-        await value.InvokeVoidAsync("Register", _el, _ref);
-    }
-
-    public async Task UnRegister()
-    {
-        var value = await ModuleTask.Value;
-        await value.InvokeVoidAsync("UnRegister", _el, _ref);
+        await value.InvokeVoidAsync("PreventEnterKey", _el);
     }
 
     public async Task ScrollToActive(string behavior = "instant")
@@ -60,7 +52,6 @@ internal class Js : IAsyncDisposable
     {
         if (ModuleTask.IsValueCreated)
         {
-            await UnRegister();
             var module = await ModuleTask.Value;
             await module.DisposeAsync();
         }

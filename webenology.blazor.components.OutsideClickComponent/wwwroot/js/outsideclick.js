@@ -26,6 +26,8 @@ class OutsideClick {
             }
         }
 
+        console.log("onclick", this._ref, isInside);
+
         if (this._ref == null)
             return;
         if (isInside) {

@@ -18,7 +18,7 @@ namespace webenology.blazor.components
     internal class OutsideClickJsHelper : IOutsideClickJsHelper
     {
         public Lazy<Task<IJSObjectReference>> _moduleTask { get; set; }
-        private IJSObjectReference _classReference;
+        private IJSObjectReference? _classReference;
 
         public OutsideClickJsHelper(IJSRuntime jsRuntime)
         {
@@ -34,7 +34,8 @@ namespace webenology.blazor.components
 
         public async Task UnRegister<TRef>(ElementReference el, DotNetObjectReference<TRef> instance) where TRef : class
         {
-            await _classReference.InvokeVoidAsync("unregister");
+            if (_classReference != null)
+                await _classReference.InvokeVoidAsync("unregister");
         }
 
         public async ValueTask DisposeAsync()

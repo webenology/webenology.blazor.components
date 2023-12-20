@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Text;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -7,8 +10,10 @@ using webenology.blazor.components.shared;
 
 namespace webenology.blazor.components.dropdown;
 
-public partial class DropDown<TValue> : ComponentBase where TValue : IConvertible
+public partial class WebenologyDropDown<TValue> : ComponentBase
 {
+    [Parameter]
+    public string? BaseCssClass { get; set; }
     [Parameter] public List<DropDownItem<TValue>> Items { get; set; }
     private DropDownItem<TValue> _oldSelectedItem { get; set; }
     [Parameter] public DropDownItem<TValue> SelectedItem { get; set; }
@@ -16,15 +21,19 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
     [Parameter] public RenderFragment<DropDownItem<TValue>> ItemContent { get; set; }
     [Parameter] public EventCallback<string> OnAddNew { get; set; }
     [Parameter] public string Value { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public bool IsDisabled { get; set; }
     [Inject]
     private IJSRuntime js { get; set; }
 
-    private ElementReference _el;
+    private ElementReference el;
+    private ElementReference inputEl;
+
     private Js _jsObj { get; set; }
     public string Search { get; set; }
+    private string _searchText { get; set; } = string.Empty;
 
     private bool isActive;
-    private bool showAdd;
     private bool _shouldFilter;
     private int _originalIndex = -1;
 
@@ -32,44 +41,55 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
     {
         _jsObj = new Js(js);
 
-        foreach (var item in Items)
+        if (Items != null)
         {
-            if (item.Equals(SelectedItem))
+            foreach (var item in Items)
             {
-                item.IsSelected = true;
-                Search = item.Value;
+                if (item.Equals(SelectedItem))
+                {
+                    item.IsSelected = true;
+                    Search = item.Value;
+                }
             }
-
         }
 
         base.OnInitialized();
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        if (_oldSelectedItem != SelectedItem)
-        {
-            Items.ForEach(x => x.IsSelected = false);
-            _oldSelectedItem = SelectedItem;
-            if (SelectedItem != null)
-            {
-                var item = Items.First(x => x.Equals(SelectedItem));
-                item.IsSelected = true;
-                Search = item.Value;
-            }
-        }
-
-        _originalIndex = -1;
-        await base.OnParametersSetAsync();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await _jsObj.Register(_el, OnOutsideClick);
+            await _jsObj.SetElement(el);
         }
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_oldSelectedItem != SelectedItem)
+        {
+            Search = string.Empty;
+            _searchText = string.Empty;
+            _oldSelectedItem = SelectedItem;
+            if (Items != null && Items.Any())
+            {
+                Items.ForEach(x => x.IsSelected = false);
+                if (SelectedItem != null)
+                {
+                    var item = Items.FirstOrDefault(x => x.Equals(SelectedItem));
+                    if (item != null)
+                    {
+                        item.IsSelected = true;
+                        Search = item.Value;
+                    }
+                }
+            }
+
+            _originalIndex = -1;
+        }
+
+        await base.OnParametersSetAsync();
     }
 
     private void OnOutsideClick()
@@ -88,7 +108,7 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
                 }
             }
         }
-
+        _searchText = String.Empty;
         StateHasChanged();
     }
 
@@ -107,6 +127,14 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
     {
         if (!isActive)
         {
+            if (Items != null && Items.Count(x => x.IsSelected) > 1 && SelectedItem != null)
+            {
+                foreach (var i in Items.Where(x => x.IsSelected && !x.Equals(SelectedItem)))
+                {
+                    i.IsSelected = false;
+                }
+            }
+            isActive = true;
             isActive = true;
             _shouldFilter = false;
             await Task.Yield();
@@ -116,14 +144,15 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
 
     private IEnumerable<DropDownItem<TValue>> GetSearched()
     {
-        showAdd = true;
+        if (Items == null || !Items.Any())
+            yield break;
+
         var search = string.Empty;
         var hasSelected = false;
         if (_shouldFilter)
             search = Search;
         foreach (var item in Items.Search(search, x => x.Value))
         {
-            showAdd = false;
             if (item.IsSelected)
                 hasSelected = true;
             yield return item;
@@ -146,7 +175,7 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
         return Task.CompletedTask;
     }
 
-    private Task SetToggle()
+    private async Task SetToggle()
     {
         if (isActive)
         {
@@ -154,15 +183,14 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
         }
         else
         {
-            isActive = true;
+            await SetActive();
         }
-
-        return Task.CompletedTask;
     }
 
     private Task DoFilter()
     {
         _shouldFilter = true;
+        _searchText = Search;
         return Task.CompletedTask;
     }
 
@@ -173,7 +201,15 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
             await _jsObj.SetCursorToEnd();
 
         if (!(args.Key is "ArrowDown" or "ArrowUp" or "Enter"))
+        {
             return;
+        }
+
+        if (args.CtrlKey && args.Key == "Enter")
+        {
+            await OnAddNewItem();
+            return;
+        }
 
         var searchedItems = GetSearched().ToList();
         if (!searchedItems.Any())
@@ -199,6 +235,7 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
                     var nextIndex = GetAvailableIndex(searchedItems, index, 1);
                     searchedItems[index].IsSelected = false;
                     searchedItems[nextIndex].IsSelected = true;
+                    Search = searchedItems[nextIndex].Value;
                     break;
                 }
             case "ArrowUp":
@@ -206,10 +243,12 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
                     var prevIndex = GetAvailableIndex(searchedItems, index, -1);
                     searchedItems[index].IsSelected = false;
                     searchedItems[prevIndex].IsSelected = true;
+                    Search = searchedItems[prevIndex].Value;
                     break;
                 }
             case "Enter":
                 {
+
                     var item = searchedItems.Find(x => x.IsSelected);
                     if (item != null)
                     {
@@ -220,12 +259,19 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
                 }
         }
 
-        await Task.Yield();
+        StateHasChanged();
         await _jsObj.ScrollToActive();
+
+        if (args.Key == "Enter")
+            return;
+
     }
 
     private int GetAvailableIndex(List<DropDownItem<TValue>> items, int currentIndex, int goIndex)
     {
+        if (!items.Any())
+            return 0;
+
         var nextIndex = currentIndex;
 
         while (true)
@@ -246,5 +292,33 @@ public partial class DropDown<TValue> : ComponentBase where TValue : IConvertibl
         }
 
         return nextIndex;
+    }
+
+    private async Task OnAddNewItem()
+    {
+        if (OnAddNew.HasDelegate)
+            await OnAddNew.InvokeAsync(Search);
+
+        isActive = false;
+        await Task.Yield();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _jsObj.DisposeAsync();
+    }
+
+    private bool CanShowAddNew()
+    {
+        if (!OnAddNew.HasDelegate)
+            return false;
+        if (Items == null)
+            return false;
+        if (string.IsNullOrEmpty(Search))
+            return false;
+        if (Items.Any(x => x.Value.Equals(Search, StringComparison.OrdinalIgnoreCase)))
+            return false;
+
+        return true;
     }
 }

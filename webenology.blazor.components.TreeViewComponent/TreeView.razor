@@ -1,0 +1,22 @@
+﻿@namespace webenology.blazor.components.TreeViewComponent
+<CascadingValue Value="this">
+
+    @if (AllowSelectAll && Selectable)
+    {
+        @*@onclick="ToggleAll"*@
+        <label class="@CssStyle.LinkCss" >
+            @if (_toggleAll)
+            {
+                <i class="@CssStyle.SelectAllCheckedCss" style="margin-right: 0.5em;"></i>
+                <text>Unselect All</text>
+            }
+            else
+            {
+                <i class="@CssStyle.SelectAllUncheckedCss" style="margin-right: 0.5em"></i>
+                <text>Select All</text>
+            }
+        </label>
+    }
+    <TreeViewItem TreeNodes="TreeNodes" CssStyle="CssStyle"></TreeViewItem>
+</CascadingValue>
+

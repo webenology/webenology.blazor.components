@@ -7,17 +7,18 @@
     border-color: #e5e7eb
 }
 
+::deep .wc-outline {
+    position: relative;
+    width: 100%;
+    user-select: none;
+}
+
 .wc {
     margin: 0.5rem;
     min-width: 150px;
     min-height: 220px;
 
     &-outline {
-
-        position: relative;
-        width: 100%;
-        user-select: none;
-
         &.wc-disabled {
             .wc-input {
                 color: rgb(200 200 200 / .5);
@@ -44,6 +45,8 @@
             font-weight: 600;
             --tw-text-opacity: 1;
             color: rgb(31 41 55 / var(--tw-text-opacity));
+            white-space: nowrap;
+            text-overflow: ellipsis;
 
             span {
                 flex: 1 1 0;
@@ -144,7 +147,7 @@
             padding: 0.5rem;
             text-align: right;
 
-            &>button {
+            & > button {
                 border-radius: 0.25rem;
                 --tw-bg-opacity: 1;
                 background-color: rgb(99 102 241 / var(--tw-bg-opacity));
@@ -153,9 +156,7 @@
                 color: rgb(255 255 255 / var(--tw-text-opacity));
                 --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
                 --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-                    var(--tw-ring-shadow, 0 0 #0000),
-                    var(--tw-shadow);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 
                 &:hover {
                     --tw-bg-opacity: 1;
@@ -221,7 +222,7 @@
             gap: 0.25rem;
             justify-content: center;
 
-            >div {
+            > div {
                 width: 100%;
                 border-bottom-width: 1px;
                 padding-bottom: 0.25rem;
@@ -342,6 +343,37 @@
             &.wc-skip-6 {
                 grid-column-start: 7
             }
+        }
+    }
+
+    .wc-time {
+        display: flex;
+        justify-content: center;
+        font-size: 1.1em;
+
+        .wc-hour,
+        .wc-minute,
+        .wc-meridian {
+            border: 1px solid #989a9d;
+            border-left: 0;
+            border-right: 0;
+            padding: 0 2px;
+        }
+
+        .wc-hour {
+            border-left: 1px solid #989a9d;
+        }
+
+        .wc-meridian {
+            border-right: 1px solid #989a9d !important;
+        }
+
+        .wc-seperator {
+            border: 1px solid #989a9d;
+            border-left: 0px;
+            border-right: 0px;
+            padding: 0 4px;
+            font-weight: bold;
         }
     }
 }

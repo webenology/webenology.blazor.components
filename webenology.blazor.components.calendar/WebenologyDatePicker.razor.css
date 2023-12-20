@@ -7,17 +7,18 @@
   border-color: #e5e7eb;
 }
 
-.wc {
-  margin: 0.5rem;
-  min-width: 150px;
-  min-height: 220px;
-}
-.wc-outline {
+::deep .wc-outline {
   position: relative;
   width: 100%;
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
+}
+
+.wc {
+  margin: 0.5rem;
+  min-width: 150px;
+  min-height: 220px;
 }
 .wc-outline.wc-disabled .wc-input {
   color: rgba(200, 200, 200, 0.5);
@@ -41,6 +42,8 @@
   font-weight: 600;
   --tw-text-opacity: 1;
   color: rgb(31 41 55/var(--tw-text-opacity));
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .wc-outline .wc-input span {
   flex: 1 1 0;
@@ -291,4 +294,30 @@
 }
 .wc .wc-days .wc-day.wc-skip-6 {
   grid-column-start: 7;
+}
+.wc .wc-time {
+  display: flex;
+  justify-content: center;
+  font-size: 1.1em;
+}
+.wc .wc-time .wc-hour,
+.wc .wc-time .wc-minute,
+.wc .wc-time .wc-meridian {
+  border: 1px solid #989a9d;
+  border-left: 0;
+  border-right: 0;
+  padding: 0 2px;
+}
+.wc .wc-time .wc-hour {
+  border-left: 1px solid #989a9d;
+}
+.wc .wc-time .wc-meridian {
+  border-right: 1px solid #989a9d !important;
+}
+.wc .wc-time .wc-seperator {
+  border: 1px solid #989a9d;
+  border-left: 0px;
+  border-right: 0px;
+  padding: 0 4px;
+  font-weight: bold;
 }/*# sourceMappingURL=WebenologyDatePicker.razor.css.map */
