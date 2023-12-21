@@ -580,6 +580,7 @@ video {
 .webenology_drop-down-wrapper .drop-down-body {
   position: absolute;
   display: none;
+  width: 100%;
   overflow-y: auto;
   border-width: 1px;
   --tw-border-opacity: 1;
@@ -690,3 +691,4 @@ video {
   background-color: rgb(250 204 21 / var(--tw-bg-opacity));
   padding: 0px;
 }
+/*# sourceMappingURL=WebenologyDropDown.razor.css.map */

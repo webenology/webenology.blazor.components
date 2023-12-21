@@ -1,0 +1,44 @@
+﻿@namespace webenology.blazor.components.MapAutocompleteComponent
+@using webenology.blazor.components.OutsideClickComponent
+
+<OutsideClick OnLoseFocus="@HideResults" @ref="_outsideClick">
+    <div class="wrapper">
+        <div class="input-wrapper">
+            <input type="text" @bind="Search" @bind:event="oninput"
+                   placeholder="Search for an address..."
+                   autocomplete="off" class="input"
+                   @onclick="ShowResults" disabled="@IsDisabled"/>
+            @if (_searching || _debouncing)
+            {
+                <svg viewBox="0 0 73 73" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+                     style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;right:10px;position: absolute;width:20px;">
+                    <circle cx="13.612" cy="35.938" r="9"/>
+                    <circle cx="36.07" cy="35.938" r="9"/>
+                    <circle cx="58.582" cy="36.222" r="9"/>
+                </svg>
+            }
+            else
+            {
+                <svg viewBox="0 0 73 73" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" 
+                     style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;right:10px;position: absolute;width:20px;">
+                    <path d="M6.331,30.553l-6.218,6.219l25.036,25.037l6.219,-6.219l-25.037,-25.037Z"/>
+                    <path d="M72.113,14.828l-6.283,-6.282l-46.98,46.981l6.282,6.282l46.981,-46.981Z"/>
+                </svg>
+            }
+        </div>
+        @if (_showResults)
+        {
+            <div class="results" style="top:102%;">
+                @if (_autoItem != null)
+                {
+                    foreach (var g in _autoItem.Items)
+                    {
+                        <div @onclick="@(() => SelectAddress(g))" class="results-item">@Highlight(g.Address?.Label, g.Highlights.Address?.Label)</div>
+                    }
+                }
+            </div>
+        }
+    </div>
+</OutsideClick>

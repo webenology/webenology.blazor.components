@@ -2,6 +2,7 @@
 ::deep .webenology_drop-down-wrapper {
   @apply w-full relative bg-white;
 }
+
 .webenology_drop-down-wrapper .drop-down-input-wrapper {
   @apply flex border border-black items-center;
 }
@@ -15,7 +16,7 @@
   @apply p-2 border-l cursor-pointer;
 }
 .webenology_drop-down-wrapper .drop-down-body {
-  @apply border border-gray-400 shadow-sm absolute overflow-y-auto hidden bg-white;
+  @apply border border-gray-400 shadow-sm absolute overflow-y-auto hidden bg-white w-full;
   max-height: 260px;
 }
 .webenology_drop-down-wrapper .drop-down-body .add {
@@ -45,6 +46,7 @@
 .webenology_drop-down-wrapper .drop-down-body .item.disabled:hover mark {
   @apply bg-yellow-400 text-black;
 }
+
 ::deep mark {
   @apply inline-block p-0 bg-yellow-400;
-}
+}/*# sourceMappingURL=dropdown.raw.css.map */
