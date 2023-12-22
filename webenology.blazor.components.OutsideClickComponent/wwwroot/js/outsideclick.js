@@ -3,10 +3,10 @@ class OutsideClick {
         this._el = el;
         this._ref = ref;
         this._binded = this.onClickReg.bind(this);
-        console.log(this._ref);
         this.register();
     }
-    register() {        
+
+    register() {
         document.addEventListener("click", this._binded);
     }
 
@@ -25,8 +25,6 @@ class OutsideClick {
                 break;
             }
         }
-
-        console.log("onclick", this._ref, isInside);
 
         if (this._ref == null)
             return;

@@ -1,8 +1,4 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using webenology.blazor.components.shared;
@@ -11,6 +7,15 @@ namespace webenology.blazor.components.dropdown;
 
 public partial class WebenologyDropDown<TValue> : ComponentBase
 {
+    private List<DropDownItem<TValue>> _filtered = new();
+    private int _oldHash;
+    private int _originalIndex = -1;
+    private bool _shouldFilter;
+
+    private ElementReference el;
+    private ElementReference inputEl;
+
+    private bool isActive;
     [Parameter] public string? BaseCssClass { get; set; }
     [Parameter] public List<DropDownItem<TValue>> Items { get; set; }
     private DropDownItem<TValue> _oldSelectedItem { get; set; }
@@ -22,18 +27,9 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
     [Parameter] public string? Placeholder { get; set; }
     [Parameter] public bool IsDisabled { get; set; }
     [Inject] private IJSRuntime js { get; set; }
-
-    private ElementReference el;
-    private ElementReference inputEl;
-    private int _oldHash;
     private Js _jsObj { get; set; }
     public string Search { get; set; }
     private string _searchText { get; set; } = string.Empty;
-
-    private bool isActive;
-    private bool _shouldFilter;
-    private int _originalIndex = -1;
-    private List<DropDownItem<TValue>> _filtered = new();
 
     protected override void OnInitialized()
     {
@@ -66,10 +62,13 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
 
     protected override async Task OnParametersSetAsync()
     {
-        if (Items.GetHashCode() != _oldHash)
+        if (Items != null)
         {
-            _filtered = Items;
-            _oldHash = Items.GetHashCode();
+            if (Items.GetHashCode() != _oldHash)
+            {
+                _filtered = Items;
+                _oldHash = Items.GetHashCode();
+            }
         }
 
         if (_oldSelectedItem != SelectedItem)
@@ -107,6 +106,7 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
         {
             found.IsSelected = true;
         }
+
         Search = SelectedItem != null ? SelectedItem.Value : string.Empty;
 
         _searchText = String.Empty;
