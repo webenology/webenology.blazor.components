@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="drop-down-body @(isActive ? "active" : "")">
-            <Virtualize OverscanCount="5" Items="GetSearched()" Context="i">
+            <Virtualize OverscanCount="5" Items="_filtered" Context="i">
                 @if (ItemContent != null)
                 {
                     <div @key="i" @onclick="() => _onSelected(i)"
