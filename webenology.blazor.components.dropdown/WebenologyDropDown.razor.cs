@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 using Microsoft.AspNetCore.Components;
@@ -134,34 +135,34 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
                     i.IsSelected = false;
                 }
             }
-            isActive = true;
+
+            var index = Items.FindIndex(x => x.IsSelected);
             isActive = true;
             _shouldFilter = false;
             await Task.Yield();
-            await _jsObj.ScrollToActive();
+            await _jsObj.ScrollToActive(index);
         }
     }
 
-    private IEnumerable<DropDownItem<TValue>> GetSearched()
+    private ICollection<DropDownItem<TValue>> GetSearched()
     {
         if (Items == null || !Items.Any())
-            yield break;
+            return new List<DropDownItem<TValue>>();
 
         var search = string.Empty;
         var hasSelected = false;
         if (_shouldFilter)
             search = Search;
-        foreach (var item in Items.Search(search, x => x.Value))
-        {
-            if (item.IsSelected)
-                hasSelected = true;
-            yield return item;
-        }
 
-        if (hasSelected) yield break;
+        var items = Items.Search(search, x => x.Value).ToList();
+        hasSelected = items.Any(x => x.IsSelected);
+        if (hasSelected)
+            return items;
 
         var index = GetAvailableIndex(Items, -1, 1);
         Items[index].IsSelected = true;
+
+        return items;
     }
 
     private Task UnSelect()
@@ -260,7 +261,8 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
         }
 
         StateHasChanged();
-        await _jsObj.ScrollToActive();
+        var foundIndex = searchedItems.FindIndex(x => x.IsSelected);
+        await _jsObj.ScrollToActive(foundIndex);
 
         if (args.Key == "Enter")
             return;

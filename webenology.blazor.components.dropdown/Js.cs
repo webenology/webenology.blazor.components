@@ -24,10 +24,10 @@ internal class Js : IAsyncDisposable
         await value.InvokeVoidAsync("PreventEnterKey", _el);
     }
 
-    public async Task ScrollToActive(string behavior = "instant")
+    public async Task ScrollToActive(int index, string behavior = "instant")
     {
         var value = await ModuleTask.Value;
-        await value.InvokeVoidAsync("ScrollToActive", _el, behavior);
+        await value.InvokeVoidAsync("ScrollToActive", _el, index, behavior);
     }
 
     public async Task SetCursorToEnd()

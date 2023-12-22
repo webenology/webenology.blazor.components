@@ -9,12 +9,16 @@ export function PreventEnterKey(el) {
     });
 }
 
-export function ScrollToActive(el, behavior) {
-    const item = el.nextElementSibling.querySelector(".item.selected");
+export function ScrollToActive(el, index, behavior) {
+    var item = el.nextElementSibling.querySelector(".item");
+    var bounding = 29.67 * index;
     if (item != null) {
-        var bounding = item.offsetTop;
-        el.nextElementSibling.scrollTo({ top: bounding, behavior: behavior });
+        var height = item.getBoundingClientRect().height;
+        bounding = height * index;
+        console.log(item);
     }
+    console.log(index, bounding);
+    el.nextElementSibling.scrollTo({ top: bounding, behavior: behavior });
 }
 
 export function CursorAtEnd(el) {

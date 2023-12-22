@@ -1,6 +1,7 @@
 ﻿@namespace webenology.blazor.components.dropdown
 @using webenology.blazor.components.shared
 @using webenology.blazor.components.OutsideClickComponent
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 @typeparam TValue
 
 <div style="display:inline-block;width:100%;" class="@BaseCssClass">
@@ -16,9 +17,8 @@
             </div>
         </div>
         <div class="drop-down-body @(isActive ? "active" : "")">
-            @foreach (var i in GetSearched())
-            {
-                if (ItemContent != null)
+            <Virtualize OverscanCount="5" Items="GetSearched()" Context="i">
+                @if (ItemContent != null)
                 {
                     <div @key="i" @onclick="() => _onSelected(i)"
                          class="item @(i.IsSelected ? "selected" : "") @(i.IsDisabled ? "disabled" : "")">
@@ -32,7 +32,7 @@
                         @((MarkupString)i.Value.Highlight(_searchText))
                     </div>
                 }
-            }
+            </Virtualize>
             @if (CanShowAddNew())
             {
                 <div class="add" @onclick="OnAddNewItem">
