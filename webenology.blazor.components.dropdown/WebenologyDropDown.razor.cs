@@ -100,6 +100,9 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
     {
         isActive = false;
         _filtered = Items;
+        if (_filtered == null)
+            return;
+        
         _filtered.FindAll(x => x.IsSelected).ForEach(x => x.IsSelected = false);
         var found = _filtered.Find(x => x.Equals(SelectedItem));
         if (found != null)
