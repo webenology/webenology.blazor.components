@@ -4,6 +4,7 @@ using System;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
 namespace webenology.blazor.components.OutsideClickComponent
@@ -27,12 +28,13 @@ namespace webenology.blazor.components.OutsideClickComponent
 
         private IOutsideClickJsHelper js { get; set; }
         [Inject] private IJSRuntime _jsRuntime { get; set; }
+        [Inject] private ILogger<OutsideClickJsHelper> _logger { get; set; }
         private ElementReference elRef { get; set; }
         private DotNetObjectReference<OutsideClick> _theInstance;
 
         protected override void OnInitialized()
         {
-            js = new OutsideClickJsHelper(_jsRuntime);
+            js = new OutsideClickJsHelper(_jsRuntime, _logger);
             _theInstance = DotNetObjectReference.Create(this);
             base.OnInitialized();
         }
