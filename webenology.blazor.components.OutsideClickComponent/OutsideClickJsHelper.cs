@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 
 namespace webenology.blazor.components
@@ -17,11 +19,13 @@ namespace webenology.blazor.components
 
     internal class OutsideClickJsHelper : IOutsideClickJsHelper
     {
+        private readonly ILogger<OutsideClickJsHelper> _logger;
         public Lazy<Task<IJSObjectReference>> _moduleTask { get; set; }
         private IJSObjectReference? _classReference;
 
-        public OutsideClickJsHelper(IJSRuntime jsRuntime)
+        public OutsideClickJsHelper(IJSRuntime jsRuntime, ILogger<OutsideClickJsHelper> logger)
         {
+            _logger = logger;
             _moduleTask = new(() =>
                 jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/webenology.blazor.components.OutsideClickComponent/js/outsideclick.js").AsTask());
         }
@@ -34,8 +38,15 @@ namespace webenology.blazor.components
 
         public async Task UnRegister<TRef>(ElementReference el, DotNetObjectReference<TRef> instance) where TRef : class
         {
-            if (_classReference != null)
-                await _classReference.InvokeVoidAsync("unregister");
+            try
+            {
+                if (_classReference != null)
+                    await _classReference.InvokeVoidAsync("unregister");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Unregistering outside click.");
+            }
         }
 
         public async ValueTask DisposeAsync()
