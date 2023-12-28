@@ -129,7 +129,7 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
 
     private async Task SetActive()
     {
-        if (!isActive)
+        if (!isActive && _filtered != null)
         {
             _filtered.FindAll(x => x.IsSelected).ForEach(x => x.IsSelected = false);
             var found = _filtered.FirstOrDefault(x => x.Equals(SelectedItem));
