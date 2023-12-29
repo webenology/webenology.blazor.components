@@ -51,11 +51,19 @@ namespace webenology.blazor.components
 
         public async ValueTask DisposeAsync()
         {
-            if (_moduleTask.IsValueCreated)
+            try
             {
-                var module = await _moduleTask.Value;
-                await module.DisposeAsync();
+                if (_moduleTask.IsValueCreated)
+                {
+                    var module = await _moduleTask.Value;
+                    await module.DisposeAsync();
+                }
             }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Failed when disposing outside click");
+            }
+            
         }
     }
 }
