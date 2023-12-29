@@ -1,5 +1,8 @@
 
 export function PreventEnterKey(el) {
+    if (el == undefined || el == null)
+        return;
+
     const input = el.querySelector("input");
     input.addEventListener("keydown", function (event) {
         if (event.keyCode == 13) {
