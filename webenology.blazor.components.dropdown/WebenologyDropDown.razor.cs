@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+
 using webenology.blazor.components.shared;
 
 namespace webenology.blazor.components.dropdown;
@@ -102,7 +103,7 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
         _filtered = Items;
         if (_filtered == null)
             return;
-        
+
         _filtered.FindAll(x => x.IsSelected).ForEach(x => x.IsSelected = false);
         var found = _filtered.Find(x => x.Equals(SelectedItem));
         if (found != null)
@@ -142,6 +143,12 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
             await Task.Yield();
             await _jsObj.ScrollToActive(index);
         }
+        else if (!isActive)
+
+        {
+            isActive = true;
+            StateHasChanged();
+        }
     }
 
     private Task UnSelect()
@@ -169,22 +176,26 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
 
     private Task DoFilter()
     {
-        _shouldFilter = true;
         _searchText = Search;
-        _filtered = Items.Search(_searchText, x => x.Value).ToList();
-        var hasSelected = _filtered.Any(x => x.IsSelected);
-        if (hasSelected)
-            return Task.CompletedTask;
-
-        foreach (var dropDownItem in _filtered.Where(x => x.IsSelected))
+        if (Items != null)
         {
-            dropDownItem.IsSelected = false;
-        }
+            _shouldFilter = true;
+            _filtered = Items.Search(_searchText, x => x.Value).ToList();
+            var hasSelected = _filtered.Any(x => x.IsSelected);
+            if (hasSelected)
+                return Task.CompletedTask;
 
-        var index = GetAvailableIndex(_filtered, -1, 1);
-        if (_filtered.Count > 0)
-        {
-            _filtered[index].IsSelected = true;
+            foreach (var dropDownItem in _filtered.Where(x => x.IsSelected))
+            {
+                dropDownItem.IsSelected = false;
+            }
+
+            var index = GetAvailableIndex(_filtered, -1, 1);
+            if (_filtered.Count > 0)
+            {
+                _filtered[index].IsSelected = true;
+            }
+
         }
 
         return Task.CompletedTask;
@@ -224,31 +235,31 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
         switch (args.Key)
         {
             case "ArrowDown":
-            {
-                var nextIndex = GetAvailableIndex(_filtered, index, 1);
-                _filtered[index].IsSelected = false;
-                _filtered[nextIndex].IsSelected = true;
-                Search = _filtered[nextIndex].Value;
-                break;
-            }
-            case "ArrowUp":
-            {
-                var prevIndex = GetAvailableIndex(_filtered, index, -1);
-                _filtered[index].IsSelected = false;
-                _filtered[prevIndex].IsSelected = true;
-                Search = _filtered[prevIndex].Value;
-                break;
-            }
-            case "Enter":
-            {
-                var item = _filtered.Find(x => x.IsSelected);
-                if (item != null)
                 {
-                    await _onSelected(item);
+                    var nextIndex = GetAvailableIndex(_filtered, index, 1);
+                    _filtered[index].IsSelected = false;
+                    _filtered[nextIndex].IsSelected = true;
+                    Search = _filtered[nextIndex].Value;
+                    break;
                 }
+            case "ArrowUp":
+                {
+                    var prevIndex = GetAvailableIndex(_filtered, index, -1);
+                    _filtered[index].IsSelected = false;
+                    _filtered[prevIndex].IsSelected = true;
+                    Search = _filtered[prevIndex].Value;
+                    break;
+                }
+            case "Enter":
+                {
+                    var item = _filtered.Find(x => x.IsSelected);
+                    if (item != null)
+                    {
+                        await _onSelected(item);
+                    }
 
-                break;
-            }
+                    break;
+                }
         }
 
         StateHasChanged();
@@ -306,11 +317,9 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
     {
         if (!OnAddNew.HasDelegate)
             return false;
-        if (_filtered == null)
-            return false;
         if (string.IsNullOrEmpty(Search))
             return false;
-        if (_filtered.Any(x => x.Value.Equals(Search, StringComparison.OrdinalIgnoreCase)))
+        if (_filtered?.Any(x => x.Value.Equals(Search, StringComparison.OrdinalIgnoreCase)) ?? false)
             return false;
 
         return true;
