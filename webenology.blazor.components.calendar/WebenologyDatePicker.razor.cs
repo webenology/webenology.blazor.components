@@ -51,26 +51,29 @@ public partial class WebenologyDatePicker
 
     protected override void OnParametersSet()
     {
-        if (DateRange != null && Date.HasValue)
-            throw new ArgumentException("You can only set a date range or a single date");
-
-        _isRangeCalendar = (DateRangeChanged.HasDelegate || DateRange != null) &&
-                           (IsRangeCalendar.HasValue && IsRangeCalendar.Value || !IsRangeCalendar.HasValue);
-
-        if (Date.HasValue)
+        if (!_isCalendarVisible)
         {
-            CurrentDateRange = new List<DateTime?>
+            if (DateRange != null && Date.HasValue)
+                throw new ArgumentException("You can only set a date range or a single date");
+
+            _isRangeCalendar = (DateRangeChanged.HasDelegate || DateRange != null) &&
+                               (IsRangeCalendar.HasValue && IsRangeCalendar.Value || !IsRangeCalendar.HasValue);
+
+            if (Date.HasValue)
+            {
+                CurrentDateRange = new List<DateTime?>
             {
                 Date.Value,
                 Date.Value
             };
-            _fromTime = SetTimeFromDateTime(Date.Value);
-            _toTime = null;
-        }
-        else
-        {
-            _fromTime = SetTimeFromDateTime(DateRange?.FirstOrDefault(new DateTime?()).GetValueOrDefault() ?? new DateTime());
-            _toTime = SetTimeFromDateTime(DateRange?.LastOrDefault(new DateTime?()).GetValueOrDefault() ?? new DateTime());
+                _fromTime = SetTimeFromDateTime(Date.Value);
+                _toTime = null;
+            }
+            else
+            {
+                _fromTime = SetTimeFromDateTime(DateRange?.FirstOrDefault(new DateTime?()).GetValueOrDefault() ?? new DateTime());
+                _toTime = SetTimeFromDateTime(DateRange?.LastOrDefault(new DateTime?()).GetValueOrDefault() ?? new DateTime());
+            }
         }
 
         base.OnParametersSet();
