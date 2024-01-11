@@ -25,6 +25,7 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
     [Parameter] public RenderFragment<DropDownItem<TValue>> ItemContent { get; set; }
     [Parameter] public EventCallback<string> OnAddNew { get; set; }
     [Parameter] public string Value { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
     [Parameter] public string? Placeholder { get; set; }
     [Parameter] public bool IsDisabled { get; set; }
     [Inject] private IJSRuntime js { get; set; }
@@ -177,6 +178,9 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
     private Task DoFilter()
     {
         _searchText = Search;
+        if (ValueChanged.HasDelegate)
+            ValueChanged.InvokeAsync(_searchText);
+
         if (Items != null)
         {
             _shouldFilter = true;
