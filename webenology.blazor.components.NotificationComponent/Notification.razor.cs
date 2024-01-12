@@ -10,7 +10,6 @@ namespace webenology.blazor.components.NotificationComponent
         public NotificationStyle CssStyle { get; set; } = NotificationStyle.WebenologyStyle;
 
         public List<NotificationModel> Items = new();
-        public List<NotificationModel> RemoveItems = new();
 
         public void AddNotification(string body)
         {
@@ -35,6 +34,12 @@ namespace webenology.blazor.components.NotificationComponent
         {
             Items.Add(model);
             StateHasChanged();
+        }
+
+        public void RemoveNotification(NotificationModel model)
+        {
+            Items.Remove(model);
+            InvokeAsync(StateHasChanged);
         }
     }
 }

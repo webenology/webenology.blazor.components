@@ -7,7 +7,7 @@ using Timer = System.Timers.Timer;
 
 namespace webenology.blazor.components.NotificationComponent
 {
-    public partial class NotificationItem
+    public partial class NotificationItem : IDisposable
     {
         [CascadingParameter]
         private Notification _notification { get; set; }
@@ -43,8 +43,7 @@ namespace webenology.blazor.components.NotificationComponent
              {
                  Thread.Sleep(300);
                  _isHidden = true;
-                 _notification.Items.Remove(Model);
-                 InvokeAsync(StateHasChanged);
+                 _notification.RemoveNotification(Model);
              });
         }
 
@@ -89,6 +88,11 @@ namespace webenology.blazor.components.NotificationComponent
                 return "animation-name: none";
             }
             return $"animation-duration: {Model.TimeoutInSeconds}s";
+        }
+
+        public void Dispose()
+        {
+            _timer.Dispose();
         }
     }
 }
