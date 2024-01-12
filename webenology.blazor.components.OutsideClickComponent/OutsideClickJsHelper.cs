@@ -43,6 +43,10 @@ namespace webenology.blazor.components
                 if (_classReference != null)
                     await _classReference.InvokeVoidAsync("unregister");
             }
+            catch (JSDisconnectedException ex)
+            {
+                //we know it failed because we did not disconnect
+            }
             catch (Exception e)
             {
                 _logger.LogError(e, "Unregistering outside click.");
@@ -58,6 +62,10 @@ namespace webenology.blazor.components
                     var module = await _moduleTask.Value;
                     await module.DisposeAsync();
                 }
+            }
+            catch (JSDisconnectedException ex)
+            {
+                //we know it failed because we did not disconnect
             }
             catch (Exception e)
             {
