@@ -43,6 +43,7 @@ namespace webenology.blazor.components.NotificationComponent
              {
                  Thread.Sleep(300);
                  _isHidden = true;
+                 _notification.Items.Remove(Model);
                  InvokeAsync(StateHasChanged);
              });
         }
