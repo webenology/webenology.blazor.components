@@ -34,7 +34,6 @@ public class Tests
     }
 
     [Test]
-   
     public void it_should_do_a_large_amount_of_text()
     {
         var sw = new Stopwatch();
