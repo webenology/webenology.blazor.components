@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Net;
 using System.Text;
-
+using System.Transactions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -53,30 +53,35 @@ public partial class WebenologyDatePicker
     {
         if (!_isCalendarVisible)
         {
-            if (DateRange != null && Date.HasValue)
-                throw new ArgumentException("You can only set a date range or a single date");
+            SetupDates();
+        }
 
-            _isRangeCalendar = (DateRangeChanged.HasDelegate || DateRange != null) &&
-                               (IsRangeCalendar.HasValue && IsRangeCalendar.Value || !IsRangeCalendar.HasValue);
+        base.OnParametersSet();
+    }
 
-            if (Date.HasValue)
-            {
-                CurrentDateRange = new List<DateTime?>
+    private void SetupDates()
+    {
+        if (DateRange != null && Date.HasValue)
+            throw new ArgumentException("You can only set a date range or a single date");
+
+        _isRangeCalendar = (DateRangeChanged.HasDelegate || DateRange != null) &&
+                           (IsRangeCalendar.HasValue && IsRangeCalendar.Value || !IsRangeCalendar.HasValue);
+
+        if (Date.HasValue)
+        {
+            CurrentDateRange = new List<DateTime?>
             {
                 Date.Value,
                 Date.Value
             };
-                _fromTime = SetTimeFromDateTime(Date.Value);
-                _toTime = null;
-            }
-            else
-            {
-                _fromTime = SetTimeFromDateTime(DateRange?.FirstOrDefault(new DateTime?()).GetValueOrDefault() ?? new DateTime());
-                _toTime = SetTimeFromDateTime(DateRange?.LastOrDefault(new DateTime?()).GetValueOrDefault() ?? new DateTime());
-            }
+            _fromTime = SetTimeFromDateTime(Date.Value);
+            _toTime = null;
         }
-
-        base.OnParametersSet();
+        else
+        {
+            _fromTime = SetTimeFromDateTime(DateRange?.FirstOrDefault(new DateTime?()).GetValueOrDefault() ?? new DateTime());
+            _toTime = SetTimeFromDateTime(DateRange?.LastOrDefault(new DateTime?()).GetValueOrDefault() ?? new DateTime());
+        }
     }
 
     private WebenologyTime SetTimeFromDateTime(DateTime dt)
@@ -100,6 +105,7 @@ public partial class WebenologyDatePicker
 
     private Task HideCalendar()
     {
+        SelectDateRange();
         _isCalendarVisible = false;
         return Task.CompletedTask;
     }
@@ -109,9 +115,13 @@ public partial class WebenologyDatePicker
         if (IsDisabled)
             return Task.CompletedTask;
 
+
         _isCalendarVisible = !_isCalendarVisible;
         if (_isCalendarVisible)
+        {
             UpdateCalendarPosition();
+            SetupDates();
+        }
         return Task.CompletedTask;
     }
 
@@ -537,7 +547,7 @@ public partial class WebenologyDatePicker
             if (DateChanged.HasDelegate)
                 DateChanged.InvokeAsync(CurrentDateRange.Last());
         }
-        else if (DateRange.Any())
+        else if (DateRange != null && DateRange.Any())
         {
             DateRange[0] = SetDateAndTime(DateRange[0].GetValueOrDefault(), time1);
             DateRange[1] = SetDateAndTime(DateRange[1].GetValueOrDefault(), time2);
@@ -571,6 +581,8 @@ public partial class WebenologyDatePicker
         var dt = new List<DateTime?>();
         if (DateRangeChanged.HasDelegate)
             DateRangeChanged.InvokeAsync(dt);
+        if (DateChanged.HasDelegate)
+            DateChanged.InvokeAsync(null);
 
         return Reset();
     }
