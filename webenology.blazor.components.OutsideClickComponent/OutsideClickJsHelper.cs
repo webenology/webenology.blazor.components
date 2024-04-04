@@ -69,9 +69,9 @@ namespace webenology.blazor.components
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Failed when disposing outside click");
+                _logger.LogError(new EventId(1005, name: nameof(OutsideClickComponent.OutsideClick)), e, "Failed while disposing outside click.");
             }
-            
+
         }
     }
 }
