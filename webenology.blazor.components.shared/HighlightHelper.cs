@@ -9,7 +9,7 @@ namespace webenology.blazor.components.shared
 {
     public static class HighlightHelper
     {
-        public static string Highlight(this string item, string searchTerm, bool includeSubstitution = true)
+        public static string Highlight(this string item, string searchTerm, bool includeSubstitution = true, Dictionary<string, string>? searchSubstitute = null)
         {
             if (string.IsNullOrEmpty(searchTerm) || string.IsNullOrEmpty(item))
                 return item;
@@ -24,11 +24,16 @@ namespace webenology.blazor.components.shared
                     if (string.IsNullOrEmpty(s))
                         continue;
 
+                    var search = Regex.Replace(s, @"[^\d\w]", "");
+
+
                     if (!isFirst)
                         searchString.Append("|");
 
                     searchString.Append("(?:");
-                    foreach (var v in s)
+
+
+                    foreach (var v in search)
                     {
                         if (includeSubstitution && SharedHelper.SubstituteChars.TryGetValue(v, out var c))
                         {
@@ -41,6 +46,11 @@ namespace webenology.blazor.components.shared
                     }
 
                     searchString.Append(")");
+                    if (searchSubstitute != null)
+                    {
+                        if (searchSubstitute.TryGetValue(search, out var substitute))
+                            searchString.Append($"|(?:{substitute})");
+                    }
                     isFirst = false;
                 }
 
