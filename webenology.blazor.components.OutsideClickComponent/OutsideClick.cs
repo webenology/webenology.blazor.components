@@ -31,6 +31,7 @@ namespace webenology.blazor.components.OutsideClickComponent
         [Inject] private ILogger<OutsideClickJsHelper> _logger { get; set; }
         private ElementReference elRef { get; set; }
         private DotNetObjectReference<OutsideClick> _theInstance;
+        private bool _hasFocus;
 
         protected override void OnInitialized()
         {
@@ -52,6 +53,7 @@ namespace webenology.blazor.components.OutsideClickComponent
         [JSInvokable]
         public void OnInsideClick()
         {
+            _hasFocus =true;
             if (OnGainFocus.HasDelegate)
                 OnGainFocus.InvokeAsync();
         }
@@ -59,8 +61,10 @@ namespace webenology.blazor.components.OutsideClickComponent
         [JSInvokable]
         public void OnOutsideClick()
         {
-            if (OnLoseFocus.HasDelegate)
+            if (OnLoseFocus.HasDelegate && _hasFocus)
                 OnLoseFocus.InvokeAsync();
+
+            _hasFocus = false;
         }
 
 
@@ -79,6 +83,14 @@ namespace webenology.blazor.components.OutsideClickComponent
             await js.UnRegister(elRef, _theInstance);
             _theInstance.Dispose();
             await js.DisposeAsync();
+        }
+    }
+
+    public class OutsideClickChild : ComponentBase, IAsyncDisposable
+    {
+        public async ValueTask DisposeAsync()
+        {
+            // TODO release managed resources here
         }
     }
 }
