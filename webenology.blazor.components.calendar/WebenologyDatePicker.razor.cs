@@ -170,8 +170,8 @@ public partial class WebenologyDatePicker
 
     private bool IsDisabledDate(DateTime dt)
     {
-        var isInMinMaxDisabled = MinDateTime.HasValue && dt <= MinDateTime.Value ||
-                                 MaxDateTime.HasValue && dt >= MaxDateTime.Value;
+        var isInMinMaxDisabled = MinDateTime.HasValue && dt.Date < MinDateTime.Value.Date ||
+                                 MaxDateTime.HasValue && dt.Date > MaxDateTime.Value.Date;
 
         if (_isRangeCalendar)
             return isInMinMaxDisabled;
