@@ -47,7 +47,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webenology.blazor.component
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webenology.blazor.components.TreeViewComponent", "webenology.blazor.components.TreeViewComponent\webenology.blazor.components.TreeViewComponent.csproj", "{4A7E1E44-2F30-4A7B-BBCA-A684D776560F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.MapAutocompleteComponent", "webenology.blazor.components.MapAutocomplete\webenology.blazor.components.MapAutocompleteComponent.csproj", "{3EB1B139-5AE5-41A3-8791-405D3E64B31E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webenology.blazor.components.MapAutocompleteComponent", "webenology.blazor.components.MapAutocomplete\webenology.blazor.components.MapAutocompleteComponent.csproj", "{3EB1B139-5AE5-41A3-8791-405D3E64B31E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webenology.blazor.components.tags", "webenology.blazor.components.tags\webenology.blazor.components.tags.csproj", "{1DF89FC3-504D-481D-950F-E59C8DE6312A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +137,10 @@ Global
 		{3EB1B139-5AE5-41A3-8791-405D3E64B31E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EB1B139-5AE5-41A3-8791-405D3E64B31E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EB1B139-5AE5-41A3-8791-405D3E64B31E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DF89FC3-504D-481D-950F-E59C8DE6312A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DF89FC3-504D-481D-950F-E59C8DE6312A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DF89FC3-504D-481D-950F-E59C8DE6312A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DF89FC3-504D-481D-950F-E59C8DE6312A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

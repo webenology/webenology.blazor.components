@@ -1,0 +1,44 @@
+﻿.tag-wrapper {
+    border: 2px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .tag-wrapper input {
+        border: none;
+        padding: 0 4px;
+        flex: 1;
+        min-height: calc(1.8125rem + 11px)
+    }
+
+        .tag-wrapper input:focus {
+            border: none;
+            outline:none;
+            background-color: #f9f9f9;
+        }
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding-left:2px;
+    padding-right:2px;
+}
+
+    .tags span {
+        background-color: #e0f0ff;
+        border: 1px solid #99c2ff;
+        cursor:pointer;
+        white-space: nowrap;
+        border-radius: 50px;
+        padding: 0 4px;
+    }
+
+        .tags span i {
+            color: #ccc;
+        }
+
+        .tags span:hover i {
+            color: inherit;
+        }

@@ -10,6 +10,7 @@ public partial class NewTests
     private List<DropDownItem<string>> Items { get; set; }
 
     private DropDownItem<string> _selected = null;
+    private List<string> _tags = new List<string>() { "tag" };
 
     protected override void OnInitialized()
     {

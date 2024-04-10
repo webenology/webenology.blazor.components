@@ -1,9 +1,12 @@
 ﻿@page "/new"
 @using webenology.blazor.components.dropdown
 @using System.Security.Cryptography
+@using DocumentFormat.OpenXml.Office2010.ExcelAc
+@using System.Runtime.InteropServices.JavaScript
 
 <h3>NewTests</h3>
 <webenology.blazor.components.dropdown.DropDown Items="@Items" SelectedItem="@_selected" TValue="string" OnSelected="OnSelect" />
 
 <webenology.blazor.components.dropdown.DropDown Items="@Items" SelectedItem="@_selected" TValue="string" OnSelected="OnSelect" />
 
+<Tags @bind-TagsList="_tags" />

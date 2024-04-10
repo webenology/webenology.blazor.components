@@ -17,6 +17,7 @@
     <ProjectReference Include="..\webenology.blazor.components.shared.Tests\webenology.blazor.components.shared.Tests.csproj" />
     <ProjectReference Include="..\webenology.blazor.components.shared\webenology.blazor.components.shared.csproj" />
     <ProjectReference Include="..\webenology.blazor.components.TabComponent\webenology.blazor.components.TabComponent.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.tags\webenology.blazor.components.tags.csproj" />
     <ProjectReference Include="..\webenology.blazor.components.Tests\webenology.blazor.components.Tests.csproj" />
     <ProjectReference Include="..\webenology.blazor.components\webenology.blazor.components.csproj" />
     <ProjectReference Include="..\webenology.blazor.ss.authentication\webenology.blazor.ss.authentication.csproj" />

@@ -1,0 +1,27 @@
+﻿<div class="tag-wrapper @CustomCss">
+    <div class="tags">
+        @if (_showAll)
+        {
+            @foreach (var t in _tags)
+            {
+                <span @onclick="@(() => RemoveTag(t))">@t <i class="mdi mdi-close"></i></span>
+            }
+            @if (_tags.Count > 3)
+            {
+                <span @onclick="@(() => _showAll = false)"><i class="mdi mdi-chevron-double-left"></i></span>
+            }
+        }
+        else
+        {
+            @foreach (var t in _tags.Take(3))
+            {
+                <span @onclick="@(() => RemoveTag(t))">@t <i class="mdi mdi-close"></i></span>
+            }
+            @if (_tags.Count > 3)
+            {
+                <span @onclick="@(()=> _showAll = true)" title="@JoinTags(_tags.Skip(3).ToList(), null)">+ @(_tags.Count - 3) <i class="mdi mdi-chevron-double-right"></i></span>
+            }
+        }
+    </div>
+    <input type="text" @bind="Tag" @bind:event="oninput" @onblur="OnAddTag" @ref="_input" />
+</div>
