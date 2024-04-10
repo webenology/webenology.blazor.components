@@ -93,25 +93,28 @@
                     @if (ShowTime && (!IsSmall || (IsSmall && !_isRangeCalendar)) && (i == 0 || i == EndingInt))
                     {
                         var time = i == 0 ? _fromTime : _toTime ?? new WebenologyTime();
-                        <div class="wc-time">
-                            <select class="wc-hour" @bind="@time.Hour">
-                                @for (var j = 1; j < 13; j++)
-                                {
-                                    <option value="@j">@j.ToString("00")</option>
-                                }
-                            </select>
-                            <span class="wc-seperator">:</span>
-                            <select class="wc-minute" @bind="@time.Minute">
-                                @for (var j = 0; j < 60; j++)
-                                {
-                                    <option value="@j">@j.ToString("00")</option>
-                                }
-                            </select>
-                            <select class="wc-meridian" @bind="@time.Meridian">
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                        </div>
+                        if ((i > 0 && _isRangeCalendar) || i == 0)
+                        {
+                            <div class="wc-time">
+                                <select class="wc-hour" @bind="@time.Hour">
+                                    @for (var j = 1; j < 13; j++)
+                                    {
+                                        <option value="@j">@j.ToString("00")</option>
+                                    }
+                                </select>
+                                <span class="wc-seperator">:</span>
+                                <select class="wc-minute" @bind="@time.Minute">
+                                    @for (var j = 0; j < 60; j++)
+                                    {
+                                        <option value="@j">@j.ToString("00")</option>
+                                    }
+                                </select>
+                                <select class="wc-meridian" @bind="@time.Meridian">
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+                        }
                     }
                     @if (ShowTime && IsSmall && _isRangeCalendar)
                     {

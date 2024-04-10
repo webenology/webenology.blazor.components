@@ -307,6 +307,7 @@
   border-left: 0;
   border-right: 0;
   padding: 0 2px;
+  font-size:20px;
 }
 .wc .wc-time .wc-hour {
   border-left: 1px solid #989a9d;

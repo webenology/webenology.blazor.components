@@ -21,13 +21,14 @@ public partial class WebenologyDatePicker
     [Parameter] public bool IsDisabled { get; set; }
     [Parameter] public bool ShowTime { get; set; }
     [Parameter] public string? BaseCssClass { get; set; }
+    [Parameter] public TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Local;
     [Inject]
     private IJSRuntime jsRuntime { get; set; }
     private string _wrapperCss => IsDisabled ? "wc-outline wc-disabled" : "wc-outline";
     private bool _isRangeCalendar;
     private bool _isCalendarVisible;
     private int middleMonth;
-    private DateTime today = new DateTime(DateTime.Now.Ticks, DateTimeKind.Unspecified);
+    private DateTime today = new DateTime(DateTime.Now.Ticks, DateTimeKind.Local);
     private int selectedYear;
     private int currentYear;
     private int visibleYear;
@@ -86,8 +87,8 @@ public partial class WebenologyDatePicker
 
     private WebenologyTime SetTimeFromDateTime(DateTime dt)
     {
-        var isPm = dt.Hour > 12;
-        var hour = isPm ? dt.Hour - 12 : dt.Hour;
+        var isPm = dt.Hour >= 12;
+        var hour = isPm && dt.Hour > 12 ? dt.Hour - 12 : dt.Hour;
         if (hour == 0)
             hour = 12;
 
@@ -259,7 +260,7 @@ public partial class WebenologyDatePicker
     private Task SetLastDate(int i, int day)
     {
         var monthAndYear = GetNewMonthAndYear(i);
-        var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day, 0, 0, 0, 0, DateTimeKind.Unspecified);
+        var dt = new DateTime(monthAndYear.Item2, monthAndYear.Item1, day, 0, 0, 0, 0, DateTimeKind.Local);
 
         if (ClickedDate.HasValue)
         {
@@ -350,16 +351,16 @@ public partial class WebenologyDatePicker
                     { thisSaturdayAgain.AddDays(-27), thisSaturdayAgain.AddDays(-7) };
                 break;
             case QuickSelect.MonthToDate:
-                var startOfMonth = new DateTime(today.Year, today.Month, 1, 0, 0, 0, 0, DateTimeKind.Unspecified);
+                var startOfMonth = new DateTime(today.Year, today.Month, 1, 0, 0, 0, 0, DateTimeKind.Local);
                 CurrentDateRange = new List<DateTime?> { startOfMonth, today };
                 break;
             case QuickSelect.YearToDate:
-                var startOfYear = new DateTime(today.Year, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified);
+                var startOfYear = new DateTime(today.Year, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
                 CurrentDateRange = new List<DateTime?> { startOfYear, today };
                 break;
             case QuickSelect.Year:
-                CurrentDateRange = new List<DateTime?> { new DateTime(today.Year, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                    new DateTime(today.Year, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) };
+                CurrentDateRange = new List<DateTime?> { new DateTime(today.Year, 1, 1, 0, 0, 0, 0, DateTimeKind.Local),
+                    new DateTime(today.Year, 12, 31, 0, 0, 0, 0, DateTimeKind.Local) };
                 break;
         }
 
@@ -400,8 +401,8 @@ public partial class WebenologyDatePicker
         var daysInMonth = GetDaysInMonth(month);
         CurrentDateRange = new List<DateTime?>
         {
-            new DateTime(monthAndYear.Item2, monthAndYear.Item1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-            new DateTime(monthAndYear.Item2, monthAndYear.Item1, daysInMonth, 0, 0, 0, 0, DateTimeKind.Unspecified),
+            new DateTime(monthAndYear.Item2, monthAndYear.Item1, 1, 0, 0, 0, 0, DateTimeKind.Local),
+            new DateTime(monthAndYear.Item2, monthAndYear.Item1, daysInMonth, 0, 0, 0, 0, DateTimeKind.Local),
         };
         return Task.CompletedTask;
     }
@@ -563,12 +564,12 @@ public partial class WebenologyDatePicker
     private DateTime SetDateAndTime(DateTime date, WebenologyTime time)
     {
         var hour = time.Hour;
-        if (time.Meridian == MeridianEnum.PM)
+        if (time.Meridian == MeridianEnum.PM && hour < 12)
             hour += 12;
         else if (time is { Meridian: MeridianEnum.AM, Hour: 12 })
             hour = 0;
 
-        return new DateTime(date.Year, date.Month, date.Day, hour, time.Minute, 0, DateTimeKind.Unspecified);
+        return new DateTime(date.Year, date.Month, date.Day, hour, time.Minute, 0, DateTimeKind.Local);
     }
 
     private int GetYear(int i)
