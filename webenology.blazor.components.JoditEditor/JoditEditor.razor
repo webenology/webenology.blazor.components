@@ -1,0 +1,74 @@
+﻿@using Microsoft.JSInterop
+@using System.Reflection
+<textarea id="@_id" @onchange="OnChange">@Value</textarea>
+
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public bool IsHtml { get; set; } = true;
+    [Parameter] public Type? MergeTags { get; set; }
+    [Inject] private IJSRuntime jsRuntime { get; set; }
+    private string _id;
+    private JoditJs js;
+
+
+    protected override void OnInitialized()
+    {
+        _id = "w_" + Guid.NewGuid().ToString("D");
+        _id = _id.Substring(0, _id.IndexOf("-"));
+        js = new JoditJs(jsRuntime);
+        base.OnInitialized();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await Load();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task Load()
+    {
+        var mergeTags = GetAllTags();
+        await Task.Yield();
+        await js.Setup(_id, mergeTags);
+    }
+
+    private Dictionary<string, string>? GetAllTags()
+    {
+        var lst = new Dictionary<string, string>();
+        if (MergeTags != null)
+        {
+
+            var properties = MergeTags.GetProperties()
+                .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(JoditMergeTag)));
+            foreach (var propertyInfo in properties)
+            {
+                var attr = propertyInfo.GetCustomAttribute<JoditMergeTag>() ??
+                           new JoditMergeTag(propertyInfo.Name);
+
+                lst.Add($"{{{{{propertyInfo.Name}}}}}", attr.Description);
+            }
+        }
+
+        if (lst.Any())
+            return lst;
+
+        return null;
+    }
+
+    private async Task OnChange(ChangeEventArgs args)
+    {
+        var text = (string?)args.Value ?? "";
+        if (!IsHtml)
+        {
+            text = await js.GetText();
+        }
+
+        if (ValueChanged.HasDelegate)
+            await ValueChanged.InvokeAsync(text);
+    }
+
+}

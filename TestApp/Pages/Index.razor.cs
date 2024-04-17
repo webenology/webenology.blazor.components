@@ -13,6 +13,7 @@ using TestApp.Data;
 using webenology.blazor.components;
 using webenology.blazor.components.BlazorPdfComponent;
 using webenology.blazor.components.ConfirmComponent;
+using webenology.blazor.components.JoditEditor;
 using webenology.blazor.components.MailMerge;
 using webenology.blazor.components.ModalComponent;
 using webenology.blazor.components.NotificationComponent;
@@ -188,5 +189,11 @@ namespace TestApp.Pages
             _address = arg;
             return Task.CompletedTask;
         }
+    }
+
+    public class Tags
+    {
+        [JoditMergeTag("Tag Me")]
+        public string TagMe { get; set; }
     }
 }

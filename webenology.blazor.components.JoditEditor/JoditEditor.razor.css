@@ -1,0 +1,19 @@
+﻿::deep .merge-tag {
+    border: 1px solid rgb(252 211 77);
+    font-size: 12px;
+    margin: 1px;
+    background-color: rgb(254 243 199);
+    padding: 1px;
+    border-radius: 3px;
+}
+
+::deep .merge-tag::after {
+    content: "x";
+    font-weight:bold;
+    margin-left:1px;
+}
+
+::deep .merge-tag:hover {
+    background-color: rgb(253 230 138);
+    cursor: pointer;
+}
