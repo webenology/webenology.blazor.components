@@ -60,6 +60,7 @@ export function Setup(id, mergeTags) {
         var interval = setInterval(() => {
             if (document.getElementById(id) != null) {
                 var idDoc = "#" + id;
+                console.log("editor id", idDoc);
                 editor = Jodit.make(idDoc, {
                     uploader: {
                         insertImageAsBase64URI: true
@@ -74,6 +75,7 @@ export function Setup(id, mergeTags) {
                     beautifyHTML: true,
                     hidePoweredByJodit: true
                 });
+                console.log(editor);
                 clearInterval(interval);
                 let attr = document.body.querySelector(idDoc);
                 var names = attr.getAttributeNames();
