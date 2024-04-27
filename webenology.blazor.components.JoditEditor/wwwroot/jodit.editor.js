@@ -11,7 +11,7 @@ document.head.appendChild(scriptEle);
 
 let editor;
 
-export function Setup(id, mergeTags) {
+export function Setup(id, mergeTags, dotnet) {
     console.log(mergeTags);
 
     var interval = setInterval(() => {
@@ -34,7 +34,7 @@ export function Setup(id, mergeTags) {
                     childTemplate: (editor, key, value) =>
                         `<span class="${key}">${editor.i18n(value)}</span>`,
 
-                    exec(editor, _, { control }) {
+                    exec(editor, _, {control}) {
                         if (control.name == "mergeTags")
                             return false;
                         let key = control.args && control.args[0];
@@ -79,6 +79,9 @@ export function Setup(id, mergeTags) {
                 });
                 console.log(editor);
                 clearInterval(interval);
+                editor.e.on("blur", () => {
+                    dotnet.invokeMethodAsync("OnBlur");
+                });
                 let attr = document.body.querySelector(idDoc);
                 var names = attr.getAttributeNames();
                 for (var name in names) {
@@ -91,9 +94,19 @@ export function Setup(id, mergeTags) {
     }, 500);
 }
 
-export function GetText() {
-    if (editor)
-        return editor.text;
+export function GetText(chunk) {
+    if (editor) {
+        const textEncoder = new TextEncoder().encode(editor.text);
+        return textEncoder;
+    }
+    return "";
+}
+
+export function GetHtml(chunk) {
+    if (editor) {
+        const textEncoder = new TextEncoder().encode(editor.value);
+        return textEncoder;
+    }
 
     return "";
 }

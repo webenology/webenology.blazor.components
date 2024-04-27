@@ -1,6 +1,6 @@
 ﻿@using Microsoft.JSInterop
 @using System.Reflection
-<textarea id="@_id" @onchange="OnChange">@Value</textarea>
+<textarea id="@_id">@Value</textarea>
 
 @code {
     [Parameter] public string? Value { get; set; }
@@ -26,6 +26,7 @@
         {
             await Load();
         }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 
@@ -33,7 +34,8 @@
     {
         var mergeTags = GetAllTags();
         await Task.Yield();
-        await js.Setup(_id, mergeTags);
+        var dotNetRef = DotNetObjectReference.Create(this);
+        await js.Setup(_id, mergeTags, dotNetRef);
     }
 
     private Dictionary<string, string>? GetAllTags()
@@ -41,7 +43,6 @@
         var lst = new Dictionary<string, string>();
         if (MergeTags != null)
         {
-
             var properties = MergeTags.GetProperties()
                 .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(JoditMergeTag)));
             foreach (var propertyInfo in properties)
@@ -59,12 +60,17 @@
         return null;
     }
 
-    private async Task OnChange(ChangeEventArgs args)
+    [JSInvokable]
+    public async void OnBlur()
     {
-        var text = (string?)args.Value ?? "";
+        var text = string.Empty;
         if (!IsHtml)
         {
             text = await js.GetText();
+        }
+        else
+        {
+            text = await js.GetHtml();
         }
 
         if (ValueChanged.HasDelegate)
