@@ -52,11 +52,11 @@ public static class SearchHelper
         }
     }
 
-    public static string[] ToSearchBreakout(this string searchTerm, bool includeSubstitution = true)
+    public static IEnumerable<string> ToSearchBreakout(this string searchTerm, bool includeSubstitution = true)
     {
         if (string.IsNullOrEmpty(searchTerm))
-            return null;
-        
+            yield break;
+
         var splitData = searchTerm.Split(" ");
         var results = new List<string>();
         foreach (var s in splitData)
@@ -74,13 +74,11 @@ public static class SearchHelper
                 }
                 else
                 {
-                    searchString.Append(Regex.Escape(v.ToString()));
+                    searchString.Append(Regex.Escape($"{v}"));
                 }
             }
 
-            results.Add(searchString.ToString());
+            yield return searchString.ToString();
         }
-
-        return results.ToArray();
     }
 }

@@ -14,6 +14,7 @@
             {'I', "EIY"},
             {'y', "yie"},
             {'Y', "YIE"},
+            {'s', "'s"}
         };
 
         public static readonly string[] Colors = new[]
