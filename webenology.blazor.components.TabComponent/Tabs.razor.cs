@@ -55,11 +55,18 @@ namespace webenology.blazor.components.TabComponent
             {
                 var tabName = WebUtility.UrlDecode(uri.Fragment).Substring(1);
                 int.TryParse(tabName.Split(":")[1], out var index);
-                var tab = TabPages[index];
-                if (tab != null && ActivePage != tab)
+                try
                 {
-                    ActivePage = tab;
-                    StateHasChanged();
+                    var tab = TabPages[index];
+                    if (tab != null && ActivePage != tab)
+                    {
+                        ActivePage = tab;
+                        StateHasChanged();
+                    }
+                }
+                catch (Exception e)
+                {
+                    //do nothing
                 }
             }
             else
