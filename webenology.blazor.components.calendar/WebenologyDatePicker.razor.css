@@ -45,6 +45,15 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.wc-outline .wc-input input {
+  flex: 1 1 0;
+  padding: 0.5rem;
+  border: none;
+}
+.wc-outline .wc-input input:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246/var(--tw-bg-opacity));
+}
 .wc-outline .wc-input span {
   flex: 1 1 0;
   padding: 0.5rem;
@@ -307,7 +316,6 @@
   border-left: 0;
   border-right: 0;
   padding: 0 2px;
-  font-size:20px;
 }
 .wc .wc-time .wc-hour {
   border-left: 1px solid #989a9d;

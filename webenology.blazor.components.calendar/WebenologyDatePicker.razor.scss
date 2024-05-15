@@ -48,6 +48,17 @@
             white-space: nowrap;
             text-overflow: ellipsis;
 
+            input {
+                flex: 1 1 0;
+                padding: 0.5rem;
+                border:none;
+
+                &:hover {
+                    --tw-bg-opacity: 1;
+                    background-color: rgb(243 244 246 / var(--tw-bg-opacity))
+                }
+            }
+
             span {
                 flex: 1 1 0;
                 padding: 0.5rem;

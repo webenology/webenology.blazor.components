@@ -1,7 +1,9 @@
 ﻿using System.Globalization;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Transactions;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -43,12 +45,155 @@ public partial class WebenologyDatePicker
     private CalendarJsHelper _jsHelper;
     private WebenologyTime _fromTime = new();
     private WebenologyTime? _toTime = new();
+    private Regex _dateOnly = new Regex(@"^(\d{1,2})[-/\.](\d{1,2})[-/\.](\d{4})$");
+    private Regex _dateTime = new Regex(@"^(\d{1,2})[-/\.](\d{1,2})[-/\.](\d{4})\s(\d{1,2}):(\d{1,2})\s([AapP][mM]?)$");
+    private Regex _dateRangeDateOnly = new Regex(@"^(\d{1,2})[-/\.](\d{1,2})[-/\.](\d{4})\s[tToO]{2}\s(\d{1,2})[-/\.](\d{1,2})[-/\.](\d{4})$");
+    private Regex _dateRangeDateTime = new(@"^(\d{1,2})[-/\.](\d{1,2})[-/\.](\d{4})\s(\d{1,2}):(\d{1,2})\s([AapP][mM]?)\s[tToO]{2}\s(\d{1,2})[-/\.](\d{1,2})[-/\.](\d{4})\s(\d{1,2}):(\d{1,2})\s([AapP][mM]?)$");
 
     private static string[] MONTHS =
     {
         "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER",
         "DECEMBER"
     };
+
+    private string _textValue;
+    private string TextValue
+    {
+        get => GetDateRangeForInput();
+        set => _textValue = value;
+    }
+
+    private void DateParser()
+    {
+        if (!_isRangeCalendar)
+        {
+
+            if (!ShowTime || _dateOnly.IsMatch(_textValue))
+            {
+                if (_dateOnly.IsMatch(_textValue))
+                {
+                    var matches = _dateOnly.Matches(_textValue);
+                    int.TryParse(matches[0].Groups[1].Value, out var month);
+                    int.TryParse(matches[0].Groups[2].Value, out var day);
+                    int.TryParse(matches[0].Groups[3].Value, out var year);
+                    if (year < 1900)
+                        return;
+                    if (month < 1 || month > 12)
+                        return;
+                    if (day < 1)
+                        return;
+                    day = Math.Min(DateTime.DaysInMonth(year, month), day);
+
+                    var dt = new DateTime(year, month, day, 0, 0, 0, 0, DateTimeKind.Unspecified);
+                    if (IsDisabledDate(dt))
+                        return;
+                    Date = dt;
+                    CurrentDateRange = new List<DateTime?>
+                    {
+                        dt,
+                        dt
+                    };
+                    visibleYear = dt.Year;
+                    middleMonth = dt.Month;
+                }
+
+                if (ShowTime)
+                    _fromTime = new WebenologyTime(12, 0, MeridianEnum.AM);
+            }
+            else if (ShowTime && _dateTime.IsMatch(_textValue))
+            {
+
+                if (_dateTime.IsMatch(_textValue))
+                {
+                    var matches = _dateTime.Matches(_textValue);
+                    int.TryParse(matches[0].Groups[1].Value, out var month);
+                    int.TryParse(matches[0].Groups[2].Value, out var day);
+                    int.TryParse(matches[0].Groups[3].Value, out var year);
+                    int.TryParse(matches[0].Groups[4].Value, out var hour);
+                    int.TryParse(matches[0].Groups[5].Value, out var minute);
+                    var meridian = matches[0].Groups[6].Value;
+                    if (year < 1900)
+                        return;
+                    if (month < 1 || month > 12)
+                        return;
+                    if (day < 1)
+                        return;
+                    day = Math.Min(DateTime.DaysInMonth(year, month), day);
+                    if (hour < 1 || hour > 12)
+                        return;
+                    if (minute < 0 || minute > 59)
+                        return;
+
+                    var dtOnly = new DateTime(year, month, day, 0, 0, 0, 0, DateTimeKind.Unspecified);
+                    var m = meridian.StartsWith("a", StringComparison.OrdinalIgnoreCase) ? MeridianEnum.AM : MeridianEnum.PM;
+                    _fromTime = new WebenologyTime(hour, minute, m);
+
+                    if (IsDisabledDate(dtOnly))
+                        return;
+                    Date = dtOnly;
+                    CurrentDateRange = new List<DateTime?>
+                    {
+                        dtOnly,
+                        dtOnly
+                    };
+                    visibleYear = dtOnly.Year;
+                    middleMonth = dtOnly.Month;
+                }
+            }
+        }
+        else
+        {
+            if (!ShowTime || _dateRangeDateOnly.IsMatch(_textValue))
+            {
+                if (_dateRangeDateOnly.IsMatch(_textValue))
+                {
+                    var matches = _dateRangeDateOnly.Matches(_textValue);
+                    int.TryParse(matches[0].Groups[1].Value, out var fMonth);
+                    int.TryParse(matches[0].Groups[2].Value, out var fDay);
+                    int.TryParse(matches[0].Groups[3].Value, out var fYear);
+                    int.TryParse(matches[0].Groups[4].Value, out var tMonth);
+                    int.TryParse(matches[0].Groups[5].Value, out var tDay);
+                    int.TryParse(matches[0].Groups[6].Value, out var tYear);
+                    if (fYear < 1900)
+                        return;
+                    if (fMonth < 1 || fMonth > 12)
+                        return;
+                    if (fDay < 1)
+                        return;
+                    fDay = Math.Min(DateTime.DaysInMonth(fYear, fMonth), fDay);
+
+                    if (tYear < 1900)
+                        return;
+                    if (tMonth < 1 || tMonth > 12)
+                        return;
+                    if (tDay < 1)
+                        return;
+                    tDay = Math.Min(DateTime.DaysInMonth(tYear, tMonth), tDay);
+
+
+                    var fromDt = new DateTime(fYear, fMonth, fDay, 0, 0, 0, 0, DateTimeKind.Unspecified);
+                    var toDt = new DateTime(tYear, tMonth, tDay, 0, 0, 0, 0, DateTimeKind.Unspecified);
+                    if (IsDisabledDate(fromDt))
+                        return;
+                    if (IsDisabledDate(toDt))
+                        return;
+
+                    CurrentDateRange = new List<DateTime?>
+                    {
+                        fromDt > toDt ? toDt : fromDt,
+                        fromDt > toDt ? fromDt : toDt
+                    };
+                    visibleYear = CurrentDateRange.Last().GetValueOrDefault().Year;
+                    middleMonth = CurrentDateRange.Last().GetValueOrDefault().Month;
+                }
+
+                if (ShowTime)
+                    _fromTime = new WebenologyTime(12, 0, MeridianEnum.AM);
+            }
+        }
+
+        SelectDateRange();
+    }
 
     protected override void OnParametersSet()
     {
