@@ -17,4 +17,5 @@ public static class RegisterWebenologyBlazorComponent
         service.TryAddTransient<IWFileWriter, WFileWriter>();
         service.TryAddTransient<IBlazorPdf, BlazorPdf>();
     }
+
 }

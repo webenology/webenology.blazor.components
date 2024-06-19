@@ -7,7 +7,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+
 using HtmlAgilityPack;
+
 using PuppeteerSharp;
 
 namespace webenology.blazor.components.BlazorPdfComponent
@@ -36,26 +38,29 @@ namespace webenology.blazor.components.BlazorPdfComponent
         {
             var doc = new HtmlDocument();
             doc.LoadHtml(markup);
+            HtmlNode? headNode = null;
             if (useBaseUrl)
             {
                 var baseUrlNode = HtmlNode.CreateNode($"<base href='{baseUrl}'>");
-                if (doc.DocumentNode.ChildNodes.FindFirst("head") != null)
+                if (doc.DocumentNode.ChildNodes.FindFirst("head") == null)
                 {
-                    var headNode = doc.DocumentNode.ChildNodes.FindFirst("head");
-                    headNode.AppendChild(baseUrlNode);
+                    var headHtml = HtmlNode.CreateNode("<head></head>");
+                    doc.DocumentNode.InsertBefore(headHtml, doc.DocumentNode.FirstChild);
                 }
-                else
-                {
-                    doc.DocumentNode.InsertBefore(baseUrlNode, doc.DocumentNode.FirstChild);
-                }
+                headNode = doc.DocumentNode.ChildNodes.FindFirst("head");
+                headNode.AppendChild(baseUrlNode);
             }
+
 
             if (cssFiles != null)
             {
                 foreach (var cssLocation in cssFiles)
                 {
                     var style = HtmlNode.CreateNode($"<link rel='stylesheet' href='{cssLocation}'>");
-                    doc.DocumentNode.AppendChild(style);
+                    if (headNode != null)
+                        headNode.AppendChild(style);
+                    else
+                        doc.DocumentNode.AppendChild(style);
                 }
             }
 
@@ -64,7 +69,10 @@ namespace webenology.blazor.components.BlazorPdfComponent
                 foreach (var jsLocation in jsFiles)
                 {
                     var script = HtmlNode.CreateNode($"<script type='text/javascript' src='{jsLocation}'>");
-                    doc.DocumentNode.AppendChild(script);
+                    if (headNode != null)
+                        doc.DocumentNode.AppendChild(script);
+                    else
+                        doc.DocumentNode.AppendChild(script);
                 }
             }
 
