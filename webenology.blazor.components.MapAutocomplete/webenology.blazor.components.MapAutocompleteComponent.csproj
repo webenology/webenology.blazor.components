@@ -21,6 +21,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\webenology.blazor.components.OutsideClickComponent\webenology.blazor.components.OutsideClickComponent.csproj" />
+		<ProjectReference Include="..\webenology.blazor.components.shared\webenology.blazor.components.shared.csproj" />
 	</ItemGroup>
 
 </Project>

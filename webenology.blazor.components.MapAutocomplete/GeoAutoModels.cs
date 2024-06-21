@@ -18,12 +18,12 @@ public class LatLng
     }
 }
 
-public class GeoAutoResult
+internal class GeoAutoResult
 {
     public List<GeoAutoItem> Items { get; set; }
 }
 
-public class GeoAutoItem
+internal class GeoAutoItem
 {
     public string Title { get; set; }
     public GeoAutoAddress Address { get; set; }
@@ -32,19 +32,19 @@ public class GeoAutoItem
     public string Id { get; set; }
 }
 
-public class GeoAutoHighlights
+internal class GeoAutoHighlights
 {
     public List<GeoAutoStartEnd> Title { get; set; }
     public GeoAutoStartEndAddress Address { get; set; }
 }
 
-public class GeoAutoStartEnd
+internal class GeoAutoStartEnd
 {
     public int Start { get; set; }
     public int End { get; set; }
 }
 
-public class GeoAutoStartEndAddress
+internal class GeoAutoStartEndAddress
 {
     public List<GeoAutoStartEnd> Label { get; set; }
     public List<GeoAutoStartEnd> City { get; set; }
@@ -64,5 +64,7 @@ public class GeoAutoAddress
     public string Street { get; set; }
     public string PostalCode { get; set; }
     public string HouseNumber { get; set; }
-    public LatLng Position { get; set; }
+    public LatLng? Position { get; set; }
+    public string? Id { get; set; }
+    public string? Suite { get; set; }
 }

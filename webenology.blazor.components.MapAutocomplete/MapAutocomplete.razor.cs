@@ -7,6 +7,8 @@ using System.Text.Json;
 using System.Timers;
 
 using Microsoft.AspNetCore.Components;
+
+using webenology.blazor.components.MapAutocompleteComponent.Search;
 using webenology.blazor.components.OutsideClickComponent;
 
 namespace webenology.blazor.components.MapAutocompleteComponent;
@@ -16,9 +18,10 @@ public partial class MapAutocomplete
     [Parameter] public string DefaultSearch { get; set; }
     [Parameter] public EventCallback<GeoAutoAddress> OnSelectAddress { get; set; }
     [Parameter] public bool IsDisabled { get; set; }
-    [Parameter] public decimal? CentralLat { get; set; }
-    [Parameter] public decimal? CentralLng { get; set; }
-    [Parameter] public string ApiKey { get; set; }
+    [Parameter] public double? CentralLat { get; set; }
+    [Parameter] public double? CentralLng { get; set; }
+    [Parameter] public string? HereMapsApiKey { get; set; }
+    [Parameter] public string? GoogleApiKey { get; set; }
     [Parameter] public CountryEnum Country { get; set; } = CountryEnum.USA | CountryEnum.CAN | CountryEnum.MEX;
 
     private string _previousSearch;
@@ -39,14 +42,34 @@ public partial class MapAutocomplete
     private bool _debouncing;
     private bool _searching;
     private bool _showResults;
-    private GeoAutoResult _autoItem;
+    private List<GeoAutoAddress> _autoItem;
     private OutsideClick _outsideClick;
+
+    private ISearch? _searchService;
 
     protected override void OnInitialized()
     {
         _debounceTimer = new System.Timers.Timer(TimeSpan.FromMilliseconds(300));
         _debounceTimer.Elapsed += DebounceTimerOnElapsed;
         _debounceTimer.AutoReset = false;
+        if (!string.IsNullOrEmpty(GoogleApiKey) && _searchService == null)
+        {
+            _searchService = new GoogleMapsSearch(new MapSettings
+            {
+                CenterLat = CentralLat ?? 37.0902,
+                CenterLng = CentralLng ?? -95.7129,
+                ApiKey = GoogleApiKey
+            });
+        }
+        if (!string.IsNullOrEmpty(HereMapsApiKey) && _searchService == null)
+        {
+            _searchService = new HereMapsSearch(new MapSettings
+            {
+                CenterLat = CentralLat ?? 37.0902,
+                CenterLng = CentralLng ?? -95.7129,
+                ApiKey = HereMapsApiKey
+            });
+        }
         base.OnInitialized();
     }
 
@@ -84,10 +107,10 @@ public partial class MapAutocomplete
             if (!_searching)
             {
                 _searching = true;
-                var results = await AutoComplete(_searchData);
+                var results = await _searchService!.Search(_searchData);
                 _autoItem = results;
                 _searching = false;
-                _showResults = _autoItem?.Items.Any() ?? false;
+                _showResults = _autoItem?.Any() ?? false;
             }
         }
         catch (Exception e)
@@ -100,40 +123,9 @@ public partial class MapAutocomplete
         StateHasChanged();
     }
 
-    private MarkupString Highlight(string lbl, List<GeoAutoStartEnd> highlights)
-    {
-        if (highlights == null || !highlights.Any())
-            return (MarkupString)lbl;
-
-        var str = new StringBuilder();
-        var lastStart = 0;
-        if (highlights.Any())
-        {
-            foreach (var h in highlights)
-            {
-                if (h.Start != lastStart)
-                {
-                    str.Append(lbl[lastStart..h.Start]);
-                }
-
-                str.Append($"<mark>{lbl[h.Start..h.End]}</mark>");
-                lastStart = h.End;
-            }
-
-            if (lastStart < lbl.Length)
-            {
-                str.Append(lbl.Substring(lastStart));
-            }
-
-            return (MarkupString)str.ToString();
-        }
-
-        return (MarkupString)lbl;
-    }
-
     private async Task ShowResults()
     {
-        if (_autoItem != null && _autoItem.Items.Any() && !_showResults)
+        if (_autoItem != null && _autoItem.Any() && !_showResults)
         {
             _showResults = true;
         }
@@ -154,65 +146,26 @@ public partial class MapAutocomplete
         _showResults = false;
     }
 
-    private async Task SelectAddress(GeoAutoItem item)
+    private async Task SelectAddress(GeoAutoAddress g)
     {
-        if (string.IsNullOrEmpty(item?.Address?.Label))
+        if (string.IsNullOrEmpty(g.Label))
             return;
 
         _showResults = false;
-        _search = item?.Address?.Label;
-        _addressSelectedLabel = item?.Address?.Label;
+        _search = g.Label;
+        _addressSelectedLabel = g.Label;
         _debouncing = false;
         _debounceTimer.Stop();
 
-        var lookup = await LookupBy(item.Id);
-
-        var address = lookup.Address;
-        address.Position = lookup.Position;
+        if (g.Position == null && !string.IsNullOrEmpty(g.Id) && _searchService.GetType() == typeof(HereMapsSearch))
+        {
+            var results = (await _searchService.LookupBy(g.Id));
+            var address = results.Address;
+            address.Position = results.Position;
+        }
 
         if (OnSelectAddress.HasDelegate)
-            OnSelectAddress.InvokeAsync(address);
+            await OnSelectAddress.InvokeAsync(g);
     }
 
-    private async Task<GeoAutoResult> AutoComplete(string query)
-    {
-        if (string.IsNullOrEmpty(query))
-            return null;
-
-        using var http = new HttpClient();
-        http.BaseAddress = new Uri("https://autocomplete.search.hereapi.com/v1/");
-        var encodedQuery = WebUtility.UrlEncode(query);
-        var lat = CentralLat?.ToString(CultureInfo.InvariantCulture) ?? "37.0902";
-        var lng = CentralLng?.ToString(CultureInfo.InvariantCulture) ?? "-95.7129";
-        var countryCode = Country.ToString().Replace(" ", "");
-        var searchUrl =
-            $"autocomplete?q={encodedQuery}&in=countryCode:{countryCode}&at={lat},{lng}&limit=5&apiKey={ApiKey}";
-        try
-        {
-            var str = await http.GetStringAsync(searchUrl);
-            var opts = new JsonSerializerOptions(JsonSerializerDefaults.Web);
-            var results = JsonSerializer.Deserialize<GeoAutoResult>(str, opts);
-            return results;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
-        return null;
-
-    }
-
-    public async Task<GeoAutoItem> LookupBy(string hereId)
-    {
-        if (string.IsNullOrEmpty(hereId))
-            return null;
-
-        using var http = new HttpClient();
-        http.BaseAddress = new Uri("https://lookup.search.hereapi.com/v1/");
-        var results = await http.GetFromJsonAsync<GeoAutoItem>($"lookup?id={hereId}&apiKey={ApiKey}");
-
-        return results;
-    }
 }
