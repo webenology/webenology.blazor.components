@@ -52,6 +52,12 @@ public partial class MapAutocomplete
         _debounceTimer = new System.Timers.Timer(TimeSpan.FromMilliseconds(300));
         _debounceTimer.Elapsed += DebounceTimerOnElapsed;
         _debounceTimer.AutoReset = false;
+        
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
         if (!string.IsNullOrEmpty(GoogleApiKey) && _searchService == null)
         {
             _searchService = new GoogleMapsSearch(new MapSettings
@@ -70,7 +76,7 @@ public partial class MapAutocomplete
                 ApiKey = HereMapsApiKey
             });
         }
-        base.OnInitialized();
+        base.OnParametersSet();
     }
 
     private async void DoSearch()
