@@ -12,6 +12,7 @@
     <ProjectReference Include="..\webenology.blazor.components.DropDownComponent\webenology.blazor.components.DropDownComponent.csproj" />
     <ProjectReference Include="..\webenology.blazor.components.dropdown\webenology.blazor.components.dropdown.csproj" />
     <ProjectReference Include="..\webenology.blazor.components.JoditEditor\webenology.blazor.components.JoditEditor.csproj" />
+    <ProjectReference Include="..\webenology.blazor.components.MapAutocomplete\webenology.blazor.components.MapAutocompleteComponent.csproj" />
     <ProjectReference Include="..\webenology.blazor.components.ModalComponent\webenology.blazor.components.ModalComponent.csproj" />
     <ProjectReference Include="..\webenology.blazor.components.NotificationComponent\webenology.blazor.components.NotificationComponent.csproj" />
     <ProjectReference Include="..\webenology.blazor.components.OrderByComponent\webenology.blazor.components.OrderByComponent.csproj" />

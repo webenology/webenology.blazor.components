@@ -6,10 +6,13 @@ using System.Text;
 using System.Text.Json;
 using System.Timers;
 
+using Maps;
+
 using Microsoft.AspNetCore.Components;
 
 using webenology.blazor.components.MapAutocompleteComponent.Search;
 using webenology.blazor.components.OutsideClickComponent;
+using webenology.blazor.components.shared;
 
 namespace webenology.blazor.components.MapAutocompleteComponent;
 
@@ -22,6 +25,7 @@ public partial class MapAutocomplete
     [Parameter] public double? CentralLng { get; set; }
     [Parameter] public string? HereMapsApiKey { get; set; }
     [Parameter] public string? GoogleApiKey { get; set; }
+    [Parameter] public bool AutoHighlight { get; set; } = true;
     [Parameter] public CountryEnum Country { get; set; } = CountryEnum.USA | CountryEnum.CAN | CountryEnum.MEX;
 
     private string _previousSearch;
@@ -52,7 +56,7 @@ public partial class MapAutocomplete
         _debounceTimer = new System.Timers.Timer(TimeSpan.FromMilliseconds(300));
         _debounceTimer.Elapsed += DebounceTimerOnElapsed;
         _debounceTimer.AutoReset = false;
-        
+
         base.OnInitialized();
     }
 
@@ -163,15 +167,34 @@ public partial class MapAutocomplete
         _debouncing = false;
         _debounceTimer.Stop();
 
-        if (g.Position == null && !string.IsNullOrEmpty(g.Id) && _searchService.GetType() == typeof(HereMapsSearch))
+        if (g.Position == null && !string.IsNullOrEmpty(g.Id))
         {
             var results = (await _searchService.LookupBy(g.Id));
             var address = results.Address;
             address.Position = results.Position;
+            g.Label = !string.IsNullOrEmpty(results.Address.Label) ? results.Address.Label : g.Label;
+            g.HouseNumber = !string.IsNullOrEmpty(results.Address.HouseNumber) ? results.Address.HouseNumber : g.HouseNumber;
+            g.City = !string.IsNullOrEmpty(results.Address.City) ? results.Address.City : g.City;
+            g.PostalCode = !string.IsNullOrEmpty(results.Address.PostalCode) ? results.Address.PostalCode : g.PostalCode;
+            g.State = !string.IsNullOrEmpty(results.Address.State) ? results.Address.State : g.State;
+            g.StateCode = !string.IsNullOrEmpty(results.Address.StateCode) ? results.Address.StateCode : g.StateCode;
+            g.Street = !string.IsNullOrEmpty(results.Address.Street) ? results.Address.Street : g.Street;
+            g.Suite = !string.IsNullOrEmpty(results.Address.Suite) ? results.Address.Suite : g.Suite;
+            if (_addressSelectedLabel != g.Label)
+                _addressSelectedLabel = g.Label;
         }
 
         if (OnSelectAddress.HasDelegate)
             await OnSelectAddress.InvokeAsync(g);
     }
 
+    private MarkupString GetLabel(GeoAutoAddress g)
+    {
+        if (AutoHighlight)
+        {
+            return (MarkupString)g.Label.Highlight(_searchData, searchSubstitute: Helpers.Substitutions);
+        }
+
+        return (MarkupString)g.LabelHighlighted;
+    }
 }

@@ -15,6 +15,7 @@ using webenology.blazor.components.BlazorPdfComponent;
 using webenology.blazor.components.ConfirmComponent;
 using webenology.blazor.components.JoditEditor;
 using webenology.blazor.components.MailMerge;
+using webenology.blazor.components.MapAutocompleteComponent;
 using webenology.blazor.components.ModalComponent;
 using webenology.blazor.components.NotificationComponent;
 

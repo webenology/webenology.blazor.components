@@ -55,6 +55,7 @@ internal class GeoAutoStartEndAddress
 public class GeoAutoAddress
 {
     public string Label { get; set; }
+    public string LabelHighlighted { get; set; }
     public string StateCode { get; set; }
     public string State { get; set; }
     public string CountryName { get; set; }

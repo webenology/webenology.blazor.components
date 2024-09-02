@@ -5,19 +5,19 @@
 @using webenology.blazor.components.NotificationComponent
 @using webenology.blazor.components.OrderByComponent
 @using webenology.blazor.components.ConfirmComponent
-
+@using webenology.blazor.components.MapAutocompleteComponent
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?"/>
+<MapAutocomplete AutoHighlight="false" GoogleApiKey="AIzaSyA0JLV3uYf65DsZrea4eQs9fkVYera1m-k" />
 @* 
 <WebenologyDatePicker @bind-DateRange="Dates" BlackoutDates="new List<DateTime> { DateTime.Today}"
                       />
 Date: @Date
 
-<MapAutocomplete ApiKey="" DefaultSearch="23 conne" OnSelectAddress="SetAddress" />
 @if (_address != null)
 {
     @JsonSerializer.Serialize(_address);

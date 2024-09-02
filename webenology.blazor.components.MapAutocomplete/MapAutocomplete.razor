@@ -37,7 +37,7 @@
                 {
                     foreach (var g in _autoItem)
                     {
-                        <div @onclick="@(() => SelectAddress(g))" class="hover:bg-blue-200 px-2 py-1 cursor-pointer">@((MarkupString)g.Label.Highlight(_searchData, searchSubstitute: Helpers.Substitutions))</div>
+                        <div @onclick="@(() => SelectAddress(g))" class="hover:bg-blue-200 px-2 py-1 cursor-pointer">@GetLabel(g)</div>
                     }
                 }
             </div>

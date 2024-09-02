@@ -16,50 +16,75 @@ internal class GoogleMapsSearch : ISearch
         using var client = new HttpClient();
         client.BaseAddress = new Uri("https://places.googleapis.com/");
         client.DefaultRequestHeaders.Add("X-Goog-Api-Key", _mapSettings.ApiKey);
-        client.DefaultRequestHeaders.Add("X-Goog-FieldMask", "places.formattedAddress,places.addressComponents,places.location,places.id");
+        //client.DefaultRequestHeaders.Add("X-Goog-FieldMask", "formattedAddress,addressComponents,location,id");
         var model = new
         {
-            textQuery = query,
-            maxResultCount = 5,
+            input = query,
             regionCode = "us"
         };
 
-        var results = await client.PostAsJsonAsync("/v1/places:searchText", model);
+        var results = await client.PostAsJsonAsync("/v1/places:autocomplete", model);
 
         if (results.IsSuccessStatusCode)
         {
             var str = await results.Content.ReadAsStringAsync();
-            var places =
-                JsonSerializer.Deserialize<PlacesDto>(str, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            var suggestions =
+                JsonSerializer.Deserialize<GoogleSuggestion>(str,
+                    new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
-            if (places != null)
+            var geoAutoItems = new List<GeoAutoAddress>();
+
+            if (suggestions is { Suggestions: { } })
             {
-                var geoAutoItems = new List<GeoAutoAddress>();
-                if (places.Places != null)
+                foreach (var suggest in suggestions.Suggestions)
                 {
-
-                    foreach (var place in places.Places)
+                    var label = suggest.PlacePrediction.Text.Text;
+                    foreach (var gh in suggest.PlacePrediction.Text.Matches.OrderByDescending(x => x.EndOffset))
                     {
-                        var geoAutoItem = new GeoAutoAddress()
-                        {
-                            Id = place.Id,
-                            Position = new LatLng(place.Location.Latitude, place.Location.Longitude),
-                            HouseNumber = GetAddressComponent(place.AddressComponents, true, "street_number"),
-                            Street = GetAddressComponent(place.AddressComponents, true, "route"),
-                            City = GetAddressComponent(place.AddressComponents, false, "locality"),
-                            State = GetAddressComponent(place.AddressComponents, false, "administrative_area_level_1"),
-                            StateCode = GetAddressComponent(place.AddressComponents, true, "administrative_area_level_1"),
-                            CountryCode = GetAddressComponent(place.AddressComponents, true, "country"),
-                            CountryName = GetAddressComponent(place.AddressComponents, false, "country"),
-                            PostalCode = GetAddressComponent(place.AddressComponents, false, "postal_code"),
-                            Suite = GetAddressComponent(place.AddressComponents, false, "subpremise"),
-                            Label = BuildLabel(place)
-                        };
-                        geoAutoItems.Add(geoAutoItem);
+                        label = label.Insert(gh.EndOffset, "</mark>").Insert(gh.StartOffset, "<mark>");
                     }
+                    var geoAutoItem = new GeoAutoAddress
+                    {
+                        LabelHighlighted = label,
+                        Label = suggest.PlacePrediction.Text.Text,
+                        Id = suggest.PlacePrediction.PlaceId
+                    };
+                    geoAutoItems.Add(geoAutoItem);
                 }
-                return geoAutoItems;
             }
+
+            return geoAutoItems;
+            //var places =
+            //    JsonSerializer.Deserialize<PlacesDto>(str, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+
+            //if (places != null)
+            //{
+            //    var geoAutoItems = new List<GeoAutoAddress>();
+            //    if (places.Places != null)
+            //    {
+
+            //        foreach (var place in places.Places)
+            //        {
+            //            var geoAutoItem = new GeoAutoAddress()
+            //            {
+            //                Id = place.Id,
+            //                Position = new LatLng(place.Location.Latitude, place.Location.Longitude),
+            //                HouseNumber = GetAddressComponent(place.AddressComponents, true, "street_number"),
+            //                Street = GetAddressComponent(place.AddressComponents, true, "route"),
+            //                City = GetAddressComponent(place.AddressComponents, false, "locality"),
+            //                State = GetAddressComponent(place.AddressComponents, false, "administrative_area_level_1"),
+            //                StateCode = GetAddressComponent(place.AddressComponents, true, "administrative_area_level_1"),
+            //                CountryCode = GetAddressComponent(place.AddressComponents, true, "country"),
+            //                CountryName = GetAddressComponent(place.AddressComponents, false, "country"),
+            //                PostalCode = GetAddressComponent(place.AddressComponents, false, "postal_code"),
+            //                Suite = GetAddressComponent(place.AddressComponents, false, "subpremise"),
+            //                Label = BuildLabel(place)
+            //            };
+            //            geoAutoItems.Add(geoAutoItem);
+            //        }
+            //    }
+            //    return geoAutoItems;
+            //}
         }
         else
         {
@@ -68,6 +93,18 @@ internal class GoogleMapsSearch : ISearch
         }
 
         return new List<GeoAutoAddress>();
+    }
+
+    private async Task<Place> GetPlaceDetails(string placeId)
+    {
+        using var client = new HttpClient();
+        client.BaseAddress = new Uri("https://places.googleapis.com/");
+        client.DefaultRequestHeaders.Add("X-Goog-Api-Key", _mapSettings.ApiKey);
+        client.DefaultRequestHeaders.Add("X-Goog-FieldMask", "formattedAddress,addressComponents,location,id");
+
+        var results = await client.GetFromJsonAsync<Place>($"/v1/places/{placeId}");
+
+        return results;
     }
 
     private string GetAddressComponent(List<AddressComponent> address, bool showShort, string type)
@@ -103,8 +140,32 @@ internal class GoogleMapsSearch : ISearch
         return string.Empty;
     }
 
-    public Task<GeoAutoItem> LookupBy(string hereId)
+    public async Task<GeoAutoItem> LookupBy(string hereId)
     {
-        throw new NotImplementedException();
+        var place = await GetPlaceDetails(hereId);
+
+        var geoAutoItem = new GeoAutoAddress()
+        {
+            Id = place.Id,
+            Position = new LatLng(place.Location.Latitude, place.Location.Longitude),
+            HouseNumber = GetAddressComponent(place.AddressComponents, true, "street_number"),
+            Street = GetAddressComponent(place.AddressComponents, true, "route"),
+            City = GetAddressComponent(place.AddressComponents, false, "locality"),
+            State = GetAddressComponent(place.AddressComponents, false, "administrative_area_level_1"),
+            StateCode = GetAddressComponent(place.AddressComponents, true, "administrative_area_level_1"),
+            CountryCode = GetAddressComponent(place.AddressComponents, true, "country"),
+            CountryName = GetAddressComponent(place.AddressComponents, false, "country"),
+            PostalCode = GetAddressComponent(place.AddressComponents, false, "postal_code"),
+            Suite = GetAddressComponent(place.AddressComponents, false, "subpremise"),
+            Label = BuildLabel(place)
+        };
+
+
+        return new GeoAutoItem
+        {
+            Id = hereId,
+            Position = new LatLng(place.Location.Latitude, place.Location.Longitude),
+            Address = geoAutoItem
+        };
     }
 }
