@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Linq.Expressions;
+using System.Reflection;
+using Microsoft.AspNetCore.Components;
 
 namespace webenology.blazor.components.OrderByComponent
 {
@@ -6,6 +8,7 @@ namespace webenology.blazor.components.OrderByComponent
     {
         [Parameter] public string FieldName { get; set; }
         [Parameter] public string FieldText { get; set; }
+        [Parameter] public Expression<Func<TValue, object>>? Field { get; set; }
 
         [CascadingParameter]
         private OrderByContainer<TValue> OrderByContainer { get; set; }
@@ -22,25 +25,31 @@ namespace webenology.blazor.components.OrderByComponent
 
         private void OnToggleChanges()
         {
-            if (OrderByContainer.CurrentFieldName == FieldName && OrderByContainer.OrderType == OrderByType.NONE)
+            var fieldName = FieldName;
+            if (Field != null)
             {
-                OrderByContainer.OnOrderBy(FieldName, OrderByType.ASC);
+                var b = (PropertyInfo)((MemberExpression)((UnaryExpression)Field.Body).Operand).Member;
+                fieldName = b.Name;
             }
-            else if (OrderByContainer.CurrentFieldName == FieldName && OrderByContainer.OrderType == OrderByType.ASC)
+            if (OrderByContainer.CurrentFieldName == fieldName && OrderByContainer.OrderType == OrderByType.NONE)
             {
-                OrderByContainer.OnOrderBy(FieldName, OrderByType.DESC);
+                OrderByContainer.OnOrderBy(fieldName, OrderByType.ASC);
             }
-            else if (OrderByContainer.CurrentFieldName == FieldName && OrderByContainer.OrderType == OrderByType.DESC && OrderByContainer.AllowSortToReset)
+            else if (OrderByContainer.CurrentFieldName == fieldName && OrderByContainer.OrderType == OrderByType.ASC)
             {
-                OrderByContainer.OnOrderBy(FieldName, OrderByType.NONE);
+                OrderByContainer.OnOrderBy(fieldName, OrderByType.DESC);
             }
-            else if (OrderByContainer.CurrentFieldName == FieldName && OrderByContainer.OrderType == OrderByType.DESC)
+            else if (OrderByContainer.CurrentFieldName == fieldName && OrderByContainer.OrderType == OrderByType.DESC && OrderByContainer.AllowSortToReset)
             {
-                OrderByContainer.OnOrderBy(FieldName, OrderByType.ASC);
+                OrderByContainer.OnOrderBy(fieldName, OrderByType.NONE);
+            }
+            else if (OrderByContainer.CurrentFieldName == fieldName && OrderByContainer.OrderType == OrderByType.DESC)
+            {
+                OrderByContainer.OnOrderBy(fieldName, OrderByType.ASC);
             }
             else
             {
-                OrderByContainer.OnOrderBy(FieldName, OrderByType.ASC);
+                OrderByContainer.OnOrderBy(fieldName, OrderByType.ASC);
             }
         }
     }

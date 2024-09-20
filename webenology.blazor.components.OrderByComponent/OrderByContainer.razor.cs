@@ -51,6 +51,7 @@ namespace webenology.blazor.components.OrderByComponent
 
         internal void DoesFieldExist(string fieldName)
         {
+            return;
             if (typeof(TValue).GetProperty(fieldName) == null)
                 throw new Exception($"Field name '{fieldName}' must exist in '{typeof(TValue)}'.");
         }
