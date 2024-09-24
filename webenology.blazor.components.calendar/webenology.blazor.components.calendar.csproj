@@ -1,22 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+	</PropertyGroup>
 
 
-  <ItemGroup>
-    <SupportedPlatform Include="browser" />
-  </ItemGroup>
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.13" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.20" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\webenology.blazor.components.OutsideClickComponent\webenology.blazor.components.OutsideClickComponent.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\webenology.blazor.components.OutsideClickComponent\webenology.blazor.components.OutsideClickComponent.csproj" />
+	</ItemGroup>
 
 </Project>
