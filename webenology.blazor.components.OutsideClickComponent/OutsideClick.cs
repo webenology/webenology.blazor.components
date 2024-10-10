@@ -25,6 +25,7 @@ namespace webenology.blazor.components.OutsideClickComponent
         public string? Type { get; set; }
 
         [Parameter] public string? Style { get; set; }
+        [Parameter] public string? CssClass { get; set; }
 
         private IOutsideClickJsHelper js { get; set; }
         [Inject] private IJSRuntime _jsRuntime { get; set; }
@@ -53,7 +54,7 @@ namespace webenology.blazor.components.OutsideClickComponent
         [JSInvokable]
         public void OnInsideClick()
         {
-            _hasFocus =true;
+            _hasFocus = true;
             if (OnGainFocus.HasDelegate)
                 OnGainFocus.InvokeAsync();
         }
@@ -70,6 +71,17 @@ namespace webenology.blazor.components.OutsideClickComponent
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+            if ((Attributes?.ContainsKey("class") ?? false) && !string.IsNullOrEmpty(CssClass))
+            {
+                var data = (string)Attributes["class"];
+                if (!data.Contains(CssClass))
+                    Attributes["class"] += " " + CssClass;
+            }
+            else if (!string.IsNullOrEmpty(CssClass))
+            {
+                Attributes ??= new Dictionary<string, object>();
+                Attributes.Add("class", CssClass);
+            }
             builder.OpenElement(0, string.IsNullOrEmpty(Type) ? "div" : Type);
             builder.AddAttribute(1, "style", Style);
             builder.AddMultipleAttributes(2, Attributes);

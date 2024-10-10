@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+
 using Microsoft.AspNetCore.Components;
 
 namespace webenology.blazor.components.OrderByComponent
@@ -28,8 +29,8 @@ namespace webenology.blazor.components.OrderByComponent
             var fieldName = FieldName;
             if (Field != null)
             {
-                var b = (PropertyInfo)((MemberExpression)((UnaryExpression)Field.Body).Operand).Member;
-                fieldName = b.Name;
+                fieldName = Field.Body.NodeType == ExpressionType.Convert ? ((MemberExpression)((UnaryExpression)Field.Body).Operand).Member.Name : ((MemberExpression)Field.Body).Member.Name;
+                FieldName = fieldName;
             }
             if (OrderByContainer.CurrentFieldName == fieldName && OrderByContainer.OrderType == OrderByType.NONE)
             {

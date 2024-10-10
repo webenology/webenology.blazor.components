@@ -323,9 +323,13 @@ public partial class WebenologyDropDown<TValue> : ComponentBase
             return false;
         if (string.IsNullOrEmpty(Search))
             return false;
-        if (_filtered?.Any(x => x.Value.Equals(Search, StringComparison.OrdinalIgnoreCase)) ?? false)
+        var search = Search.Trim();
+        if (string.IsNullOrEmpty(search))
+            return false;
+        if (_filtered?.Any(x => x.Value.Equals(search, StringComparison.OrdinalIgnoreCase)) ?? false)
             return false;
 
         return true;
     }
+
 }

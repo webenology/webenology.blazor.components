@@ -33,20 +33,12 @@
                     </div>
                 }
             </Virtualize>
-            @if (OnAddNew.HasDelegate)
+            @if (CanShowAddNew())
             {
                 <div class="add" @onclick="OnAddNewItem" style="position:sticky;bottom:0px;background-color:white;border-top:2px solid #ccc">
-                    @if (CanShowAddNew())
-                    {
-
-                        <span @onclick="OnAddNewItem" style="width:100%;font-style:normal">
-                            Add <div style="display:inline-block; border:1px solid #ccc; padding:0.5px 3px; background-color:#efefef; color:rgb(99 102 241); border-radius:6px">@Search</div> Click or CTRL + Enter
-                        </span>
-                    }
-                    else
-                    {
-                        <text>&nbsp;</text>
-                    }
+                    <span @onclick="OnAddNewItem" style="width:100%;font-style:normal">
+                        Add <div style="display:inline-block; border:1px solid #ccc; padding:0.5px 3px; background-color:#efefef; color:rgb(99 102 241); border-radius:6px">@Search</div> Click or CTRL + Enter
+                    </span>
                 </div>
             }
         </div>
