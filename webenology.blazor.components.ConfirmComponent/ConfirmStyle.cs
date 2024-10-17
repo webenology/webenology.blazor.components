@@ -5,16 +5,16 @@
 
         public static ConfirmStyle WebenologyStyle => new ConfirmStyle
         {
-            BackdropCss = "backdrop",
+            BackdropCss = "backdrop !bg-black/80",
             HideCss = "hidden",
             BoundInCss = "bounce-in",
-            CardCss = "card",
-            CardHeaderCss = "card-header",
+            CardCss = "dark:!bg-blackdp1 p-2 flex flex-col gap-2",
+            CardHeaderCss = "text-2xl font-semibold",
             CardBodyCss = "card-body",
             CardFooterCss = "card-footer text-right",
-            CancelButtonCss = "btn btn-default btn-sm",
-            NoButtonCss = "btn btn-danger btn-sm",
-            YesButtonCss = "btn btn-primary btn-sm"
+            CancelButtonCss = "modal-button-close",
+            NoButtonCss = "button-danger",
+            YesButtonCss = "button-primary"
         };
 
         public string BackdropCss { get; set; }
