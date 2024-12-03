@@ -5,7 +5,7 @@
 <span @ref="_el">
     <OutsideClick OnLoseFocus="HideCalendar" class="@($"{_wrapperCss} {BaseCssClass}")">
         <div class="wc-input" @onclick="ToggleCalendar">
-            <input type="text" @bind="TextValue" @bind:after="DateParser" />
+            <input type="text" @bind="TextValue" @bind:after="DateParser" disbabled="@IsDisabled" />
 
             <svg class="wc-icon" viewBox="0 0 48 48" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
                 <g transform="matrix(0.256499,0,0,0.256499,-321.151,-170.602)">
