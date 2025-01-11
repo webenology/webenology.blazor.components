@@ -26,3 +26,7 @@ export function StopPropagation(el, t) {
         }
     })
 }
+
+export function SelectAll(el) {
+    el.select();
+}
