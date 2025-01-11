@@ -24,4 +24,10 @@ internal class CalendarJsHelper
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("PositionCalendar", el);
     }
+
+    public async Task StopPropagationOnEnter(ElementReference el, DotNetObjectReference<WebenologyDatePicker> reference)
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("StopPropagation", el, reference);
+    }
 }
