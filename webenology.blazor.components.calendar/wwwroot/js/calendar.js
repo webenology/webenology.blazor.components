@@ -15,11 +15,8 @@ export function PositionCalendar(el) {
 }
 
 export function StopPropagation(el, t) {
-    console.log(t);
     el.addEventListener("keydown", (e) => {
-        console.log("e down, ", e);
         if (e.key == "Enter") {
-            console.log("stopping propagation");
             e.preventDefault();
             t.invokeMethodAsync("OnEnterHit", el.value);
             return;
