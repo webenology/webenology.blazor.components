@@ -24,6 +24,7 @@ public partial class WebenologyDatePicker
     [Parameter] public bool IsDisabled { get; set; }
     [Parameter] public bool ShowTime { get; set; }
     [Parameter] public string? BaseCssClass { get; set; }
+    [Parameter] public string? InputCss { get; set; }
     [Parameter] public TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Local;
     [Inject]
     private IJSRuntime jsRuntime { get; set; }

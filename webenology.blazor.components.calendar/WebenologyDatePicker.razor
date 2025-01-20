@@ -5,7 +5,7 @@
 <span @ref="_el">
     <OutsideClick OnLoseFocus="HideCalendar" class="@($"{_wrapperCss} {BaseCssClass}")">
         <div class="wc-input" @onclick="ToggleCalendar">
-            <input type="text" @bind="TextValue" @bind:after="()=> DateParser()" disbabled="@IsDisabled" @ref="_textInput" @onfocus="SelectAll"/>
+            <input class="@InputCss" type="text" @bind="TextValue" @bind:after="()=> DateParser()" disbabled="@IsDisabled" @ref="_textInput" @onfocus="SelectAll"/>
         </div>
         <div class="wc-holder @(_isCalendarVisible ? "wc-visible" : "") @(IsSmall ? "wc-small" : "wc-large") @(_isRangeCalendar ? "wc-range": "wc-single")">
             <div class="wc-header">
