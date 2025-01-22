@@ -16,7 +16,7 @@ internal class CalendarJsHelper
     public CalendarJsHelper(IJSRuntime jsRuntime)
     {
         _moduleTask = new(() =>
-            jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/webenology.blazor.components.calendar/js/calendar.js").AsTask());
+            jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/webenology.blazor.components.calendar/js/calendar.js?dt=1_22_25").AsTask());
     }
 
     public async Task PositionCalendar(ElementReference el)
