@@ -1,13 +1,13 @@
-﻿*,
-::after,
-::before {
+﻿.wc-outline, .wc-outline *,
+.wc-outline::after, .wc-outline *::after
+.wc-outline::before, .wc-outline *::before {
     box-sizing: border-box;
     border-width: 0;
     border-style: solid;
     border-color: #e5e7eb
 }
 
-::deep .wc-outline {
+.wc-outline {
     position: relative;
     width: 100%;
     user-select: none;
@@ -51,7 +51,7 @@
             input {
                 flex: 1 1 0;
                 padding: 0.5rem;
-                border:none;
+                border: none;
 
                 &:hover {
                     --tw-bg-opacity: 1;

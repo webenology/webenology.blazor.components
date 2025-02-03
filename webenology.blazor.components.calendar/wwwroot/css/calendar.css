@@ -1,13 +1,13 @@
-*,
-::after,
-::before {
+.wc-outline, .wc-outline *,
+.wc-outline::after, .wc-outline *::after .wc-outline::before,
+.wc-outline *::before {
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
   border-color: #e5e7eb;
 }
 
-::deep .wc-outline {
+.wc-outline {
   position: relative;
   width: 100%;
   -webkit-user-select: none;
@@ -329,4 +329,4 @@
   border-right: 0px;
   padding: 0 4px;
   font-weight: bold;
-}/*# sourceMappingURL=WebenologyDatePicker.razor.css.map */
+}/*# sourceMappingURL=calendar.css.map */
