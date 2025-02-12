@@ -318,19 +318,21 @@ public partial class WebenologyDatePicker
         return Task.CompletedTask;
     }
 
-    private Task ToggleCalendar()
+    private async Task ToggleCalendar()
     {
         if (IsDisabled)
-            return Task.CompletedTask;
+            return;
 
 
         _isCalendarVisible = !_isCalendarVisible;
+
+        await Task.Yield();
         if (_isCalendarVisible)
         {
             UpdateCalendarPosition();
             SetupDates();
+
         }
-        return Task.CompletedTask;
     }
 
     private string GetMonthName(int i)
