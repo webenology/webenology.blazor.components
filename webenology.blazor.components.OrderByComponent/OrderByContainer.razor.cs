@@ -55,7 +55,10 @@ namespace webenology.blazor.components.OrderByComponent
             if (typeof(TValue).GetProperty(fieldName) == null)
                 throw new Exception($"Field name '{fieldName}' must exist in '{typeof(TValue)}'.");
         }
-
+        public void OnOrder(string fieldName, OrderByType orderBy)
+        {
+            OnOrderBy(fieldName, orderBy);
+        }
         private void Order()
         {
             if (OrderType == OrderByType.ASC)
