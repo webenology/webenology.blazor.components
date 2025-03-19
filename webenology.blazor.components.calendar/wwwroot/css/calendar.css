@@ -45,6 +45,14 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.wc-outline .wc-input + span {
+  color: rgb(31 41 55/var(--tw-text-opacity));
+  display: block;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.675rem;
+}
 .wc-outline .wc-input input {
   flex: 1 1 0;
   padding: 0.5rem;

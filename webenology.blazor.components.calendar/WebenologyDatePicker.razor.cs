@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Data;
+using System.Globalization;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -69,7 +70,7 @@ public partial class WebenologyDatePicker
 
     private string TextValue
     {
-        get => GetDateRangeForInput();
+        get => GetDateRangeForInput(false);
         set => _textValue = value;
     }
 
@@ -100,53 +101,80 @@ public partial class WebenologyDatePicker
     {
         (DateTime, WebenologyTime?) dt1 = new ValueTuple<DateTime, WebenologyTime?>(DateTime.MinValue, null);
         (DateTime, WebenologyTime?) dt2 = new ValueTuple<DateTime, WebenologyTime?>(DateTime.MinValue, null);
-
-        if (_dateRegex.IsMatch(_textValue))
+        var ranSpecial = false;
+        if (SpecialCaseHelper.SpecialValueMatch.IsMatch(_textValue.ToLower()))
         {
-            var matches = _dateRegex.Matches(_textValue);
-            var m = matches[0].Groups["Month"].Value;
-            var d = matches[0].Groups["Day"].Value;
-            var y = matches[0].Groups["Year"].Value;
-            var h = matches[0].Groups["Hour"].Value;
-            var min = matches[0].Groups["Minute"].Value;
-            var mer = matches[0].Groups["Meridian"].Value;
-            dt1 = ParseDate(m, d, y, h, min, mer);
+            var data = SpecialCaseHelper.RunCase(_textValue.ToLower());
+            if (data.Item1.Item1 != null)
+            {
+                dt1 = ParseDate(data.Item1.Item1!.Value.Month.ToString(), data.Item1.Item1!.Value.Day.ToString(), data.Item1.Item1!.Value.Year.ToString(), data.Item1.Item2?.Hour.ToString() ?? "0",
+                    data.Item1.Item2?.Minute.ToString() ?? "0",
+                    data.Item1.Item2?.Meridian.ToString() ?? "AM");
+                ranSpecial = true;
+            }
+            if (data.Item2.GetValueOrDefault().Item1.HasValue && IsRangeCalendar.GetValueOrDefault())
+            {
+                dt2 = ParseDate(data.Item2?.Item1?.Month.ToString() ?? "0", data.Item2?.Item1?.Day.ToString() ?? "0", data.Item2?.Item1?.Year.ToString() ?? "0", data.Item2?.Item2?.Hour.ToString() ?? "0",
+                    data.Item1.Item2?.Minute.ToString() ?? "0",
+                    data.Item1.Item2?.Meridian.ToString() ?? "AM");
+                ranSpecial = true;
+            }
         }
-        else if (_dateRangeRegex.IsMatch(_textValue))
-        {
-            var matches = _dateRangeRegex.Matches(_textValue);
-            var m = matches[0].Groups["Month1"].Value;
-            var d = matches[0].Groups["Day1"].Value;
-            var y = matches[0].Groups["Year1"].Value;
-            var h = matches[0].Groups["Hour1"].Value;
-            var min = matches[0].Groups["Minute1"].Value;
-            var mer = matches[0].Groups["Meridian1"].Value;
-            dt1 = ParseDate(m, d, y, h, min, mer);
 
-            var m2 = matches[0].Groups["Month2"].Value;
-            var d2 = matches[0].Groups["Day2"].Value;
-            var y2 = matches[0].Groups["Year2"].Value;
-            var h2 = matches[0].Groups["Hour2"].Value;
-            var min2 = matches[0].Groups["Minute2"].Value;
-            var mer2 = matches[0].Groups["Meridian2"].Value;
-            dt2 = ParseDate(m2, d2, y2, h2, min2, mer2);
-        }
-        else if (_dateTimeRangeRegex.IsMatch(_textValue))
+        if (!ranSpecial)
         {
-            var matches = _dateTimeRangeRegex.Matches(_textValue);
-            var m = matches[0].Groups["Month"].Value;
-            var d = matches[0].Groups["Day"].Value;
-            var y = matches[0].Groups["Year"].Value;
-            var h1 = matches[0].Groups["Hour1"].Value;
-            var min1 = matches[0].Groups["Minute1"].Value;
-            var mer1 = matches[0].Groups["Meridian1"].Value;
-            dt1 = ParseDate(m, d, y, h1, min1, mer1);
+            if (_dateRegex.IsMatch(_textValue))
+            {
+                var matches = _dateRegex.Matches(_textValue);
+                var m = matches[0].Groups["Month"].Value;
+                var d = matches[0].Groups["Day"].Value;
+                var y = matches[0].Groups["Year"].Value;
+                var h = matches[0].Groups["Hour"].Value;
+                var min = matches[0].Groups["Minute"].Value;
+                var mer = matches[0].Groups["Meridian"].Value;
+                dt1 = ParseDate(m, d, y, h, min, mer);
+            }
+            else if (_dateRangeRegex.IsMatch(_textValue))
+            {
+                var matches = _dateRangeRegex.Matches(_textValue);
+                var m = matches[0].Groups["Month1"].Value;
+                var d = matches[0].Groups["Day1"].Value;
+                var y = matches[0].Groups["Year1"].Value;
+                var h = matches[0].Groups["Hour1"].Value;
+                var min = matches[0].Groups["Minute1"].Value;
+                var mer = matches[0].Groups["Meridian1"].Value;
+                dt1 = ParseDate(m, d, y, h, min, mer);
 
-            var h2 = matches[0].Groups["Hour2"].Value;
-            var min2 = matches[0].Groups["Minute2"].Value;
-            var mer2 = matches[0].Groups["Meridian2"].Value;
-            dt2 = ParseDate(m, d, y, h2, min2, mer2);
+                var m2 = matches[0].Groups["Month2"].Value;
+                var d2 = matches[0].Groups["Day2"].Value;
+                var y2 = matches[0].Groups["Year2"].Value;
+                var h2 = matches[0].Groups["Hour2"].Value;
+                var min2 = matches[0].Groups["Minute2"].Value;
+                var mer2 = matches[0].Groups["Meridian2"].Value;
+                dt2 = ParseDate(m2, d2, y2, h2, min2, mer2);
+            }
+            else if (_dateTimeRangeRegex.IsMatch(_textValue))
+            {
+                var matches = _dateTimeRangeRegex.Matches(_textValue);
+                var m = matches[0].Groups["Month"].Value;
+                var d = matches[0].Groups["Day"].Value;
+                var y = matches[0].Groups["Year"].Value;
+                var h1 = matches[0].Groups["Hour1"].Value;
+                var min1 = matches[0].Groups["Minute1"].Value;
+                var mer1 = matches[0].Groups["Meridian1"].Value;
+                dt1 = ParseDate(m, d, y, h1, min1, mer1);
+
+                var h2 = matches[0].Groups["Hour2"].Value;
+                var min2 = matches[0].Groups["Minute2"].Value;
+                var mer2 = matches[0].Groups["Meridian2"].Value;
+                dt2 = ParseDate(m, d, y, h2, min2, mer2);
+            }
+            else
+            {
+                _textValue = "NONE";
+            }
         }
+
         if (!_isRangeCalendar)
         {
             if (dt1.Item1 != DateTime.MinValue)
@@ -155,10 +183,10 @@ public partial class WebenologyDatePicker
                     return true;
                 Date = dt1.Item1;
                 CurrentDateRange = new List<DateTime?>
-                {
-                    dt1.Item1,
-                    dt1.Item1
-                };
+                    {
+                        dt1.Item1,
+                        dt1.Item1
+                    };
                 visibleYear = dt1.Item1.Year;
                 middleMonth = dt1.Item1.Month;
 
@@ -178,10 +206,10 @@ public partial class WebenologyDatePicker
                 if (IsDisabledDate(toDt))
                     return false;
                 CurrentDateRange = new List<DateTime?>
-                {
-                    fromDt > toDt ? toDt : fromDt,
-                    fromDt > toDt ? fromDt : toDt
-                };
+                    {
+                        fromDt > toDt ? toDt : fromDt,
+                        fromDt > toDt ? fromDt : toDt
+                    };
                 visibleYear = CurrentDateRange.Last().GetValueOrDefault().Year;
                 middleMonth = CurrentDateRange.Last().GetValueOrDefault().Month;
                 if (dt1.Item2 != null)
@@ -464,6 +492,7 @@ public partial class WebenologyDatePicker
         ClickedDate = null;
         FirstDate = null;
         LastDate = null;
+        _textValue = string.Empty;
     }
 
     private Task SetLastDate(int i, int day)
@@ -543,33 +572,41 @@ public partial class WebenologyDatePicker
         {
             case QuickSelect.Today:
                 CurrentDateRange = new List<DateTime?> { today, today };
+                _textValue = string.Empty;
                 break;
             case QuickSelect.Yesterday:
                 CurrentDateRange = new List<DateTime?> { today.AddDays(-1), today.AddDays(-1) };
+                _textValue = string.Empty;
                 break;
             case QuickSelect.LastSevenDays:
                 CurrentDateRange = new List<DateTime?> { today.AddDays(-6), today };
+                _textValue = string.Empty;
                 break;
             case QuickSelect.LastWeek:
                 var thisSaturday = today.AddDays(6 - (int)today.DayOfWeek);
                 CurrentDateRange = new List<DateTime?> { thisSaturday.AddDays(-13), thisSaturday.AddDays(-7) };
+                _textValue = string.Empty;
                 break;
             case QuickSelect.LastThreeWeeks:
                 var thisSaturdayAgain = today.AddDays(6 - (int)today.DayOfWeek);
                 CurrentDateRange = new List<DateTime?>
                     { thisSaturdayAgain.AddDays(-27), thisSaturdayAgain.AddDays(-7) };
+                _textValue = string.Empty;
                 break;
             case QuickSelect.MonthToDate:
                 var startOfMonth = new DateTime(today.Year, today.Month, 1, 0, 0, 0, 0, DateTimeKind.Local);
                 CurrentDateRange = new List<DateTime?> { startOfMonth, today };
+                _textValue = string.Empty;
                 break;
             case QuickSelect.YearToDate:
                 var startOfYear = new DateTime(today.Year, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
                 CurrentDateRange = new List<DateTime?> { startOfYear, today };
+                _textValue = string.Empty;
                 break;
             case QuickSelect.Year:
                 CurrentDateRange = new List<DateTime?> { new DateTime(today.Year, 1, 1, 0, 0, 0, 0, DateTimeKind.Local),
                     new DateTime(today.Year, 12, 31, 0, 0, 0, 0, DateTimeKind.Local) };
+                _textValue = string.Empty;
                 break;
         }
 
@@ -613,6 +650,7 @@ public partial class WebenologyDatePicker
             new DateTime(monthAndYear.Item2, monthAndYear.Item1, 1, 0, 0, 0, 0, DateTimeKind.Local),
             new DateTime(monthAndYear.Item2, monthAndYear.Item1, daysInMonth, 0, 0, 0, 0, DateTimeKind.Local),
         };
+        _textValue = string.Empty;
         return Task.CompletedTask;
     }
 
@@ -677,8 +715,11 @@ public partial class WebenologyDatePicker
         return str.ToString();
     }
 
-    private string GetDateRangeForInput()
+    private string GetDateRangeForInput(bool bypassTextMatch)
     {
+        if (!string.IsNullOrEmpty(_textValue) && SpecialCaseHelper.SpecialValueMatch.IsMatch(_textValue) && !bypassTextMatch)
+            return _textValue;
+
         var str = new StringBuilder();
         DateTime? date1 = null;
         DateTime? date2 = null;
@@ -762,10 +803,10 @@ public partial class WebenologyDatePicker
             if (DateChanged.HasDelegate)
                 DateChanged.InvokeAsync(CurrentDateRange.Last());
         }
-        else if (DateRange != null && DateRange.Any())
+        else if (DateRange is { Count: > 1 })
         {
-            DateRange[0] = SetDateAndTime(DateRange[0].GetValueOrDefault(), time1);
-            DateRange[1] = SetDateAndTime(DateRange[1].GetValueOrDefault(), time2);
+            DateRange[0] = SetDateAndTime(DateRange.First().GetValueOrDefault(), time1);
+            DateRange[1] = SetDateAndTime(DateRange.Last().GetValueOrDefault(), time2);
             if (DateRange[0] > DateRange[1])
             {
                 (DateRange[0], DateRange[1]) = (DateRange[1], DateRange[0]);
@@ -845,36 +886,3 @@ public partial class WebenologyDatePicker
     }
 }
 
-internal class WebenologyTime
-{
-    public int Hour { get; set; }
-    public int Minute { get; set; }
-    public MeridianEnum Meridian { get; set; }
-
-    public WebenologyTime() : this(12, 0, MeridianEnum.AM)
-    {
-    }
-    public WebenologyTime(int hour) : this(hour, 0, MeridianEnum.AM)
-    {
-    }
-    public WebenologyTime(int hour, int minute) : this(hour, minute, MeridianEnum.AM)
-    {
-    }
-    public WebenologyTime(int hour, int minute, MeridianEnum meridian)
-    {
-        Hour = hour;
-        Minute = minute;
-        Meridian = meridian;
-    }
-
-    public override string ToString()
-    {
-        return $"{Hour:00}:{Minute:00} {Meridian.ToString()}";
-    }
-}
-
-public enum MeridianEnum
-{
-    AM,
-    PM
-}

@@ -7,6 +7,11 @@
         <div class="wc-input" @onclick="ToggleCalendar">
             <input class="@InputCss" type="text" @bind="TextValue" @bind:after="()=> DateParser()" disbabled="@IsDisabled" @ref="_textInput" @onfocus="SelectAll"/>
         </div>
+        @if (SpecialCaseHelper.SpecialValueMatch.IsMatch(_textValue ?? ""))
+        {
+            <span>@GetDateRangeForInput(true)</span>
+        }
+
         <div class="wc-holder @(_isCalendarVisible ? "wc-visible" : "") @(IsSmall ? "wc-small" : "wc-large") @(_isRangeCalendar ? "wc-range": "wc-single")">
             <div class="wc-header">
                 <div @onclick="@(() => AddYear(-1))">
