@@ -197,4 +197,14 @@ public partial class MapAutocomplete
 
         return (MarkupString)g.LabelHighlighted;
     }
+
+    private async Task AfterBlur()
+    {
+        if (string.IsNullOrEmpty(Search))
+        {
+            var g = new GeoAutoAddress();
+            if (OnSelectAddress.HasDelegate)
+                await OnSelectAddress.InvokeAsync(g);
+        }
+    }
 }

@@ -7,6 +7,7 @@
     <div class="wrapper">
         <div class="input-wrapper">
             <input type="text" @bind="Search" @bind:event="oninput"
+                   @onblur="AfterBlur"
                    placeholder="Search for an address..."
                    autocomplete="off" class="input"
                    @onclick="ShowResults" disabled="@IsDisabled" />
