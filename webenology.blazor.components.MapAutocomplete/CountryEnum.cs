@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace webenology.blazor.components.MapAutocompleteComponent;
+﻿namespace webenology.blazor.components.MapAutocompleteComponent;
 
 [Flags]
 public enum CountryEnum : short

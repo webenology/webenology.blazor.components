@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace webenology.blazor.components.MapAutocompleteComponent;
+﻿namespace webenology.blazor.components.MapAutocompleteComponent;
 
 public class LatLng
 {

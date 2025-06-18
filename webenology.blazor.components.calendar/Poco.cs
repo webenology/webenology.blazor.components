@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace webenology.blazor.components.calendar
+﻿namespace webenology.blazor.components.calendar
 {
     public class WebenologyTime
     {

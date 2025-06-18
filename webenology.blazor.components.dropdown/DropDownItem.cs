@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace webenology.blazor.components.dropdown;
+﻿namespace webenology.blazor.components.dropdown;
 
 public class DropDownItem<T> : IEqualityComparer<DropDownItem<T>?>
 {

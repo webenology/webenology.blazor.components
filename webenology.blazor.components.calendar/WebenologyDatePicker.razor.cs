@@ -1,11 +1,5 @@
-﻿using System.Data;
-using System.Globalization;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using System.Transactions;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
