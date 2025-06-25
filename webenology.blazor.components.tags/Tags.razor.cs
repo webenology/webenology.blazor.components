@@ -12,7 +12,7 @@ public partial class Tags
     [Inject] private IJSRuntime jsRuntime { get; set; }
     private string Tag { get; set; } = default!;
     private List<string> _tags = new();
-    private ElementReference _input;
+    private ElementReference? _input;
     private TagsJs js { get; set; }
     private bool _showAll;
 
@@ -28,7 +28,17 @@ public partial class Tags
     {
         if (firstRender)
         {
-            await js.PreventEnter(_input);
+            var task = Task.Run(async () =>
+            {
+                while (true)
+                {
+                    if (_input == null)
+                        continue;
+                    await js.PreventEnter(_input.GetValueOrDefault());
+                    break;
+                }
+            });
+            task.ConfigureAwait(false);
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -48,7 +58,7 @@ public partial class Tags
     [JSInvokable("OnAddTag")]
     public Task OnAddTag()
     {
-        if(string.IsNullOrWhiteSpace(Tag)) return Task.CompletedTask;
+        if (string.IsNullOrWhiteSpace(Tag)) return Task.CompletedTask;
 
         var tags = JoinTags(_tags, Tag);
         if (TagsListChanged.HasDelegate)
@@ -61,7 +71,7 @@ public partial class Tags
 
     private List<string> SplitTags(string tags)
     {
-        return tags?.Split(Separator).Where(x=> !string.IsNullOrEmpty(x)).ToList() ?? new();
+        return tags?.Split(Separator).Where(x => !string.IsNullOrEmpty(x)).ToList() ?? new();
     }
 
     private string JoinTags(List<string> tags, string? newTag)

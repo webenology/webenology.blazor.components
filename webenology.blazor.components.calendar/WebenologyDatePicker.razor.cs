@@ -60,7 +60,7 @@ public partial class WebenologyDatePicker
     };
 
     private string _textValue;
-    private ElementReference _textInput;
+    private ElementReference? _textInput;
 
     private string TextValue
     {
@@ -72,10 +72,21 @@ public partial class WebenologyDatePicker
     {
         if (firstRender)
         {
-            await _jsHelper.StopPropagationOnEnter(_textInput, DotNetObjectReference.Create(this));
+            var task = Task.Run(async () =>
+            {
+                while (true)
+                {
+                    if(_textInput == null)
+                        continue;
+                    await _jsHelper.StopPropagationOnEnter(_textInput.GetValueOrDefault(), DotNetObjectReference.Create(this));
+                    break;
+                }
+            });
+            task.ConfigureAwait(false);
         }
         await base.OnAfterRenderAsync(firstRender);
     }
+
 
     [JSInvokable]
     public void OnEnterHit(string val)
@@ -219,7 +230,7 @@ public partial class WebenologyDatePicker
 
     private async Task SelectAll()
     {
-        await _jsHelper.SelectAll(_textInput);
+        await _jsHelper.SelectAll(_textInput.GetValueOrDefault());
     }
 
     private (DateTime, WebenologyTime) ParseDate(string mon, string d, string y, string h, string min, string mer)
