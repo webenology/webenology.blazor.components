@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Fastenshtein" Version="1.0.10" />
+  </ItemGroup>
+
 </Project>
