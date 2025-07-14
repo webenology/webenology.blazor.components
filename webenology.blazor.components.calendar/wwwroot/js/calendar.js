@@ -4,15 +4,15 @@ export function PositionCalendar(el) {
     var inputBoundingBox = input.getBoundingClientRect();
 
     var screenWidth = window.innerWidth;
+    var screenHeight = window.innerHeight;
 
-    console.log(inputBoundingBox.right + 25, screenWidth);
+    var endingRight = screenWidth - (spanBoundingBox.left + inputBoundingBox.width);
+    var endingBottom = screenHeight - (spanBoundingBox.bottom + inputBoundingBox.height);
+    endingRight = Math.max(20, endingRight);
+    endingBottom = Math.max(20, endingBottom);
+    input.style.right = `${endingRight}px`;
+    input.style.bottom = `${endingBottom}px`;
 
-    if (inputBoundingBox.right + 25 > screenWidth) {
-        var right = spanBoundingBox.width + 20 + spanBoundingBox.left - window.innerWidth;
-        input.style.right = `${right}px`;
-    } else {
-        input.style.right = null;
-    }
 }
 
 export function StopPropagation(el, t) {
