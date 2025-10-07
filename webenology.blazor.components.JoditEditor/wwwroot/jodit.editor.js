@@ -11,19 +11,12 @@ document.head.appendChild(scriptEle);
 
 export class JoditHelper {
 
-    Setup(id, mergeTags, dotnet) {
+    Setup(id, mergeTags, buttons, dotnet) {
         console.log("edoitor", this.editor);
         console.log(mergeTags);
 
         var interval = setInterval(() => {
             if (Jodit != null) {
-
-                let buttons = ['undo', 'redo', '|',
-                    'bold', 'italic', 'underline', '|',
-                    'align', 'font', 'fontsize', '|',
-                    'ul', 'ol', '|',
-                    'table', 'link', 'image'];
-
 
                 if (mergeTags) {
                     Jodit.defaultOptions.controls.mergeTags = {
@@ -63,7 +56,7 @@ export class JoditHelper {
 
                 if (document.getElementById(id) != null) {
                     var idDoc = "#" + id;
-                    console.log("this.editor id", idDoc);
+                    console.log("this.editor id", idDoc, buttons);
                     this.editor = Jodit.make(idDoc, {
                         uploader: {
                             insertImageAsBase64URI: true
