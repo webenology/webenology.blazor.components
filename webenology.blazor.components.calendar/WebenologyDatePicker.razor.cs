@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -13,6 +14,7 @@ public partial class WebenologyDatePicker
     [Parameter] public EventCallback<DateTime?> DateChanged { get; set; }
     [Parameter] public bool? IsRangeCalendar { get; set; }
     [Parameter] public bool IsSmall { get; set; }
+    [Parameter] public bool IsInline { get; set; }
     [Parameter] public DateTime? MinDateTime { get; set; }
     [Parameter] public DateTime? MaxDateTime { get; set; }
     [Parameter] public List<DateTime>? BlackoutDates { get; set; }
@@ -76,7 +78,7 @@ public partial class WebenologyDatePicker
             {
                 while (true)
                 {
-                    if(_textInput == null)
+                    if (_textInput == null)
                         continue;
                     await _jsHelper.StopPropagationOnEnter(_textInput.GetValueOrDefault(), DotNetObjectReference.Create(this));
                     break;
@@ -98,7 +100,9 @@ public partial class WebenologyDatePicker
         {
             TextValue = oldVal;
         }
-        _isCalendarVisible = false;
+
+        if (!IsInline)
+            _isCalendarVisible = false;
 
     }
 
@@ -292,6 +296,12 @@ public partial class WebenologyDatePicker
 
     protected override void OnParametersSet()
     {
+        if (IsInline && !_isCalendarVisible)
+        {
+            _isCalendarVisible = true;
+            SetupDates();
+        }
+
         if (!_isCalendarVisible)
         {
             SetupDates();
@@ -347,7 +357,8 @@ public partial class WebenologyDatePicker
     private Task HideCalendar()
     {
         SelectDateRange();
-        _isCalendarVisible = false;
+        if (!IsInline)
+            _isCalendarVisible = false;
         return Task.CompletedTask;
     }
 
@@ -356,15 +367,14 @@ public partial class WebenologyDatePicker
         if (IsDisabled)
             return;
 
-
-        _isCalendarVisible = !_isCalendarVisible;
+        if (!IsInline)
+            _isCalendarVisible = !_isCalendarVisible;
 
         await Task.Yield();
         if (_isCalendarVisible)
         {
             UpdateCalendarPosition();
             SetupDates();
-
         }
     }
 
@@ -477,6 +487,8 @@ public partial class WebenologyDatePicker
                 dt,
                 dt
             };
+            if (IsInline)
+                SelectDateRange();
             return;
         }
 
@@ -484,6 +496,8 @@ public partial class WebenologyDatePicker
         {
             ClickedDate = dt;
             FirstDate = dt;
+            if (IsInline)
+                SelectDateRange();
             return;
         }
 
@@ -498,6 +512,8 @@ public partial class WebenologyDatePicker
         FirstDate = null;
         LastDate = null;
         _textValue = string.Empty;
+        if (IsInline)
+            SelectDateRange();
     }
 
     private Task SetLastDate(int i, int day)
@@ -785,7 +801,8 @@ public partial class WebenologyDatePicker
     private Task Reset()
     {
         CurrentDateRange = null;
-        _isCalendarVisible = false;
+        if (!IsInline)
+            _isCalendarVisible = false;
         return Task.CompletedTask;
     }
 

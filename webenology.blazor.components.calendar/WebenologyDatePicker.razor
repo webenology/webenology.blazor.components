@@ -12,7 +12,7 @@
             <span>@GetDateRangeForInput(true)</span>
         }
 
-        <div class="wc-holder @(_isCalendarVisible ? "wc-visible" : "") @(IsSmall ? "wc-small" : "wc-large") @(_isRangeCalendar ? "wc-range": "wc-single")">
+        <div class="wc-holder @(_isCalendarVisible ? "wc-visible" : "") @(IsSmall ? "wc-small" : "wc-large") @(_isRangeCalendar ? "wc-range": "wc-single") @(IsInline ? "wc-inline": "")">
             <div class="wc-header">
                 <div @onclick="@(() => AddYear(-1))">
                     @GetYear(-1)
@@ -143,12 +143,15 @@
                     <polyline points="9 6 15 12 9 18" />
                 </svg>
             </div>
-
-            <div class="wc-footer">
-                <button class="wc-clear" type="button" @onclick="Clear">Clear</button>
-                <button class="wc-cancel" type="button" @onclick="Reset">Cancel</button>
-                <button type="button" @onclick="SelectDateRange">Ok</button>
-            </div>
+            
+            @if (!IsInline)
+            {
+                <div class="wc-footer">
+                    <button class="wc-clear" type="button" @onclick="Clear">Clear</button>
+                    <button class="wc-cancel" type="button" @onclick="Reset">Cancel</button>
+                    <button type="button" @onclick="SelectDateRange">Ok</button>
+                </div>
+            }
         </div>
     </OutsideClick>
 </span>

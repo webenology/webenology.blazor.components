@@ -50,11 +50,11 @@
 
             + span {
                 color: rgb(31 41 55 / var(--tw-text-opacity));
-                display:block;
+                display: block;
                 text-align: center;
-                white-space:nowrap;
-                text-overflow:ellipsis;
-                font-size:0.675rem;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: 0.675rem;
             }
 
             input {
@@ -106,6 +106,10 @@
 
         &.wc-visible {
             display: grid;
+        }
+
+        &.wc-inline {
+            position: unset !important;
         }
 
         &.wc-small {
