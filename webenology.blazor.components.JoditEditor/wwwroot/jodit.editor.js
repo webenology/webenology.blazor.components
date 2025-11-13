@@ -12,9 +12,6 @@ document.head.appendChild(scriptEle);
 export class JoditHelper {
 
     Setup(id, mergeTags, buttons, dotnet) {
-        console.log("edoitor", this.editor);
-        console.log(mergeTags);
-
         var interval = setInterval(() => {
             if (Jodit != null) {
 
@@ -56,7 +53,6 @@ export class JoditHelper {
 
                 if (document.getElementById(id) != null) {
                     var idDoc = "#" + id;
-                    console.log("this.editor id", idDoc, buttons);
                     this.editor = Jodit.make(idDoc, {
                         uploader: {
                             insertImageAsBase64URI: true
@@ -71,10 +67,8 @@ export class JoditHelper {
                         beautifyHTML: true,
                         hidePoweredByJodit: true
                     });
-                    console.log(this.editor);
                     clearInterval(interval);
                     this.editor.e.on("blur", (a) => {
-                        console.log("a", a);
                         dotnet.invokeMethodAsync("OnBlur");
                     });
                     let attr = document.body.querySelector(idDoc);
@@ -90,7 +84,6 @@ export class JoditHelper {
     }
 
     GetText(chunk) {
-        console.log(this.editor);
         if (this.editor) {
             const textEncoder = new TextEncoder().encode(this.editor.text);
             return textEncoder;
@@ -99,7 +92,6 @@ export class JoditHelper {
     }
 
     GetHtml(chunk) {
-        console.log(this.editor);
         if (this.editor) {
             const textEncoder = new TextEncoder().encode(this.editor.value);
             return textEncoder;
