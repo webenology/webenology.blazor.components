@@ -54,6 +54,9 @@ public class JoditJs : IAsyncDisposable
         using var ms = new MemoryStream();
         await dataRef.CopyToAsync(ms);
         ms.Seek(0, SeekOrigin.Begin);
+        if (ms.Length == 0)
+            return string.Empty;
+
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 

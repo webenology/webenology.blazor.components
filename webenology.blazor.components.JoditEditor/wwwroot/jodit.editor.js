@@ -93,6 +93,10 @@ export class JoditHelper {
 
     GetHtml(chunk) {
         if (this.editor) {
+            if (this.editor.value.length == 0) {
+                console.log("empty js");
+                return new TextEncoder().encode("");
+            }
             const textEncoder = new TextEncoder().encode(this.editor.value);
             return textEncoder;
         }
