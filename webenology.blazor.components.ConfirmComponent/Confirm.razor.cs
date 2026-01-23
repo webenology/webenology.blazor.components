@@ -19,17 +19,19 @@ namespace webenology.blazor.components.ConfirmComponent
         private bool _isSaving;
         private bool _showCancel = true;
         private bool _showNo = true;
+        private bool _actionTaken;
 
         private async Task Execute(Action action)
         {
             _isSaving = true;
             await Task.Delay(10);
+            _actionTaken = true;
             _isOpen = false;
             action?.Invoke();
             StateHasChanged();
         }
 
-        public void ShowConfirm(string confirmHeader, string confirmMessage, Action OnYes = null, Action OnNo = null, Action OnCancel = null, string yesName = null, string noName = null, string cancelName = null, bool showCancel = true, bool showNo = true)
+        public async Task ShowConfirm(string confirmHeader, string confirmMessage, Action OnYes = null, Action OnNo = null, Action OnCancel = null, string yesName = null, string noName = null, string cancelName = null, bool showCancel = true, bool showNo = true)
         {
             _header = confirmHeader;
             _content = confirmMessage;
@@ -43,8 +45,15 @@ namespace webenology.blazor.components.ConfirmComponent
             _isSaving = false;
             _showCancel = showCancel;
             _showNo = showNo;
-
+            _actionTaken = false;
             StateHasChanged();
+            await WaitForAction();
+        }
+
+        private async Task WaitForAction()
+        {
+            while (!_actionTaken)
+                await Task.Delay(50);
         }
 
     }
