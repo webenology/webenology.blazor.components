@@ -1,10 +1,4 @@
-﻿using System.Globalization;
-using System.Net;
-using System.Net.Http.Json;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Timers;
+﻿using System.Timers;
 
 using Maps;
 
@@ -20,13 +14,16 @@ public partial class MapAutocomplete
 {
     [Parameter] public string DefaultSearch { get; set; }
     [Parameter] public EventCallback<GeoAutoAddress> OnSelectAddress { get; set; }
+    [Parameter] public EventCallback<List<GeoAutoAddress>> OnApiSelectResults { get; set; }
     [Parameter] public bool IsDisabled { get; set; }
     [Parameter] public double? CentralLat { get; set; }
     [Parameter] public double? CentralLng { get; set; }
     [Parameter] public string? HereMapsApiKey { get; set; }
     [Parameter] public string? GoogleApiKey { get; set; }
     [Parameter] public bool AutoHighlight { get; set; } = true;
+
     [Parameter] public CountryEnum Country { get; set; } = CountryEnum.USA | CountryEnum.CAN | CountryEnum.MEX;
+
 
     private string _previousSearch;
     private string _addressSelectedLabel;
@@ -83,6 +80,16 @@ public partial class MapAutocomplete
         base.OnParametersSet();
     }
 
+    public void ApiSearch(string searchStr, TimeSpan debounceTime)
+    {
+        if (_debounceTimer.Interval != debounceTime.TotalMilliseconds)
+        {
+            _debounceTimer.Interval = debounceTime.TotalMilliseconds;
+        }
+        _search = searchStr;
+        DoSearch();
+    }
+
     private async void DoSearch()
     {
         await Task.Yield();
@@ -121,11 +128,15 @@ public partial class MapAutocomplete
                 _autoItem = results;
                 _searching = false;
                 _showResults = _autoItem?.Any() ?? false;
+                if (OnApiSelectResults.HasDelegate)
+                    await OnApiSelectResults.InvokeAsync(results);
             }
         }
         catch (Exception e)
         {
             _autoItem = null;
+            if (OnApiSelectResults.HasDelegate)
+                await OnApiSelectResults.InvokeAsync(null);
             _searching = false;
         }
 
@@ -156,7 +167,7 @@ public partial class MapAutocomplete
         _showResults = false;
     }
 
-    private async Task SelectAddress(GeoAutoAddress g)
+    public async Task SelectAddress(GeoAutoAddress g)
     {
         if (string.IsNullOrEmpty(g.Label))
             return;
@@ -196,5 +207,15 @@ public partial class MapAutocomplete
         }
 
         return (MarkupString)g.LabelHighlighted;
+    }
+
+    private async Task AfterBlur()
+    {
+        if (string.IsNullOrEmpty(Search))
+        {
+            var g = new GeoAutoAddress();
+            if (OnSelectAddress.HasDelegate)
+                await OnSelectAddress.InvokeAsync(g);
+        }
     }
 }

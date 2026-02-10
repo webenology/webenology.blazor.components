@@ -7,6 +7,10 @@
 		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <None Include="wwwroot\css\calendar.scss" />
+	</ItemGroup>
+
 
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />

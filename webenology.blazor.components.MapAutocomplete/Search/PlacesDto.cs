@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace webenology.blazor.components.MapAutocompleteComponent.Search;
+﻿namespace webenology.blazor.components.MapAutocompleteComponent.Search;
 internal class PlacesDto
 {
     public List<Place> Places { get; set; }

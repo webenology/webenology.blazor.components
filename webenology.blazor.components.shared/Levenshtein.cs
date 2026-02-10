@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace webenology.blazor.components.shared;
+﻿namespace webenology.blazor.components.shared;
 public static class Levenshtein
 {
     public static int[,] Calculate(string strA, string strB)

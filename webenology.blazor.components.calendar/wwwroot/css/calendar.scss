@@ -1,13 +1,13 @@
-﻿*,
-::after,
-::before {
+﻿.wc-outline, .wc-outline *,
+.wc-outline::after, .wc-outline *::after
+.wc-outline::before, .wc-outline *::before {
     box-sizing: border-box;
     border-width: 0;
     border-style: solid;
     border-color: #e5e7eb
 }
 
-::deep .wc-outline {
+.wc-outline {
     position: relative;
     width: 100%;
     user-select: none;
@@ -48,10 +48,19 @@
             white-space: nowrap;
             text-overflow: ellipsis;
 
+            + span {
+                color: rgb(31 41 55 / var(--tw-text-opacity));
+                display: block;
+                text-align: center;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: 0.675rem;
+            }
+
             input {
                 flex: 1 1 0;
                 padding: 0.5rem;
-                border:none;
+                border: none;
 
                 &:hover {
                     --tw-bg-opacity: 1;
@@ -80,7 +89,7 @@
     }
 
     &-holder {
-        position: absolute;
+        position: fixed;
         display: none;
         overflow: hidden;
         border-top-left-radius: 0.25rem;
@@ -93,10 +102,14 @@
         --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
         box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-        z-index: 100;
+        z-index: 1020;
 
         &.wc-visible {
             display: grid;
+        }
+
+        &.wc-inline {
+            position: unset !important;
         }
 
         &.wc-small {
@@ -162,7 +175,7 @@
                 border-radius: 0.25rem;
                 --tw-bg-opacity: 1;
                 background-color: rgb(99 102 241 / var(--tw-bg-opacity));
-                padding: 0.25rem 1.75rem;
+                padding: 0.25rem 1rem;
                 --tw-text-opacity: 1;
                 color: rgb(255 255 255 / var(--tw-text-opacity));
                 --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Maps;
+﻿namespace Maps;
 internal class Helpers
 {
     public static List<KeyValuePair<string, string>> Substitutions = new List<KeyValuePair<string, string>>

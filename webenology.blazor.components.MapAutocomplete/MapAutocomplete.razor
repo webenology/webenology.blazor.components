@@ -1,12 +1,11 @@
 ﻿@namespace webenology.blazor.components.MapAutocompleteComponent
-@using Maps
 @using webenology.blazor.components.OutsideClickComponent
-@using webenology.blazor.components.shared
 
 <OutsideClick OnLoseFocus="@HideResults" @ref="_outsideClick">
     <div class="wrapper">
         <div class="input-wrapper">
             <input type="text" @bind="Search" @bind:event="oninput"
+                   @onblur="AfterBlur"
                    placeholder="Search for an address..."
                    autocomplete="off" class="input"
                    @onclick="ShowResults" disabled="@IsDisabled" />

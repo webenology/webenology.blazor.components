@@ -1,8 +1,4 @@
-﻿using System;
-using System.Buffers;
-using System.Drawing;
-using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
 
 namespace webenology.blazor.components.shared

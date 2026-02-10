@@ -22,12 +22,13 @@ public class JoditJs : IAsyncDisposable
             "import", "./_content/webenology.blazor.components.JoditEditor/jodit.editor.js").AsTask());
     }
 
-    public async ValueTask Setup(string id, Dictionary<string, string>? mergeTags,
+    public async ValueTask Setup(string id, Dictionary<string, string>? mergeTags, List<string> buttons,
         DotNetObjectReference<JoditEditor> dotNetRef)
     {
+        var btns = string.Join(",", buttons);
         var module = await moduleTask.Value;
         moduleInstance = await module.InvokeAsync<IJSObjectReference>("Instance", null);
-        await moduleInstance.InvokeVoidAsync("Setup", id, mergeTags, dotNetRef);
+        await moduleInstance.InvokeVoidAsync("Setup", id, mergeTags, btns, dotNetRef);
     }
 
     public async ValueTask<string> GetText()
@@ -53,6 +54,9 @@ public class JoditJs : IAsyncDisposable
         using var ms = new MemoryStream();
         await dataRef.CopyToAsync(ms);
         ms.Seek(0, SeekOrigin.Begin);
+        if (ms.Length == 0)
+            return string.Empty;
+
         return Encoding.UTF8.GetString(ms.ToArray());
     }
 

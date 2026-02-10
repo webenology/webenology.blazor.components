@@ -2,14 +2,29 @@ export function PositionCalendar(el) {
     var spanBoundingBox = el.getBoundingClientRect();
     var input = el.querySelector(".wc-holder");
     var inputBoundingBox = input.getBoundingClientRect();
-    console.log(input.width);
-    console.log(input, spanBoundingBox, inputBoundingBox, window.innerWidth);
-    var screenWidth = window.innerWidth;
 
-    if (inputBoundingBox.right > screenWidth) {
-        var right = spanBoundingBox.width + 20 + spanBoundingBox.left - window.innerWidth;
-        input.style.right = `${right}px`;
-    } else {
-        input.style.right = null;
-    }
+    var screenWidth = window.innerWidth;
+    var screenHeight = window.innerHeight;
+
+    var endingRight = screenWidth - (spanBoundingBox.left + inputBoundingBox.width);
+    var endingBottom = screenHeight - (spanBoundingBox.bottom + inputBoundingBox.height);
+    endingRight = Math.max(20, endingRight);
+    endingBottom = Math.max(20, endingBottom);
+    input.style.right = `${endingRight}px`;
+    input.style.bottom = `${endingBottom}px`;
+
+}
+
+export function StopPropagation(el, t) {
+    el.addEventListener("keydown", (e) => {
+        if (e.key == "Enter") {
+            e.preventDefault();
+            t.invokeMethodAsync("OnEnterHit", el.value);
+            return;
+        }
+    })
+}
+
+export function SelectAll(el) {
+    el.select();
 }

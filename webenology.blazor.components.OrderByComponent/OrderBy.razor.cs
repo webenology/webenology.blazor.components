@@ -1,6 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Reflection;
-
 using Microsoft.AspNetCore.Components;
 
 namespace webenology.blazor.components.OrderByComponent

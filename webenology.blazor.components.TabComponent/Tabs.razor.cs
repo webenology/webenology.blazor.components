@@ -71,7 +71,8 @@ namespace webenology.blazor.components.TabComponent
             }
             else
             {
-                ActivePage = TabPages[0];
+                if (TabPages.Any())
+                    ActivePage = TabPages[0];
                 StateHasChanged();
             }
         }

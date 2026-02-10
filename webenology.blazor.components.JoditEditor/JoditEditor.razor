@@ -7,6 +7,10 @@
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
     [Parameter] public bool IsHtml { get; set; } = true;
     [Parameter] public Type? MergeTags { get; set; }
+    /// <summary>
+    /// Default:  "undo", "redo", "|", "bold", "italic", "underline", "|", "align", "font", "fontsize", "|", "ul", "ol", "|", "table", "link", "image"
+    /// </summary>
+    [Parameter] public List<string>? Buttons { get; set; }
     [Inject] private IJSRuntime jsRuntime { get; set; }
     private string _id;
     private JoditJs js;
@@ -35,7 +39,9 @@
         var mergeTags = GetAllTags();
         await Task.Yield();
         var dotNetRef = DotNetObjectReference.Create(this);
-        await js.Setup(_id, mergeTags, dotNetRef);
+        Buttons ??= new[] {
+            "undo", "redo", "|", "bold", "italic", "underline", "|", "align", "font", "fontsize", "|", "ul", "ol", "|", "table", "link", "image" }.ToList();
+        await js.Setup(_id, mergeTags, Buttons, dotNetRef);
     }
 
     private Dictionary<string, string>? GetAllTags()
