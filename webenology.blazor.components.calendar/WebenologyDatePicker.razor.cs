@@ -22,6 +22,7 @@ public partial class WebenologyDatePicker
     [Parameter] public bool ShowTime { get; set; }
     [Parameter] public string? BaseCssClass { get; set; }
     [Parameter] public string? InputCss { get; set; }
+    [Parameter] public string? CharacterBetweenDateAndTime { get; set; }
     [Parameter] public TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Local;
     [Inject]
     private IJSRuntime jsRuntime { get; set; }
@@ -350,6 +351,7 @@ public partial class WebenologyDatePicker
         middleMonth = DateTime.Now.Month;
         currentYear = DateTime.Now.Year;
         visibleYear = currentYear;
+        CharacterBetweenDateAndTime ??= " ";
         _jsHelper = new CalendarJsHelper(jsRuntime);
         base.OnInitialized();
     }
@@ -763,16 +765,16 @@ public partial class WebenologyDatePicker
         str.Append(date1.GetValueOrDefault().ToString("MM-dd-yyyy"));
         if (ShowTime)
         {
-            str.Append(" ");
+            str.Append(CharacterBetweenDateAndTime);
             str.Append(date1.GetValueOrDefault().ToString("hh:mm tt"));
         }
         if (date2 != null && date1 != date2)
         {
-            str.Append(" to ");
+            str.Append($"{CharacterBetweenDateAndTime}to{CharacterBetweenDateAndTime}");
             str.Append(date2.GetValueOrDefault().ToString("MM-dd-yyyy"));
             if (ShowTime)
             {
-                str.Append(" ");
+                str.Append(CharacterBetweenDateAndTime);
                 str.Append(date2.GetValueOrDefault().ToString("hh:mm tt"));
             }
         }
