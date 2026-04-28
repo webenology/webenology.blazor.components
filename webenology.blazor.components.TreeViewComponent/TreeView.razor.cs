@@ -16,6 +16,9 @@ namespace webenology.blazor.components.TreeViewComponent
         [Parameter]
         public EventCallback<List<string>> OnNodeSelectionChange { get; set; }
 
+        [Parameter]
+        public EventCallback<TreeNode> OnClick { get; set; }
+
         private bool _toggleAll;
         private void ToggleAll()
         {

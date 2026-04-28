@@ -9,11 +9,11 @@
                 {
                     if (t.IsExpanded)
                     {
-                        <i class="@CssStyle.MinusCss @CssStyle.LinkCss" @onclick="@(()=> t.IsExpanded =false)"></i>
+                        <i class="@CssStyle.MinusCss @CssStyle.LinkCss" @onclick="@(() => t.IsExpanded = false)"></i>
                     }
                     else if (!t.IsExpanded)
                     {
-                        <i class="@CssStyle.PlusCss @CssStyle.LinkCss" @onclick="@(()=> t.IsExpanded =true)"></i>
+                        <i class="@CssStyle.PlusCss @CssStyle.LinkCss" @onclick="@(() => t.IsExpanded = true)"></i>
                     }
                 }
                 else
@@ -21,7 +21,7 @@
                     <i style="@CssStyle.EmptyStyle"></i>
                 }
 
-                <span class="@CssStyle.LinkCss" style="margin-left: 0.5em" @onclick="@(()=> ToggleCheck(t))">
+                <span class="@CssStyle.LinkCss" style="margin-left: 0.5em" @onclick="@(() => ToggleCheck(t))">
                     @if (_treeView.Selectable)
                     {
 
@@ -59,8 +59,10 @@
                             }
                         }
                     }
-                    <span style="margin-left:0.5em">
-                        <b>@t.Node</b>
+                    <span style="margin-left:0.5em;@(_treeView.OnClick.HasDelegate ? "cursor:pointer": "")" @onclick="@(() => OnClick(t))">
+                        <b>
+                            @t.Node
+                        </b>
                         <span>
                             @(!string.IsNullOrEmpty(t.NodeDescription) ? $" - {t.NodeDescription}" : "")
                             @if (!t.IsExpanded)

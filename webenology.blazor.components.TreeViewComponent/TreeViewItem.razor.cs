@@ -54,5 +54,12 @@ namespace webenology.blazor.components.TreeViewComponent
             }
             base.OnInitialized();
         }
+
+        private Task OnClick(TreeNode treeNode)
+        {
+            if (_treeView.OnClick.HasDelegate)
+                _treeView.OnClick.InvokeAsync(treeNode);
+            return Task.CompletedTask;
+        }
     }
 }
