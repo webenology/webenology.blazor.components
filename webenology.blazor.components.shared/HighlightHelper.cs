@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace webenology.blazor.components.shared
@@ -7,7 +8,15 @@ namespace webenology.blazor.components.shared
     {
         public static string Highlight(this string item, string searchTerm, bool includeSubstitution = true, List<KeyValuePair<string, string>>? searchSubstitute = null)
         {
-            if (string.IsNullOrEmpty(searchTerm) || string.IsNullOrEmpty(item))
+            if (string.IsNullOrEmpty(item))
+                return item;
+
+            // HTML-encode the source up front so the returned string is safe to render
+            // as markup (callers render it via MarkupString). Only the <mark> tags we
+            // inject below are treated as HTML; any markup in the data is neutralized.
+            item = WebUtility.HtmlEncode(item);
+
+            if (string.IsNullOrEmpty(searchTerm))
                 return item;
 
             try

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -18,8 +19,11 @@ namespace webenology.blazor.components.Helpers
 
         public static string Highlight(this string item, string searchTerm, bool colorize = false, bool includeSubstitution = true)
         {
-            if (string.IsNullOrEmpty(searchTerm) || string.IsNullOrEmpty(item))
+            if (string.IsNullOrEmpty(item))
                 return item;
+
+            if (string.IsNullOrEmpty(searchTerm))
+                return WebUtility.HtmlEncode(item);
 
             try
             {
@@ -65,16 +69,18 @@ namespace webenology.blazor.components.Helpers
                         continue;
 
                     var found = highlightObject.OrderByDescending(x => x.Length).First();
-                    results.Append(item[currentIndex..found.Index]);
+                    // HTML-encode each data slice so only the <mark> tags we inject are
+                    // treated as markup (callers render the result via MarkupString).
+                    results.Append(WebUtility.HtmlEncode(item[currentIndex..found.Index]));
                     var lastIndex = found.Index + found.Length;
                     results.Append(
-                        $"<mark{(colorize ? $" style='background-color:{found.Color}'" : "")}>{item[found.Index..lastIndex]}</mark>");
+                        $"<mark{(colorize ? $" style='background-color:{found.Color}'" : "")}>{WebUtility.HtmlEncode(item[found.Index..lastIndex])}</mark>");
                     currentIndex = lastIndex;
                 }
 
                 if (currentIndex < item.Length)
                 {
-                    results.Append(item.Substring(currentIndex));
+                    results.Append(WebUtility.HtmlEncode(item.Substring(currentIndex)));
                 }
 
                 return Regex.Unescape(results.ToString().Replace("</mark><mark>", ""));
@@ -82,7 +88,7 @@ namespace webenology.blazor.components.Helpers
             catch (Exception e)
             {
                 Console.Error.WriteLine(e.ToString());
-                return item;
+                return WebUtility.HtmlEncode(item);
             }
         }
     }
