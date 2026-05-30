@@ -5,15 +5,40 @@ let link = document.createElement("link");
 link.rel = "stylesheet";
 link.href = "./_content/webenology.blazor.components.JoditEditor/jodit.min.css";
 document.head.appendChild(link);
-let scriptEle = document.createElement("script");
-scriptEle.setAttribute("src", "./_content/webenology.blazor.components.JoditEditor/jodit.min.js");
-document.head.appendChild(scriptEle);
+// let scriptEle = document.createElement("script");
+// scriptEle.setAttribute("src", "./_content/webenology.blazor.components.JoditEditor/jodit.min.js");
+// document.head.insertBefore(scriptEle, document.head.lastElement);
 
 export class JoditHelper {
 
+    JoditExists() {
+        return [...document.scripts].some(s => s.src.includes("jodit.min.js"));
+    }
+
+    // Load jodit.min.js with the global AMD `define` temporarily hidden, so its UMD bundle
+    // takes the browser-global path (window.Jodit) instead of calling an anonymous define().
+    // This avoids "Can only have one anonymous define call per script file" when another AMD
+    // loader (e.g. Monaco's loader.js) is present on the page. Restores `define` after load.
+    EnsureJodit() {
+        if (typeof Jodit !== "undefined" && Jodit != null) return;
+        if (this.JoditExists()) return; // already loading/loaded
+
+        const prevDefine = window.define;
+        try { window.define = undefined; } catch (e) { /* ignore */ }
+
+        const s = document.createElement("script");
+        s.src = "./_content/webenology.blazor.components.JoditEditor/jodit.min.js";
+        s.type = "text/javascript";
+        const restore = () => { try { window.define = prevDefine; } catch (e) { /* ignore */ } };
+        s.onload = restore;
+        s.onerror = restore;
+        document.head.appendChild(s);
+    }
+
     Setup(id, mergeTags, buttons, dotnet) {
+        this.EnsureJodit();
         var interval = setInterval(() => {
-            if (Jodit != null) {
+            if (typeof Jodit !== "undefined" && Jodit != null) {
 
                 if (mergeTags) {
                     Jodit.defaultOptions.controls.mergeTags = {

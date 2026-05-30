@@ -1,5 +1,8 @@
 ﻿@using Microsoft.JSInterop
 @using System.Reflection
+
+@* jodit.min.js is loaded from jodit.editor.js (with the AMD `define` temporarily hidden) so its
+   UMD bundle doesn't collide with other AMD loaders on the page (e.g. Monaco's loader.js). *@
 <textarea id="@_id">@Value</textarea>
 
 @code {
@@ -32,6 +35,11 @@
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task<bool> JoditExist()
+    {
+        return await js.JoditExists();
     }
 
     private async Task Load()

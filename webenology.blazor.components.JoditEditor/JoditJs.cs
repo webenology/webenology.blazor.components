@@ -22,6 +22,14 @@ public class JoditJs : IAsyncDisposable
             "import", "./_content/webenology.blazor.components.JoditEditor/jodit.editor.js").AsTask());
     }
 
+    public async ValueTask<bool> JoditExists()
+    {
+        var module = await moduleTask.Value;
+        moduleInstance = await module.InvokeAsync<IJSObjectReference>("Instance", null);
+
+        return await moduleInstance.InvokeAsync<bool>("JoditExists");
+    }
+
     public async ValueTask Setup(string id, Dictionary<string, string>? mergeTags, List<string> buttons,
         DotNetObjectReference<JoditEditor> dotNetRef)
     {
