@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
+
 using webenology.blazor.components.Helpers;
+
 using Xunit;
 using Xunit.Abstractions;
 
@@ -210,16 +213,16 @@ namespace webenology.blazor.components.Tests
 
             var search = "velit sem augue eim faci vel just matt eg lu veh lla";
             var iterations = 0;
-            for (var i = 0; i < search.Length; i++)
+            var sb = new StringBuilder();
+            foreach (var c in search.ToCharArray())
             {
-                var b = search.Substring(0, i);
-                item.Highlight(b);
+                sb.Append(c);
+                item.Highlight(sb.ToString());
                 iterations++;
             }
 
             sw.Stop();
 
-            Assert.True(true, $"Elapsed: {sw.Elapsed}");
             Assert.Equal(52, iterations);
             _testOutputHelper.WriteLine($"search took: {sw.Elapsed}");
         }

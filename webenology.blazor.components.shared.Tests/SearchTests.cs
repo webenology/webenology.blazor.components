@@ -1,45 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
-using JetBrains.dotMemoryUnit;
-using Xunit.Abstractions;
+using System.Threading.Tasks;
 
 namespace webenology.blazor.components.shared.Tests;
 
-public class HightlightTests
+public class SearchTests
 {
-    
-    [Test] 
-    [AssertTraffic(AllocatedSizeInBytes = 0)]
-    public void Test1()
-    {
-        var sw = new Stopwatch();
-        sw.Start();
-        var str = "hello abi what are you up to, what does it look like from up there?";
-
-        var results = str.Highlight("wh ar you");
-
-        Assert.That(results, Is.EqualTo("hello abi <mark>wh</mark>at <mark>ar</mark>e <mark>you</mark> up to, " +
-                        "<mark>wh</mark>at does it look like from up th<mark>er</mark>e?"));
-        sw.Stop();
-        Console.WriteLine($"highlight took: {sw.Elapsed}");
-    }
-
-    [Test]
-    [AssertTraffic(AllocatedSizeInBytes = 0)]
-    public void Test2()
-    {
-        var sw = new Stopwatch();
-        sw.Start();
-        var str = "hello abi what are you up to, what does it look like from up there?";
-
-        var results = str.Highlight("wh what ar you");
-
-        Assert.That(results, Is.EqualTo("hello abi <mark>what</mark> <mark>ar</mark>e <mark>you</mark> up to, " +
-                                        "<mark>what</mark> does it look like from up th<mark>er</mark>e?"));
-        sw.Stop();
-        Console.WriteLine($"highlight took: {sw.Elapsed}");
-    }
-
     [Test]
     public void it_should_do_a_large_amount_of_text()
     {
@@ -67,21 +36,39 @@ public class HightlightTests
             "Sed finibus porttitor congue. Nulla ac vehicula purus. Cras vitae lobortis lacus. Ut posuere pretium vehicula. Cras volutpat cursus elit, ac malesuada augue porttitor ut. Phasellus malesuada tincidunt laoreet. Morbi sagittis elit at semper ornare. Vestibulum in viverra erat. Sed fringilla odio leo, ac pretium dui interdum facilisis. Duis cursus ornare dolor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In hac habitasse platea dictumst. Aenean ut interdum mauris. Aliquam in tincidunt nisi. Nam eu ligula urna." +
             "Sed urna nunc, condimentum a porta vitae, vulputate sit amet lorem. Aliquam quam leo, pellentesque nec placerat eget, faucibus a sapien. Sed luctus, diam eleifend dictum malesuada, lorem nulla bibendum mi, ac pellentesque quam nisi vitae quam. Cras mattis faucibus sapien, vel maximus eros vestibulum non. In eget orci ornare, vehicula nisl nec, convallis lacus. Donec fermentum tristique lectus, vitae ultrices nisl luctus pretium. Duis dolor nulla, varius sed dui vulputate, tempor aliquet est. Proin accumsan vulputate efficitur. Phasellus quis venenatis odio, eu placerat augue. Aliquam blandit aliquam justo, id viverra massa fermentum sed. Nulla facilisi.";
 
-        var search = "velit sem augue eim faci vel just matt eg lu veh lla";
+        var search = "Class aptent taci iosqu ad litora torque per ubia nostra";
+        var tester = new List<string> { item, item, item, item, item, item, item };
+        tester.AddRange(tester);
+        tester.AddRange(tester);
+        tester.AddRange(tester);
+        tester.AddRange(tester);
+        tester.AddRange(tester);
+        tester.AddRange(tester);
+
+        var searchString = string.Join(" ", tester);
+
         var iterations = 0;
         var sb = new StringBuilder();
         foreach (var c in search.ToCharArray())
         {
             sb.Append(c);
-            item.Highlight(sb.ToString());
+            var result = tester.Search(sb.ToString(), x => x);
+            if (!result.Any())
+            {
+                Console.WriteLine("failed at {0}", sb.ToString());
+                Assert.IsTrue(false);
+            }
+
             iterations++;
         }
 
         sw.Stop();
 
-        Assert.AreEqual(52, iterations);
-        Console.WriteLine($"highlight took: {sw.Elapsed}");
+        Assert.True(true, $"Elapsed: {sw.Elapsed}");
+        Assert.AreEqual(56, iterations);
+
+        Console.WriteLine($"search took: {sw.Elapsed}");
         Console.WriteLine($"iterations: {iterations}");
-        Console.WriteLine($"text length: {item.Length}");
+        Console.WriteLine($"text: {searchString.Length}");
     }
 }

@@ -1,4 +1,5 @@
-﻿using JetBrains.dotMemoryUnit;
+﻿using System.Diagnostics;
+using JetBrains.dotMemoryUnit;
 using Microsoft.VisualBasic;
 
 namespace webenology.blazor.components.shared.Tests;
@@ -49,9 +50,12 @@ public class LuhnHelperTests
     [AssertTraffic(AllocatedSizeInBytes = 0)]
     public void it_should_generate_number()
     {
+        var sw = Stopwatch.StartNew();
         var number = "1789372997";
         var data = LuhnHelper.GenerateCheckDigit(number);
+        sw.Stop();
 
+        Console.WriteLine("it took {0}ms", sw.Elapsed);
         Assert.That(7, Is.EqualTo(data));
     }
 

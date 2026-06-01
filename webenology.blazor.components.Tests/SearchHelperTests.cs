@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
+
 using webenology.blazor.components.Helpers;
+
 using Xunit;
 using Xunit.Abstractions;
 
@@ -59,25 +62,25 @@ public class SearchHelperTests
 
         Assert.Single(results);
     }
-    
+
     [Fact]
     public void it_should_do_simple_substitution()
     {
         var searchKey = "hello";
 
         var results = searchKey.ToSearchBreakout();
-        
+
         Assert.Equal("h[iea]ll[oa]", results[0]);
         Assert.Single(results);
     }
-    
+
     [Fact]
     public void it_should_do_no_simple_substitution()
     {
         var searchKey = "hello";
 
         var results = searchKey.ToSearchBreakout(false);
-        
+
         Assert.Equal("hello", results[0]);
         Assert.Single(results);
     }
@@ -154,21 +157,30 @@ public class SearchHelperTests
         var listOfItems = new List<string> { item, item, item, item, item, item, item };
         listOfItems.AddRange(listOfItems);
         listOfItems.AddRange(listOfItems);
+        listOfItems.AddRange(listOfItems);
 
-        var results = listOfItems.Search(search, x => x);
+        var sb = new StringBuilder();
+        var results = new List<string>();
+        foreach (var s in search.ToCharArray())
+        {
+            sb.Append(s);
+            results = listOfItems.Search(sb.ToString(), x => x).ToList();
+        }
 
         sw.Stop();
 
         _testOutputHelper.WriteLine($"took {sw.Elapsed}");
 
-        Assert.Equal(28, results.Count());
+        _testOutputHelper.WriteLine($"There were {56 * item.Length} characters");
+
+        Assert.Equal(56, results.Count());
     }
 
     [Fact]
     private void it_should_do_a_large_search_3()
     {
         var took = new List<TimeSpan>();
-        
+
         for (int i = 0; i < 10; i++)
         {
             // var sw = new Stopwatch();
@@ -214,7 +226,7 @@ public class SearchHelperTests
 
             Assert.True(true);
         }
-        
+
         // _testOutputHelper.WriteLine($"Average microseconds {took.Average(x=> x.TotalMicroseconds)}");
     }
 }

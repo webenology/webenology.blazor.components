@@ -8,15 +8,7 @@ namespace webenology.blazor.components.shared
     {
         public static string Highlight(this string item, string searchTerm, bool includeSubstitution = true, List<KeyValuePair<string, string>>? searchSubstitute = null)
         {
-            if (string.IsNullOrEmpty(item))
-                return item;
-
-            // HTML-encode the source up front so the returned string is safe to render
-            // as markup (callers render it via MarkupString). Only the <mark> tags we
-            // inject below are treated as HTML; any markup in the data is neutralized.
-            item = WebUtility.HtmlEncode(item);
-
-            if (string.IsNullOrEmpty(searchTerm))
+            if (string.IsNullOrEmpty(item) || string.IsNullOrEmpty(searchTerm))
                 return item;
 
             try
@@ -24,25 +16,19 @@ namespace webenology.blazor.components.shared
                 var isFirst = true;
                 var searchString = new StringBuilder();
 
-                foreach (var s in searchTerm.Split(" "))
+                foreach (var s in searchTerm.Split(" ", StringSplitOptions.RemoveEmptyEntries).OrderByDescending(x => x.Length))
                 {
-                    if (string.IsNullOrEmpty(s))
-                        continue;
-
-                    var search = Regex.Replace(s, @"[^\d\w]", "");
-
-
                     if (!isFirst)
                         searchString.Append("|");
 
                     searchString.Append("(?:");
 
 
-                    foreach (var v in search)
+                    foreach (var v in s)
                     {
                         if (includeSubstitution && SharedHelper.SubstituteChars.TryGetValue(v, out var c))
                         {
-                            searchString.Append($"[{c}]");
+                            searchString.Append("[").Append(Regex.Escape(c)).Append("]");
                         }
                         else
                         {
@@ -51,20 +37,13 @@ namespace webenology.blazor.components.shared
                     }
 
                     searchString.Append(")");
-                    if (searchSubstitute != null)
-                    {
-                        searchSubstitute.Where(x => x.Key.Equals(search, StringComparison.OrdinalIgnoreCase)).ToList().ForEach(
-                            x =>
-                            {
-                                searchString.Append($"|(?:{x.Value})");
-                            });
-                    }
+
                     isFirst = false;
                 }
 
-
-                return Regex.Replace(item, searchString.ToString(), "<mark>$&</mark>",
-                    RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+                var rg = new Regex(searchString.ToString(), RegexOptions.IgnoreCase);
+                var matches = rg.Replace(item, "<mark>$&</mark>");
+                return matches;
             }
             catch (Exception e)
             {
