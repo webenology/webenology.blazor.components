@@ -2,7 +2,7 @@
 
 @namespace webenology.blazor.components.calendar
 
-<span @ref="_el">
+<span @ref="_el" style="border:none !important;">
     <OutsideClick OnLoseFocus="HideCalendar" class="@($"{_wrapperCss} {BaseCssClass}")">
         <div class="wc-input" @onclick="ToggleCalendar">
             <input class="@InputCss" type="text" @bind="TextValue" @bind:after="()=> DateParser()" disbabled="@IsDisabled" @ref="_textInput" @onfocus="SelectAll"/>
