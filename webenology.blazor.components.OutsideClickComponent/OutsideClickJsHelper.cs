@@ -40,6 +40,11 @@ namespace webenology.blazor.components
             {
                 //we know it failed because we did not disconnect
             }
+            catch (OperationCanceledException ex)
+            {
+                // The interop call was canceled because the circuit is tearing down mid-dispose
+                // (navigation, tab close, dropped connection). Expected — don't log as an error.
+            }
             catch (Exception e)
             {
                 _logger.LogError(e, "Unregistering outside click.");
@@ -59,6 +64,11 @@ namespace webenology.blazor.components
             catch (JSDisconnectedException ex)
             {
                 //we know it failed because we did not disconnect
+            }
+            catch (OperationCanceledException ex)
+            {
+                // Module import/dispose interop canceled during circuit teardown — expected race,
+                // not an error worth logging.
             }
             catch (Exception e)
             {
